@@ -3,6 +3,14 @@
  */
 export abstract class Piece {
 
-    name: string;
-    imageUrl: string;
+    protected name: string;
+    protected imageUrl: string;
+
+    getName(): string {
+        return this.name;
+    }
+
+    getImageUrl(): string {
+        return this.imageUrl;
+    }
 }

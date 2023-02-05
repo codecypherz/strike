@@ -12,6 +12,7 @@ export class BoardService {
   static readonly HEIGHT: number = 8;
 
   private cells: Cell[][];
+  private selectedCell: Cell | null;
 
   constructor() {
     this.cells = new Array<Array<Cell>>();
@@ -26,6 +27,20 @@ export class BoardService {
     // TODO: Remove this hard-coded data.
     this.getCell(0, 3).setPiece(new Burrower());
     this.getCell(7, 4).setPiece(new Burrower());
+  }
+
+  selectCell(cell: Cell): void {
+    if (this.selectedCell) {
+      this.selectedCell.setSelected(false);
+    }
+    if (cell) {
+      cell.setSelected(true);
+    }
+    this.selectedCell = cell;
+  }
+
+  getSelectedCell(): Cell | null {
+    return this.selectedCell;
   }
 
   getCells(): Cell[][] {

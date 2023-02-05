@@ -1,0 +1,19 @@
+import { Component, Input } from '@angular/core';
+import { BoardService } from 'src/model/board.service';
+import { Cell } from 'src/model/cell';
+
+@Component({
+  selector: 'app-cell',
+  templateUrl: './cell.component.html',
+  styleUrls: ['./cell.component.css']
+})
+export class CellComponent {
+
+  @Input() cell: Cell;
+
+  constructor(private boardService: BoardService) {}
+
+  select(): void {
+    this.boardService.selectCell(this.cell);
+  }
+}

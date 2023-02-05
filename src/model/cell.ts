@@ -7,6 +7,7 @@ import { Piece } from "./piece/piece";
 export class Cell {
 
   piece: Piece | null;
+  selected: boolean;
 
   getPiece(): Piece | null {
     return this.piece;
@@ -14,5 +15,13 @@ export class Cell {
 
   setPiece(piece: Piece | null) {
     this.piece = piece;
+  }
+
+  isSelected(): boolean {
+    return this.selected;
+  }
+
+  setSelected(selected: boolean): void {
+    this.selected = selected;
   }
 }

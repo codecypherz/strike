@@ -1,11 +1,6 @@
 <div class="board">
   <div class="row" *ngFor="let row of cells">
-    <div class="cell" *ngFor="let cell of row">
-
-      <!-- TODO: Render terrain once supported. -->
-
-      <!-- Render the piece. -->
-      <app-piece [piece]="cell.getPiece()"></app-piece>
-    </div>
+    <app-cell *ngFor="let cell of row" [cell]="cell">
+    </app-cell>
   </div>
 </div>
