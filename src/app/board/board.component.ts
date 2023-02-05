@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BoardService } from 'src/model/board.service';
-import { Piece } from 'src/model/piece/piece';
+import { Cell } from 'src/model/cell';
 
 @Component({
   selector: 'app-board',
@@ -9,15 +9,15 @@ import { Piece } from 'src/model/piece/piece';
   providers: [ BoardService ]
 })
 export class BoardComponent implements OnInit {
-  pieces: Piece[][];
+  cells: Cell[][];
 
   constructor(private boardService: BoardService) {}
 
   ngOnInit(): void {
-    this.getPieces();
+    this.getCells();
   }
 
-  getPieces(): void {
-    this.pieces = this.boardService.getPieces();
+  getCells(): void {
+    this.cells = this.boardService.getCells();
   }
 }

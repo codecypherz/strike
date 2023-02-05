@@ -1,0 +1,15 @@
+.piece {
+  float: left;
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  border: solid blue 4px;
+  margin-top: -5px;
+  margin-left: -5px;
+}
+.piece > img {
+  width: 100%;
+}
+.piece.selected {
+  border: solid lightgreen 4px;
+}

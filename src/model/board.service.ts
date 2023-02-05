@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Piece } from "./piece/piece";
+import { Cell } from "./cell";
 
 /**
  * Provides the data for the board.
@@ -10,25 +10,25 @@ export class BoardService {
   static readonly WIDTH: number = 8;
   static readonly HEIGHT: number = 8;
 
-  private pieces: Piece[][];
+  private cells: Cell[][];
 
   constructor() {
-    this.pieces = new Array<Array<Piece>>();
+    this.cells = new Array<Array<Cell>>();
     for (let row = 0; row < BoardService.HEIGHT; row++) {
-      let rowArr: Piece[] = new Array<Piece>();
+      let rowArr: Cell[] = new Array<Cell>();
       for (let col = 0; col < BoardService.WIDTH; col++) {
-        rowArr.push(null);
+        rowArr.push(new Cell());
       }
-      this.pieces.push(rowArr);
+      this.cells.push(rowArr);
     }
   }
 
-  getPieces(): Piece[][] {
-    return this.pieces;
+  getCells(): Cell[][] {
+    return this.cells;
   }
 
-  getPiece(row: number, col: number): Piece|null {
-    return this.pieces[row][col];
+  getCell(row: number, col: number): Cell {
+    return this.cells[row][col];
   }
 
   getWidth() {

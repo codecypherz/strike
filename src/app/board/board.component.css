@@ -1,0 +1,9 @@
+.cell {
+  border: solid black;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+}
+.cell:hover {
+  background-color: lightgreen;
+}
