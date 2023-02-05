@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Piece } from 'src/model/piece/piece';
 
 @Component({
   selector: 'app-piece',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class PieceComponent {
 
+  @Input() piece: Piece;
 }

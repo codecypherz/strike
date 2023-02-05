@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Cell } from "./cell";
+import { Burrower } from "./piece/burrower";
 
 /**
  * Provides the data for the board.
@@ -21,6 +22,10 @@ export class BoardService {
       }
       this.cells.push(rowArr);
     }
+
+    // TODO: Remove this hard-coded data.
+    this.getCell(0, 3).setPiece(new Burrower());
+    this.getCell(7, 4).setPiece(new Burrower());
   }
 
   getCells(): Cell[][] {
