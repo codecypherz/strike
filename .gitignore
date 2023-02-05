@@ -1,3 +1,5 @@
 /node_modules
 
-/static/js
+/dist
+
+/.angular/cache/
