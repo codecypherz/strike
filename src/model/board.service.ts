@@ -30,11 +30,15 @@ export class BoardService {
   }
 
   selectCell(cell: Cell): void {
-    if (this.selectedCell) {
+    if (this.selectedCell && cell != this.selectedCell) {
       this.selectedCell.setSelected(false);
     }
     if (cell) {
-      cell.setSelected(true);
+      if (cell == this.selectedCell) {
+        cell.setSelected(!cell.isSelected());
+      } else {
+        cell.setSelected(true);
+      }
     }
     this.selectedCell = cell;
   }

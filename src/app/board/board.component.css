@@ -1,0 +1,8 @@
+.row {
+  margin: 0;
+}
+
+app-cell{
+  display: inline-flex;
+  vertical-align: top;
+}

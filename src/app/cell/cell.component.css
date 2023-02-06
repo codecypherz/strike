@@ -1,9 +1,19 @@
 .cell {
-  border: solid black;
+  border: solid black 1px;
   width: 100px;
   height: 100px;
   display: inline-block;
 }
+
+.cell-selected {
+  border: solid black 4px;
+  width: 100%;
+  height: 100%;
+  margin-left: -4px;
+  margin-top: -4px;
+  position: relative;
+}
+
 .cell:hover {
   background-color: lightgreen;
 }
