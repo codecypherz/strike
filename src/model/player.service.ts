@@ -25,4 +25,11 @@ export class PlayerService {
     this.player1.toggleActive();
     this.player2.toggleActive();
   }
+
+  getActivePlayer(): Player {
+    if (this.player1.isActive()) {
+      return this.player1;
+    }
+    return this.player2;
+  }
 }

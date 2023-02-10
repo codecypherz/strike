@@ -32,6 +32,10 @@ export class Player {
     this.points = points;
   }
 
+  addPoints(points: number): void {
+    this.points += points;
+  }
+
   getPoints(): number {
     return this.points;
   }

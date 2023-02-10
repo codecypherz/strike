@@ -11,6 +11,7 @@ import { Board } from 'src/model/board';
 import { BoardService } from 'src/model/board.service';
 import { GameService } from 'src/model/game.service';
 import { PlayerService } from 'src/model/player.service';
+import { GameoverComponent } from './gameover/gameover.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PlayerService } from 'src/model/player.service';
     PieceComponent,
     CellComponent,
     PlayersComponent,
-    PlayerComponent
+    PlayerComponent,
+    GameoverComponent
   ],
   imports: [
     BrowserModule

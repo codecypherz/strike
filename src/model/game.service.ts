@@ -10,6 +10,8 @@ import { Position } from "./position";
 @Injectable()
 export class GameService {
 
+  private gameOver: boolean = false;
+
   constructor(
     private board: Board,
     private playerService: PlayerService,
@@ -44,13 +46,32 @@ export class GameService {
     }
     let destCell = this.board.getCell(dest);
     if (destCell.hasPiece()) {
-      // Can't move to an occupied space.
-      return false;
+      let destPiece = destCell.getPiece();
+      // This is an attack.
+      // For now, the piece just dies.
+      this.playerService.getActivePlayer().addPoints(destPiece.points);
+      this.checkWinCondition();
+      destCell.clearPiece();
+      // Move the piece into the dest cell.
+      srcCell.clearPiece();
+      destCell.setPiece(srcPiece);
+      return true;
     }
     // Move is valid.
     destCell.setPiece(srcPiece);
-    srcCell.setPiece(null);
+    srcCell.clearPiece();
     this.playerService.endTurn();
     return true;
+  }
+
+  checkWinCondition(): void {
+    if (this.playerService.getActivePlayer().getPoints() >= 1) {
+      console.log('Game over!');
+      this.gameOver = true;
+    }
+  }
+
+  isGameOver(): boolean {
+    return this.gameOver;
   }
 }

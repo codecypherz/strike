@@ -30,6 +30,10 @@ export class Cell {
     }
   }
 
+  clearPiece(): void {
+    this.setPiece(null);
+  }
+
   isSelected(): boolean {
     return this.selected;
   }
