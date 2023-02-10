@@ -18,6 +18,13 @@ export class PlayerService {
     this.player1 = new Player('player1', 'Player 1');
     this.player2 = new Player('player2', 'Player 2');
 
+    this.reset();
+  }
+
+  reset(): void {
+    this.player1.reset();
+    this.player2.reset();
+
     this.player1.setActive(true);
   }
 

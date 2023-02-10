@@ -18,7 +18,11 @@ export class Board {
     if (board) {
       throw new Error('Singleton violation: Board');
     }
-    
+
+    this.reset();
+  }
+
+  reset() {
     this.cells = new Array<Array<Cell>>();
     for (let row = 0; row < Board.HEIGHT; row++) {
       let rowArr: Cell[] = new Array<Cell>();

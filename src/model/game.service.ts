@@ -20,10 +20,11 @@ export class GameService {
       throw new Error('Singleton violation: GameService');
     }
 
-    this.setUp();
+    this.reset();
   }
 
-  setUp(): void {
+  reset(): void {
+    this.gameOver = false;
     // Player 1 pieces
     let player1 = this.playerService.player1;
     this.board.getByRowCol(0, 3).setPiece(new Burrower(player1));

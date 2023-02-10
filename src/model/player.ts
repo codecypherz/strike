@@ -13,7 +13,11 @@ export class Player {
   constructor(id: string, name: string) {
     this.id = id;
     this.name = name;
+  }
+
+  reset(): void {
     this.active = false;
+    this.points = 0;
   }
 
   setActive(active: boolean): void {

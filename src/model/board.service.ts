@@ -20,6 +20,11 @@ export class BoardService {
     }
   }
 
+  reset(): void {
+    this.selectedCell = null;
+    this.board.reset();
+  }
+
   selectCell(cell: Cell): void {
     if (this.selectedCell) {
       // A cell was already selected.

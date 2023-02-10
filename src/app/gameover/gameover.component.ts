@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BoardService } from 'src/model/board.service';
 import { GameService } from 'src/model/game.service';
 import { Player } from 'src/model/player';
 import { PlayerService } from 'src/model/player.service';
@@ -14,6 +15,7 @@ export class GameoverComponent implements OnInit {
 
   constructor(
     private gameService: GameService,
+    private boardService: BoardService,
     private playerService: PlayerService) { }
 
   ngOnInit(): void {
@@ -26,5 +28,11 @@ export class GameoverComponent implements OnInit {
       this.winningPlayer = this.playerService.getActivePlayer();
     }
     return gameOver;
+  }
+
+  newGame(): void {
+    this.boardService.reset();
+    this.playerService.reset();
+    this.gameService.reset();
   }
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Board } from 'src/model/board';
-import { BoardService } from 'src/model/board.service';
 import { Cell } from 'src/model/cell';
 
 @Component({
@@ -10,15 +9,13 @@ import { Cell } from 'src/model/cell';
 })
 export class BoardComponent implements OnInit {
 
-  cells: Cell[][];
-
   constructor(private board: Board) {}
 
   ngOnInit(): void {
     this.getCells();
   }
 
-  getCells(): void {
-    this.cells = this.board.getCells();
+  getCells(): Cell[][] {
+    return this.board.getCells();
   }
 }
