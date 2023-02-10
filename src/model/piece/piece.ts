@@ -1,16 +1,24 @@
+import { Position } from "../position";
+
 /**
  * Represents the data common to all pieces.
  */
 export abstract class Piece {
 
-    protected name: string;
-    protected imageUrl: string;
+    readonly name: string;
+    readonly imageUrl: string;
+    private position: Position;
 
-    getName(): string {
-        return this.name;
+    constructor(name: string, imageUrl: string) {
+        this.name = name;
+        this.imageUrl = imageUrl;
+    }
+    
+    setPosition(position: Position): void {
+        this.position = position;
     }
 
-    getImageUrl(): string {
-        return this.imageUrl;
+    getPosition(): Position {
+        return this.position;
     }
 }

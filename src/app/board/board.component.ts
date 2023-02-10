@@ -19,6 +19,6 @@ export class BoardComponent implements OnInit {
   }
 
   getCells(): void {
-    this.cells = this.boardService.getCells();
+    this.cells = this.boardService.board.getCells();
   }
 }
