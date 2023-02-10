@@ -7,6 +7,10 @@ import { PieceComponent } from './piece/piece.component';
 import { CellComponent } from './cell/cell.component';
 import { PlayersComponent } from './players/players.component';
 import { PlayerComponent } from './player/player.component';
+import { Board } from 'src/model/board';
+import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
+import { PlayerService } from 'src/model/player.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +24,12 @@ import { PlayerComponent } from './player/player.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [
+    Board,
+    BoardService,
+    GameService,
+    PlayerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

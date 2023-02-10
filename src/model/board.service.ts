@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { GameService } from "./game.service";
@@ -7,14 +7,18 @@ import { Burrower } from "./piece/burrower";
 /**
  * Provides behavior and simple extractions of intent.
  */
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class BoardService {
 
-  readonly board: Board;
   private selectedCell: Cell | null;
 
-  constructor(private gameService: GameService) {
-    this.board = new Board();
+  constructor(
+    private board: Board,
+    private gameService: GameService,
+    @Optional() @SkipSelf() service?: BoardService) {
+    if (service) {
+      throw new Error('Singleton violation: BoardService');
+    }
 
     // TODO: Remove this hard-coded data.
     this.board.getByRowCol(0, 3).setPiece(new Burrower());
@@ -27,24 +31,24 @@ export class BoardService {
       if (this.selectedCell != cell) {
         // Let's determine if this is a piece move.
         if (this.selectedCell.hasPiece()) {
-          let moved = this.gameService.movePiece(
-              this.selectedCell.position, cell.position);
-          // Keep the cell selected if the move failed.
-          this.selectedCell.setSelected(!moved);
-          cell.setSelected(moved);
+          this.gameService.movePiece(
+            this.selectedCell.position, cell.position);
+          // Deselect everything after move attempt
+          this.selectedCell.setSelected(false);
+          cell.setSelected(false);
+          this.selectedCell = null;
         } else {
           // No piece, so just change selection.
           this.selectedCell.setSelected(false);
           cell.setSelected(true);
+          this.selectedCell = cell;
         }
       } // Do nothing if same cell clicked.
     } else {
       // There was no cell selected before.
       cell.setSelected(true);
+      this.selectedCell = cell;
     }
-
-    this.selectedCell = cell;
-    console.info(cell);
   }
 
   getSelectedCell(): Cell | null {

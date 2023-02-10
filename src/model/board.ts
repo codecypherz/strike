@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Cell } from "./cell";
 import { Burrower } from "./piece/burrower";
 import { Position } from "./position";
@@ -6,7 +6,7 @@ import { Position } from "./position";
 /**
  * Provides the data for the board.
  */
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class Board {
 
   static readonly WIDTH: number = 8;
@@ -14,8 +14,11 @@ export class Board {
 
   private cells: Cell[][];
 
-  constructor() {
-    console.info('CREATING NEW BOARD');
+  constructor(@Optional() @SkipSelf() board?: Board) {
+    if (board) {
+      throw new Error('Singleton violation: Board');
+    }
+    
     this.cells = new Array<Array<Cell>>();
     for (let row = 0; row < Board.HEIGHT; row++) {
       let rowArr: Cell[] = new Array<Cell>();

@@ -25,7 +25,9 @@ export class Cell {
 
   setPiece(piece: Piece | null) {
     this.piece = piece;
-    this.piece.setPosition(this.position);
+    if (this.piece) {
+      this.piece.setPosition(this.position);
+    }
   }
 
   isSelected(): boolean {
