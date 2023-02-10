@@ -1,18 +1,31 @@
 Repo is at https://github.com/codecypherz/strike
 
-First time setup stuff:
-1. Clone repo.
-2. Run "npm install strike"
+Setting up for the first time:
+1. Clone repo
+2. Run `sudo apt-get install npm` to install npm
+3. Run `npm --version` to verify version
+4. Run `sudo npm install -g n` to install node
+5. Run `sudo n stable` to update node
+6. Run `node -v` to verify version
+7. Run `sudo npm install -g @angular/cli` to install angular command line
+8. Run `ng version` to verify version
+9. Run `npm install strike` to set up the project
+10. Verify the log did not have warnings. It should have cleanly installed.
+11. Run `ng build` and verify it builds successfully.
+12. Profit
 
 
-Daily setup stuff (assuming VS Code):
-1. Go to Terminal > Run Task... and select "tsc: watch"
-(This will have typescript recompile as you change source)
-2. Run the local server by moving to the strike directory
-and running "dev_appserver.py ."
-3. Visit localhost:8080.
+Run Angular locally (main development flow):
+1. `ng serve`
+2. Visit `localhost:4200`
 
 
-Deployment stuff:
+Run App Engine locally (test deployment):
+1. `ng build`
+2. From strike directory, run `dev_appserver.py .`
+3. Visit `localhost:8080`
+
+
+Deploy to App Engine (publish):
 1. Go to strike directory.
-2. Run "gcloud app deploy"
+2. Run `gcloud app deploy`
