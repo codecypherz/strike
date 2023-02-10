@@ -1,1 +1,9 @@
-<div class="piece" *ngIf="piece">{{piece.name}}</div>
+<div
+    *ngIf="piece"
+    [ngClass]="{
+      'piece': true,
+      'player1' : piece.player.id == 'player1',
+      'player2' : piece.player.id == 'player2'
+      }">
+  {{piece.name}}
+</div>

@@ -1,4 +1,9 @@
-<div [ngClass]="{'cell': true, 'selected': cell.isSelected()}" (click)="select()">
+<div
+    [ngClass]="{
+      'cell': true,
+      'selected': cell.isSelected()
+      }"
+    (click)="select()">
   <div *ngIf=cell.isSelected() class="cell-selected"></div>
 
   <!-- TODO: Render terrain once supported. -->

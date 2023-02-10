@@ -1,7 +1,15 @@
 .piece {
   width: 100%;
   height: 100%;
-  border: solid blue 4px;
-  margin-top: -4px;
-  margin-left: -4px;
+  border: solid 3px transparent;
+  margin-top: -3px;
+  margin-left: -3px;
+}
+
+.piece.player1 {
+  border-color: cornflowerblue;
+}
+
+.piece.player2 {
+  border-color: coral;
 }

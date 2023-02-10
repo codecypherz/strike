@@ -15,8 +15,8 @@ export class PlayerService {
       throw new Error('Singleton violation: PlayerService');
     }
 
-    this.player1 = new Player('Player 1');
-    this.player2 = new Player('Player 2');
+    this.player1 = new Player('player1', 'Player 1');
+    this.player2 = new Player('player2', 'Player 2');
 
     this.player1.setActive(true);
   }

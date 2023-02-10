@@ -10,6 +10,12 @@
 .player.active {
     border: 4px solid;
 }
+.player1.active {
+  border-color: cornflowerblue;
+}
+.player2.active {
+  border-color: coral;
+}
 
 .player-name {
     font-size: 30px;
