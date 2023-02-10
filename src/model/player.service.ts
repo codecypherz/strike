@@ -13,5 +13,7 @@ export class PlayerService {
   constructor() {
     this.player1 = new Player('Player 1');
     this.player2 = new Player('Player 2');
+
+    this.player1.setActive(true);
   }
 }

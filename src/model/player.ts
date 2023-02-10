@@ -5,8 +5,18 @@
 export class Player {
 
   readonly name: string;
+  private active: boolean = false;
 
   constructor(name: string) {
     this.name = name;
+    this.active = false;
+  }
+
+  setActive(active: boolean): void {
+    this.active = active;
+  }
+
+  isActive(): boolean {
+    return this.active;
   }
 }
