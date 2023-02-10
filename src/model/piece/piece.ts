@@ -1,3 +1,4 @@
+import { Player } from "../player";
 import { Position } from "../position";
 
 /**
@@ -5,20 +6,22 @@ import { Position } from "../position";
  */
 export abstract class Piece {
 
-    readonly name: string;
-    readonly imageUrl: string;
-    private position: Position;
+  readonly name: string;
+  readonly imageUrl: string;
+  readonly player: Player;
+  private position: Position;
 
-    constructor(name: string, imageUrl: string) {
-        this.name = name;
-        this.imageUrl = imageUrl;
-    }
-    
-    setPosition(position: Position): void {
-        this.position = position;
-    }
+  constructor(name: string, imageUrl: string, player: Player) {
+    this.name = name;
+    this.imageUrl = imageUrl;
+    this.player = player;
+  }
 
-    getPosition(): Position {
-        return this.position;
-    }
+  setPosition(position: Position): void {
+    this.position = position;
+  }
+
+  getPosition(): Position {
+    return this.position;
+  }
 }

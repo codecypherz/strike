@@ -2,7 +2,6 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { GameService } from "./game.service";
-import { Burrower } from "./piece/burrower";
 
 /**
  * Provides behavior and simple extractions of intent.
@@ -19,10 +18,6 @@ export class BoardService {
     if (service) {
       throw new Error('Singleton violation: BoardService');
     }
-
-    // TODO: Remove this hard-coded data.
-    this.board.getByRowCol(0, 3).setPiece(new Burrower());
-    this.board.getByRowCol(7, 4).setPiece(new Burrower());
   }
 
   selectCell(cell: Cell): void {

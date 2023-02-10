@@ -1,8 +1,9 @@
+import { Player } from "../player";
 import { Piece } from "./piece";
 
 export class Burrower extends Piece {
 
-  constructor() {
-    super('Burrower', './dist/images/burrower.jpg');
+  constructor(player: Player) {
+    super('Burrower', './dist/images/burrower.jpg', player);
   }
 }
