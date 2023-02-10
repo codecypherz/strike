@@ -1,6 +1,6 @@
 .cell {
   border: solid black 1px;
-  padding: 3px;
+  padding: 4px;
   width: 100px;
   height: 100px;
   display: inline-block;
@@ -8,10 +8,10 @@
 
 .cell-selected {
   border: solid black 6px;
-  width: 106px;
-  height: 106px;
-  margin-left: -9px;
-  margin-top: -9px;
+  width: 108px;
+  height: 108px;
+  margin-left: -10px;
+  margin-top: -10px;
   position: absolute;
 }
 
