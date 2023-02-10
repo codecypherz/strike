@@ -5,7 +5,7 @@ import { Cell } from 'src/model/cell';
 @Component({
   selector: 'app-cell',
   templateUrl: './cell.component.html',
-  styleUrls: ['./cell.component.css']
+  styleUrls: ['./cell.component.scss']
 })
 export class CellComponent {
 

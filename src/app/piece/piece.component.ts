@@ -4,7 +4,7 @@ import { Piece } from 'src/model/piece/piece';
 @Component({
   selector: 'app-piece',
   templateUrl: './piece.component.html',
-  styleUrls: ['./piece.component.css']
+  styleUrls: ['./piece.component.scss']
 })
 export class PieceComponent {
 
