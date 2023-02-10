@@ -6,7 +6,9 @@ export class Player {
 
   readonly id: string;
   readonly name: string;
+
   private active: boolean = false;
+  private points: number = 0;
 
   constructor(id: string, name: string) {
     this.id = id;
@@ -24,5 +26,13 @@ export class Player {
 
   isActive(): boolean {
     return this.active;
+  }
+
+  setPoints(points: number): void {
+    this.points = points;
+  }
+
+  getPoints(): number {
+    return this.points;
   }
 }

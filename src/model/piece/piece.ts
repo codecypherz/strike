@@ -8,12 +8,15 @@ export abstract class Piece {
 
   readonly name: string;
   readonly imageUrl: string;
+  readonly points: number;
   readonly player: Player;
+
   private position: Position;
 
-  constructor(name: string, imageUrl: string, player: Player) {
+  constructor(name: string, imageUrl: string, points: number, player: Player) {
     this.name = name;
     this.imageUrl = imageUrl;
+    this.points = points;
     this.player = player;
   }
 
