@@ -1,4 +1,6 @@
 body {
     text-align: center;
-    margin-top: 60px;
+    margin: 0;
+    width: 100%;
+    padding: 40px;
 }

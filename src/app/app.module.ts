@@ -5,13 +5,17 @@ import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { PieceComponent } from './piece/piece.component';
 import { CellComponent } from './cell/cell.component';
+import { PlayersComponent } from './players/players.component';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
     PieceComponent,
-    CellComponent
+    CellComponent,
+    PlayersComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule

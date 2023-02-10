@@ -1,4 +1,10 @@
+.board {
+  /* Unsure about this display value. */
+  display: inline-grid;
+}
+
 .row {
+  display: inline-block;
   margin: 0;
 }
 

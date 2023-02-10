@@ -9,6 +9,7 @@ import { Cell } from 'src/model/cell';
   providers: [ BoardService ]
 })
 export class BoardComponent implements OnInit {
+
   cells: Cell[][];
 
   constructor(private boardService: BoardService) {}

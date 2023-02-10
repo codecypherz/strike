@@ -29,3 +29,8 @@ Run App Engine locally (test deployment):
 Deploy to App Engine (publish):
 1. Go to strike directory.
 2. Run `gcloud app deploy`
+
+
+Other cheat sheet commands:
+*   Create an angular component named `foo`
+    *   `ng generate component foo`
