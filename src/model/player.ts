@@ -16,6 +16,10 @@ export class Player {
     this.active = active;
   }
 
+  toggleActive(): void {
+    this.active = !this.active;
+  }
+
   isActive(): boolean {
     return this.active;
   }

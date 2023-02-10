@@ -20,4 +20,9 @@ export class PlayerService {
 
     this.player1.setActive(true);
   }
+
+  endTurn(): void {
+    this.player1.toggleActive();
+    this.player2.toggleActive();
+  }
 }

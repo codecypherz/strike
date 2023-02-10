@@ -1,5 +1,6 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
+import { PlayerService } from "./player.service";
 import { Position } from "./position";
 
 /**
@@ -10,6 +11,7 @@ export class GameService {
 
   constructor(
     private board: Board,
+    private playerService: PlayerService,
     @Optional() @SkipSelf() service?: GameService) {
     if (service) {
       throw new Error('Singleton violation: GameService');
@@ -30,6 +32,7 @@ export class GameService {
     // Move is valid.
     destCell.setPiece(srcCell.getPiece());
     srcCell.setPiece(null);
+    this.playerService.endTurn();
     return true;
   }
 }
