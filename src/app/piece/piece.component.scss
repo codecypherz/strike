@@ -7,9 +7,9 @@
 }
 
 .piece.player1 {
-  border-color: cornflowerblue;
+  border-color: var(--player1Color);
 }
 
 .piece.player2 {
-  border-color: coral;
+  border-color: var(--player2Color);
 }

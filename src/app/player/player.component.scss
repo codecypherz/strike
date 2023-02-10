@@ -11,10 +11,10 @@
     border: 4px solid;
 }
 .player1.active {
-  border-color: cornflowerblue;
+  border-color: var(--player1Color);
 }
 .player2.active {
-  border-color: coral;
+  border-color: var(--player2Color);
 }
 
 .player-name {

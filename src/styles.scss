@@ -1,3 +1,6 @@
+// This import makes the :root variables globally available to all scss.
+@import '_variables';
+
 @font-face {
     font-family: Horizon;
     src: url(Horizon-nMeM.ttf);
