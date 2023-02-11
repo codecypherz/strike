@@ -13,7 +13,9 @@ export abstract class Piece {
     readonly name: string,
     readonly points: number,
     readonly movement: number,
+    readonly attack: number,
     readonly attackRange: number,
+    readonly health: number,
     readonly player: Player) {
   }
 
