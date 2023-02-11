@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Cell } from "./cell";
 import { Burrower } from "./piece/burrower";
 import { Scrounger } from "./piece/scrounger";
+import { Player } from "./player";
 import { PlayerService } from "./player.service";
 import { Position } from "./position";
 
@@ -12,7 +13,7 @@ import { Position } from "./position";
 @Injectable()
 export class GameService {
 
-  private gameOver: boolean = false;
+  private winningPlayer: Player | null = null;
 
   constructor(
     private board: Board,
@@ -26,7 +27,7 @@ export class GameService {
   }
 
   reset(): void {
-    this.gameOver = false;
+    this.winningPlayer = null;
     // Player 1 pieces
     let player1 = this.playerService.player1;
     this.board.getByRowCol(0, 2).setPiece(new Scrounger(player1));
@@ -127,13 +128,23 @@ export class GameService {
   }
 
   private checkWinCondition(): void {
-    if (this.playerService.getActivePlayer().getPoints() >= 2) {
-      console.log('Game over!');
-      this.gameOver = true;
+    if (this.hasWon(this.playerService.player1)) {
+      this.winningPlayer = this.playerService.player1;
+    }
+    if (this.hasWon(this.playerService.player2)) {
+      this.winningPlayer = this.playerService.player2;
     }
   }
 
+  private hasWon(player: Player): boolean {
+    return player.getPoints() >= 2;
+  }
+
   public isGameOver(): boolean {
-    return this.gameOver;
+    return this.winningPlayer != null;
+  }
+
+  public getWinningPlayer(): Player|null {
+    return this.winningPlayer;
   }
 }

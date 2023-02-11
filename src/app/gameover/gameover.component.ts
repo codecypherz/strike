@@ -25,7 +25,7 @@ export class GameoverComponent implements OnInit {
   isGameOver(): boolean {
     let gameOver = this.gameService.isGameOver();
     if (gameOver) {
-      this.winningPlayer = this.playerService.getActivePlayer();
+      this.winningPlayer = this.gameService.getWinningPlayer()!;
     }
     return gameOver;
   }
