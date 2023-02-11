@@ -8,7 +8,7 @@ export class Bristleback extends Piece {
   static MOVEMENT = 3;
   static ATTACK = 2;
   static ATTACK_RANGE = 1;
-  static HEALTH = 4;
+  static MAX_HEALTH = 4;
 
   constructor(player: Player) {
     super(
@@ -17,7 +17,7 @@ export class Bristleback extends Piece {
       Bristleback.MOVEMENT,
       Bristleback.ATTACK,
       Bristleback.ATTACK_RANGE,
-      Bristleback.HEALTH,
+      Bristleback.MAX_HEALTH,
       player);
   }
 }

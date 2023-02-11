@@ -87,15 +87,21 @@ export class GameService {
   }
 
   private attack(srcCell: Cell, destCell: Cell): boolean {
-    let srcPiece = srcCell.getPiece();
+    if (!srcCell.hasPiece() || !destCell.hasPiece()) {
+      throw new Error('Cannot attack without two pieces');
+    }
+    let srcPiece = srcCell.getPiece()!;
     let destPiece = destCell.getPiece()!;
     // This is an attack.
-    // For now, the piece just dies.
-    this.playerService.getActivePlayer().addPoints(destPiece.points);
-    this.checkWinCondition();
-    destCell.clearPiece();
-    // Move the piece into the dest cell.
-    this.playerService.endTurn();
+    let died = destPiece.takeDamage(srcPiece.attack);
+    if (died) {
+      this.playerService.getActivePlayer().addPoints(destPiece.points);
+      destCell.clearPiece();
+      this.checkWinCondition();
+    }
+    if (!this.isGameOver()) {
+      this.playerService.endTurn();
+    }
     return true;
   }
 

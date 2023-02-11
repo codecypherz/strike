@@ -4,11 +4,13 @@
       'selected': cell.isSelected()
       }"
     (click)="select()">
-  <div *ngIf=cell.isSelected() class="cell-selected"></div>
+  <div *ngIf=cell.isSelected()
+    [ngClass]="{'cell-selected': true, 'cell-has-piece': cell.hasPiece()}"></div>
 
   <div *ngIf=cell.isAvailableMove() class="cell-available-move">
-    <!-- alternatives: ⁜, ☩ -->
-    <div class="cell-move-symbol">🕂</div>
+    <!-- alternatives: ⁜, ☩, 🕂, ↔, ↕, ⟷ -->
+    <div class="cell-move-symbol-1">⟷</div>
+    <div class="cell-move-symbol-2">⟷</div>
   </div>
 
   <div *ngIf=cell.isAvailableAttack() class="cell-available-attack">

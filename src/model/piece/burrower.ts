@@ -8,7 +8,7 @@ export class Burrower extends Piece {
   static MOVEMENT = 2;
   static ATTACK = 2;
   static ATTACK_RANGE = 1;
-  static HEALTH = 4;
+  static MAX_HEALTH = 4;
 
   constructor(player: Player) {
     super(
@@ -17,7 +17,7 @@ export class Burrower extends Piece {
       Burrower.MOVEMENT,
       Burrower.ATTACK,
       Burrower.ATTACK_RANGE,
-      Burrower.HEALTH,
+      Burrower.MAX_HEALTH,
       player);
   }
 }

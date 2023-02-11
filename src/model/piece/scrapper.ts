@@ -8,7 +8,7 @@ export class Scrapper extends Piece {
   static MOVEMENT = 2;
   static ATTACK = 3;
   static ATTACK_RANGE = 2;
-  static HEALTH = 5;
+  static MAX_HEALTH = 5;
 
   constructor(player: Player) {
     super(
@@ -17,7 +17,7 @@ export class Scrapper extends Piece {
       Scrapper.MOVEMENT,
       Scrapper.ATTACK,
       Scrapper.ATTACK_RANGE,
-      Scrapper.HEALTH,
+      Scrapper.MAX_HEALTH,
       player);
   }
 }

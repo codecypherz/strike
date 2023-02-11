@@ -4,8 +4,10 @@
   border: solid 4px transparent;
   margin-top: -4px;
   margin-left: -4px;
-  border-radius: 30px;
+  border-radius: 54px;
   position: relative;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .piece.player1 {
@@ -20,5 +22,12 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 15%;
+  top: 38%;
+}
+
+.piece-health {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 8%;
 }

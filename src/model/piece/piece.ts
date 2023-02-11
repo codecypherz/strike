@@ -8,6 +8,7 @@ export abstract class Piece {
 
   // Semi-invalid default, but don't want nullability.
   private position: Position = new Position(0, 0);
+  private health: number = 0;
 
   constructor(
     readonly name: string,
@@ -15,15 +16,30 @@ export abstract class Piece {
     readonly movement: number,
     readonly attack: number,
     readonly attackRange: number,
-    readonly health: number,
+    readonly maxHealth: number,
     readonly player: Player) {
+    this.health = maxHealth;
   }
 
-  setPosition(position: Position): void {
+  public setPosition(position: Position): void {
     this.position = position;
   }
 
-  getPosition(): Position {
+  public getPosition(): Position {
     return this.position;
+  }
+
+  public getHealth(): number {
+    return this.health;
+  }
+
+  /**
+   * Makes this piece take some damage
+   * @param amount The amount of damage to take
+   * @returns True if the piece died
+   */
+  public takeDamage(amount: number): boolean {
+    this.health = Math.max(0, this.health - amount);
+    return this.health == 0;
   }
 }

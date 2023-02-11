@@ -8,7 +8,7 @@ export class Scrounger extends Piece {
   static MOVEMENT = 3;
   static ATTACK = 3;
   static ATTACK_RANGE = 1;
-  static HEALTH = 5;
+  static MAX_HEALTH = 5;
 
   constructor(player: Player) {
     super(
@@ -17,7 +17,7 @@ export class Scrounger extends Piece {
       Scrounger.MOVEMENT,
       Scrounger.ATTACK,
       Scrounger.ATTACK_RANGE,
-      Scrounger.HEALTH,
+      Scrounger.MAX_HEALTH,
       player);
   }
 }
