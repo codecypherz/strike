@@ -5,7 +5,7 @@ export class Burrower extends Piece {
 
   static NAME = 'Burrower';
   static POINTS = 1;
-  static MOVEMENT = 1;
+  static MOVEMENT = 2;
 
   constructor(player: Player) {
     super(

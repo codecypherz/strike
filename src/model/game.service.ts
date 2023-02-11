@@ -2,6 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { Burrower } from "./piece/burrower";
+import { Scrounger } from "./piece/scrounger";
 import { PlayerService } from "./player.service";
 import { Position } from "./position";
 
@@ -28,11 +29,13 @@ export class GameService {
     this.gameOver = false;
     // Player 1 pieces
     let player1 = this.playerService.player1;
+    this.board.getByRowCol(0, 2).setPiece(new Scrounger(player1));
     this.board.getByRowCol(0, 3).setPiece(new Burrower(player1));
 
     // Player 2 pieces
     let player2 = this.playerService.player2;
     this.board.getByRowCol(7, 4).setPiece(new Burrower(player2));
+    this.board.getByRowCol(7, 5).setPiece(new Scrounger(player2));
   }
 
   /**
@@ -69,7 +72,7 @@ export class GameService {
   }
 
   private canAttack(destCell: Cell): boolean {
-    return destCell.hasPiece();
+    return destCell.hasPiece() && !destCell.getPiece()!.player.isActive();
   }
 
   private attack(srcCell: Cell, destCell: Cell): boolean {
