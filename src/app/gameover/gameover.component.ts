@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BoardService } from 'src/model/board.service';
 import { GameService } from 'src/model/game.service';
 import { Player } from 'src/model/player';
-import { PlayerService } from 'src/model/player.service';
+import { TurnService } from 'src/model/turn.service';
 
 @Component({
   selector: 'app-gameover',
@@ -16,7 +16,7 @@ export class GameoverComponent implements OnInit {
   constructor(
     private gameService: GameService,
     private boardService: BoardService,
-    private playerService: PlayerService) { }
+    private turnService: TurnService) { }
 
   ngOnInit(): void {
     this.isGameOver();
@@ -32,7 +32,7 @@ export class GameoverComponent implements OnInit {
 
   newGame(): void {
     this.boardService.reset();
-    this.playerService.reset();
+    this.turnService.reset();
     this.gameService.reset();
   }
 }

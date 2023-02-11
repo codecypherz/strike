@@ -64,7 +64,7 @@ export class BoardService {
   }
 
   private showAvailableActions() {
-    for (var cell of this.board.getCells().flat()) {
+    for (let cell of this.board.getCells().flat()) {
       if (!this.selectedCell) {
         // No cell selected, so clear movement indicator.
         cell.setAvailableMove(false);

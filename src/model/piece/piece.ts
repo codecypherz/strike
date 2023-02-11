@@ -7,10 +7,14 @@ import { Position } from "../position";
 export abstract class Piece {
 
   static IMAGE_PATH = '/images/';
-  
+
   // Semi-invalid default, but don't want nullability.
   private position: Position = new Position(0, 0);
   private health: number = 0;
+
+  // Per-turn data
+  moved: boolean = false;
+  attacked: boolean = false;
 
   constructor(
     readonly name: string,
@@ -44,5 +48,14 @@ export abstract class Piece {
   public takeDamage(amount: number): boolean {
     this.health = Math.max(0, this.health - amount);
     return this.health == 0;
+  }
+
+  public clearTurnData() {
+    this.moved = false;
+    this.attacked = false;
+  }
+
+  public hasMoved(): boolean {
+    return this.moved;
   }
 }

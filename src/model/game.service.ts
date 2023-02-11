@@ -5,7 +5,7 @@ import { Bristleback } from "./piece/bristleback";
 import { Burrower } from "./piece/burrower";
 import { Scrapper } from "./piece/scrapper";
 import { Player } from "./player";
-import { PlayerService } from "./player.service";
+import { TurnService } from "./turn.service";
 import { Position } from "./position";
 
 /**
@@ -18,7 +18,7 @@ export class GameService {
 
   constructor(
     private board: Board,
-    private playerService: PlayerService,
+    private turnService: TurnService,
     @Optional() @SkipSelf() service?: GameService) {
     if (service) {
       throw new Error('Singleton violation: GameService');
@@ -30,12 +30,12 @@ export class GameService {
   reset(): void {
     this.winningPlayer = null;
     // Player 1 pieces
-    let player1 = this.playerService.player1;
+    let player1 = this.turnService.player1;
     this.board.getByRowCol(0, 2).setPiece(new Scrapper(player1));
     this.board.getByRowCol(0, 3).setPiece(new Burrower(player1));
 
     // Player 2 pieces
-    let player2 = this.playerService.player2;
+    let player2 = this.turnService.player2;
     this.board.getByRowCol(7, 4).setPiece(new Bristleback(player2));
     this.board.getByRowCol(7, 5).setPiece(new Scrapper(player2));
   }
@@ -44,33 +44,31 @@ export class GameService {
    * Tries to take an action by interpreting intent.
    * @param srcPos The position of the source piece.
    * @param destPos The target of the action.
-   * @returns True if a move or attack took place.
    */
-  public takeAction(srcPos: Position, destPos: Position): boolean {
+  public takeAction(srcPos: Position, destPos: Position): void {
     let srcCell = this.board.getCell(srcPos);
     let destCell = this.board.getCell(destPos);
     
     if (!srcCell.hasPiece()) {
       // No piece to move.
-      return false;
+      return;
     }
 
     let srcPiece = srcCell.getPiece()!;
     if (!srcPiece.player.isActive()) {
       // Player can only take action on own pieces.
-      return false;
+      return;
     }
 
     if (this.canMove(srcCell, destCell)) {
-      return this.move(srcCell, destCell);
+      this.move(srcCell, destCell);
+    } else if (this.canAttack(srcCell, destCell)) {
+      this.attack(srcCell, destCell);
     }
 
-    if (this.canAttack(srcCell, destCell)) {
-      return this.attack(srcCell, destCell);
+    if (this.turnService.isTurnOver()) {
+      this.turnService.endTurn();
     }
-
-    // Invalid move.
-    return false;
   }
 
   canAttack(srcCell: Cell, destCell: Cell): boolean {
@@ -87,7 +85,7 @@ export class GameService {
     return delta <= srcPiece.attackRange;
   }
 
-  private attack(srcCell: Cell, destCell: Cell): boolean {
+  private attack(srcCell: Cell, destCell: Cell): void {
     if (!srcCell.hasPiece() || !destCell.hasPiece()) {
       throw new Error('Cannot attack without two pieces');
     }
@@ -96,17 +94,19 @@ export class GameService {
     // This is an attack.
     let died = destPiece.takeDamage(srcPiece.attack);
     if (died) {
-      this.playerService.getActivePlayer().addPoints(destPiece.points);
+      this.turnService.getActivePlayer().addPoints(destPiece.points);
       destCell.clearPiece();
       this.checkWinCondition();
     }
-    if (!this.isGameOver()) {
-      this.playerService.endTurn();
-    }
-    return true;
+    // Turn book-keeping
+    srcPiece.attacked = true;
+    this.turnService.getActivePlayer().incrementAttacks();
   }
 
   canMove(srcCell: Cell, destCell: Cell): boolean {
+    if (!this.turnService.getActivePlayer().canMove()) {
+      return false;
+    }
     if (!srcCell.hasPiece() || destCell.hasPiece()) {
       return false;
     }
@@ -124,20 +124,20 @@ export class GameService {
         + Math.abs(srcPos.col - destPos.col);
   }
 
-  private move(srcCell: Cell, destCell: Cell): boolean {
-    let srcPiece = srcCell.getPiece();
+  private move(srcCell: Cell, destCell: Cell): void {
+    let srcPiece = srcCell.getPiece()!;
     destCell.setPiece(srcPiece);
     srcCell.clearPiece();
-    this.playerService.endTurn();
-    return true;
+    srcPiece.moved = true;
+    this.turnService.getActivePlayer().incrementMoves();
   }
 
   private checkWinCondition(): void {
-    if (this.hasWon(this.playerService.player1)) {
-      this.winningPlayer = this.playerService.player1;
+    if (this.hasWon(this.turnService.player1)) {
+      this.winningPlayer = this.turnService.player1;
     }
-    if (this.hasWon(this.playerService.player2)) {
-      this.winningPlayer = this.playerService.player2;
+    if (this.hasWon(this.turnService.player2)) {
+      this.winningPlayer = this.turnService.player2;
     }
   }
 

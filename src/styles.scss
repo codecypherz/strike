@@ -29,10 +29,15 @@ button {
   text-transform: uppercase;
   font-weight: bold;
   cursor: pointer;
+  padding: 6px 10px 2px 10px;
 }
 button:hover {
   background: #ddd;
 }
 button:active {
   background: #bbb;
+}
+button:disabled {
+  background: var(--hover_color);
+  cursor: default;
 }

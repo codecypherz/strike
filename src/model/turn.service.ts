@@ -1,18 +1,19 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
+import { Board } from "./board";
 import { Player } from "./player";
 
 /**
  * Provides the data for each player.
  */
 @Injectable()
-export class PlayerService {
+export class TurnService {
 
   readonly player1: Player;
   readonly player2: Player;
 
-  constructor(@Optional() @SkipSelf() service?: PlayerService) {
+  constructor(private board: Board, @Optional() @SkipSelf() service?: TurnService) {
     if (service) {
-      throw new Error('Singleton violation: PlayerService');
+      throw new Error('Singleton violation: TurnService');
     }
 
     this.player1 = new Player('player1', 'Player 1');
@@ -28,7 +29,16 @@ export class PlayerService {
     this.player1.setActive(true);
   }
 
+  isTurnOver(): boolean {
+    return this.getActivePlayer().isTurnOver();
+  }
+
   endTurn(): void {
+    for (let cell of this.board.getCells().flat()) {
+      if (cell.hasPiece()) {
+        cell.getPiece()!.clearTurnData();
+      }
+    }
     this.player1.toggleActive();
     this.player2.toggleActive();
   }

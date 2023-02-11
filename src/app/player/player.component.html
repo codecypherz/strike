@@ -1,14 +1,23 @@
-<div
-    [ngClass]="{
+<div [ngClass]="{
       'player': true,
       'player1' : player.id == 'player1',
       'player2' : player.id == 'player2',
       'active': player.isActive()
       }">
-    <div class="player-name">
-        {{player.name}}
-    </div>
-    <div class="player-points">
-      <span>Points: {{player.getPoints()}}</span>
-    </div>
+  <div class="player-name">
+    {{player.name}}
+  </div>
+  <div class="player-points">
+    <span>Points: {{player.getPoints()}}</span>
+  </div>
+
+  <!-- Active player content -->
+  <div *ngIf="player.isActive()">
+    <button
+        class="end-turn"
+        [disabled]="!player.canEndTurn()"
+        (click)="endTurn()">
+      End Turn
+    </button>
+  </div>
 </div>

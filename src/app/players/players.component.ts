@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Player } from 'src/model/player';
-import { PlayerService } from 'src/model/player.service';
+import { TurnService } from 'src/model/turn.service';
 
 @Component({
   selector: 'app-players',
@@ -9,17 +9,18 @@ import { PlayerService } from 'src/model/player.service';
 })
 export class PlayersComponent implements OnInit {
 
-  player1!: Player;
-  player2!: Player;
-
-  constructor(private playerService: PlayerService) {}
+  constructor(private turnService: TurnService) {}
 
   ngOnInit(): void {
-    this.getPlayers();
+    this.getPlayer1();
+    this.getPlayer2();
   }
 
-  getPlayers(): void {
-    this.player1 = this.playerService.player1;
-    this.player2 = this.playerService.player2;
+  getPlayer1(): Player {
+    return this.turnService.player1;
+  }
+
+  getPlayer2(): Player {
+    return this.turnService.player2;
   }
 }

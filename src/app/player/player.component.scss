@@ -7,6 +7,7 @@
   border: 4px solid transparent;
   border-radius: 30px;
   text-transform: uppercase;
+  position: relative;
 }
 
 .player.active {
@@ -28,4 +29,11 @@
 .player-points {
   margin-top: 10px;
   font-size: 20px;
+}
+
+.end-turn {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }

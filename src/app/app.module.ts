@@ -10,7 +10,7 @@ import { PlayerComponent } from './player/player.component';
 import { Board } from 'src/model/board';
 import { BoardService } from 'src/model/board.service';
 import { GameService } from 'src/model/game.service';
-import { PlayerService } from 'src/model/player.service';
+import { TurnService } from 'src/model/turn.service';
 import { GameoverComponent } from './gameover/gameover.component';
 import { SelectedComponent } from './selected/selected.component';
 
@@ -32,7 +32,7 @@ import { SelectedComponent } from './selected/selected.component';
     Board,
     BoardService,
     GameService,
-    PlayerService
+    TurnService
   ],
   bootstrap: [AppComponent]
 })
