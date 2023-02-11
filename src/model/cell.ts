@@ -10,6 +10,7 @@ export class Cell {
   piece: Piece | null = null;
   selected: boolean = false;
   availableMove: boolean = false;
+  availableAttack: boolean = false;
   readonly position: Position;
 
   constructor(row: number, col: number) {
@@ -45,12 +46,17 @@ export class Cell {
 
   setAvailableMove(availableMove: boolean): void {
     this.availableMove = availableMove;
-    if (availableMove) {
-      console.log(this, 'available');
-    }
   }
 
   isAvailableMove(): boolean {
     return this.availableMove;
+  }
+
+  setAvailableAttack(availableAttack: boolean): void {
+    this.availableAttack = availableAttack;
+  }
+
+  isAvailableAttack(): boolean {
+    return this.availableAttack;
   }
 }

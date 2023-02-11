@@ -56,20 +56,22 @@ export class BoardService {
     }
 
     // Always update this information.
-    this.showAvailableMoves();
+    this.showAvailableActions();
   }
 
   public getSelectedCell(): Cell | null {
     return this.selectedCell;
   }
 
-  private showAvailableMoves() {
+  private showAvailableActions() {
     for (var cell of this.board.getCells().flat()) {
       if (!this.selectedCell) {
         // No cell selected, so clear movement indicator.
         cell.setAvailableMove(false);
+        cell.setAvailableAttack(false);
       } else {
         cell.setAvailableMove(this.gameService.canMove(this.selectedCell, cell));
+        cell.setAvailableAttack(this.gameService.canAttack(this.selectedCell, cell));
       }
     }
   }

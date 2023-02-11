@@ -4,7 +4,8 @@
   width: 100px;
   height: 100px;
   display: inline-block;
-  position: relative
+  position: relative;
+  cursor: default;
 }
 
 .cell:hover {
@@ -23,15 +24,31 @@
 }
 
 .cell-available-move {
-  border: solid var(--foreground_color) 3px;
   width: 80px;
   height: 80px;
   border-radius: 80px;
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 14px;
+  left: 14px;
+  background: lightslategray;
 }
+
 .cell-move-symbol {
   font-size: 50px;
   margin-top: 3px;
+}
+
+.cell-available-attack {
+  width: 80px;
+  height: 80px;
+  border-radius: 80px;
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: firebrick;
+}
+
+.cell-attack-symbol {
+  font-size: 45px;
+  margin-top: 14px;
 }

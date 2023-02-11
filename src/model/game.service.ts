@@ -63,7 +63,7 @@ export class GameService {
       return this.move(srcCell, destCell);
     }
 
-    if (this.canAttack(destCell)) {
+    if (this.canAttack(srcCell, destCell)) {
       return this.attack(srcCell, destCell);
     }
 
@@ -71,8 +71,18 @@ export class GameService {
     return false;
   }
 
-  private canAttack(destCell: Cell): boolean {
-    return destCell.hasPiece() && !destCell.getPiece()!.player.isActive();
+  canAttack(srcCell: Cell, destCell: Cell): boolean {
+    if (!srcCell.hasPiece() || !destCell.hasPiece()) {
+      return false;
+    }
+    let srcPiece = srcCell.getPiece()!;
+    let destPiece = destCell.getPiece()!;
+    if (srcPiece.player == destPiece.player) {
+      return false;
+    }
+    // The target piece must be in range.
+    let delta = this.delta(srcCell.position, destCell.position);
+    return delta <= srcPiece.attackRange;
   }
 
   private attack(srcCell: Cell, destCell: Cell): boolean {
@@ -86,6 +96,7 @@ export class GameService {
     // Move the piece into the dest cell.
     srcCell.clearPiece();
     destCell.setPiece(srcPiece);
+    this.playerService.endTurn();
     return true;
   }
 
@@ -98,9 +109,13 @@ export class GameService {
       return false;
     }
     // total row and col delta cannot exceed movement value
-    let delta = Math.abs(piece.getPosition().row - destCell.position.row);
-    delta += Math.abs(piece.getPosition().col - destCell.position.col);
+    let delta = this.delta(piece.getPosition(), destCell.position);
     return delta <= piece.movement;
+  }
+
+  private delta(srcPos: Position, destPos: Position) {
+    return Math.abs(srcPos.row - destPos.row)
+        + Math.abs(srcPos.col - destPos.col);
   }
 
   private move(srcCell: Cell, destCell: Cell): boolean {
@@ -112,7 +127,7 @@ export class GameService {
   }
 
   private checkWinCondition(): void {
-    if (this.playerService.getActivePlayer().getPoints() >= 1) {
+    if (this.playerService.getActivePlayer().getPoints() >= 2) {
       console.log('Game over!');
       this.gameOver = true;
     }

@@ -5,8 +5,15 @@
       }"
     (click)="select()">
   <div *ngIf=cell.isSelected() class="cell-selected"></div>
+
   <div *ngIf=cell.isAvailableMove() class="cell-available-move">
+    <!-- alternatives: ⁜, ☩ -->
     <div class="cell-move-symbol">🕂</div>
+  </div>
+
+  <div *ngIf=cell.isAvailableAttack() class="cell-available-attack">
+    <!-- alternative: ⚔, ⤲ -->
+    <div class="cell-attack-symbol">⤱</div>
   </div>
 
   <!-- TODO: Render terrain once supported. -->
