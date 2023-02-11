@@ -1,11 +1,51 @@
 <div class="selected-panel">
 
-  <div *ngIf="!getSelected()" class="selected-content">
-    Nothing selected
+  <!-- Nothing Selected -->
+  <div *ngIf="!getSelected()" class="selected-content nothing-selected">
+    <div class="selected-piece-name">
+      Nothing selected
+    </div>
+    <img class="nothing-selected-image" src="/images/nothing_selected.jpg">
   </div>
 
   <div *ngIf="getSelected()" class="selected-content">
-    Selected
-  </div>
 
+    <!-- Piece Selected -->
+    <div *ngIf="getSelected()!.hasPiece()">
+      <div class="selected-piece-name">
+        {{getSelected()!.getPiece()!.name}}
+      </div>
+      <div class="selected-piece-type">
+        TODO: TYPE
+      </div>
+      <div class="selected-piece-image-container">
+        <img class="selected-piece-image" src="{{getSelected()!.getPiece()!.imageUrl}}">
+        <div class="selected-piece-points">
+          VP: {{getSelected()!.getPiece()!.points}}
+        </div>
+      </div>
+      <div class="selected-piece-stats">
+        <div class="selected-piece-stat">
+          AT: {{getSelected()!.getPiece()!.attack}}
+        </div>
+        <div class="selected-piece-stat">
+          RG: {{getSelected()!.getPiece()!.attackRange}}
+        </div>
+        <div class="selected-piece-stat">
+          MV: {{getSelected()!.getPiece()!.movement}}
+        </div>
+        <div class="selected-piece-stat">
+          HP: {{getSelected()!.getPiece()!.maxHealth}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Terrain Selected -->
+    <div *ngIf="!getSelected()!.hasPiece()">
+      <div class="selected-piece-name">
+        No Terrain
+      </div>
+    </div>
+
+  </div>
 </div>

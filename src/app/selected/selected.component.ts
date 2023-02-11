@@ -10,8 +10,6 @@ import { Cell } from 'src/model/cell';
 })
 export class SelectedComponent implements OnInit {
 
-  selected: Cell | null = null;
-
   constructor(private boardService: BoardService) {}
 
   ngOnInit(): void {
@@ -19,7 +17,6 @@ export class SelectedComponent implements OnInit {
   }
 
   getSelected(): Cell | null {
-    this.selected = this.boardService.getSelectedCell();
-    return this.selected;
+    return this.boardService.getSelectedCell();
   }
 }

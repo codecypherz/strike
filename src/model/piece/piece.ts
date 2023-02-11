@@ -6,12 +6,15 @@ import { Position } from "../position";
  */
 export abstract class Piece {
 
+  static IMAGE_PATH = '/images/';
+  
   // Semi-invalid default, but don't want nullability.
   private position: Position = new Position(0, 0);
   private health: number = 0;
 
   constructor(
     readonly name: string,
+    readonly imageUrl: string,
     readonly points: number,
     readonly movement: number,
     readonly attack: number,

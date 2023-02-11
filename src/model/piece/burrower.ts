@@ -4,6 +4,7 @@ import { Piece } from "./piece";
 export class Burrower extends Piece {
 
   static NAME = 'Burrower';
+  static IMAGE_URL = Piece.IMAGE_PATH + 'burrower.webp';
   static POINTS = 1;
   static MOVEMENT = 2;
   static ATTACK = 2;
@@ -13,6 +14,7 @@ export class Burrower extends Piece {
   constructor(player: Player) {
     super(
       Burrower.NAME,
+      Burrower.IMAGE_URL,
       Burrower.POINTS,
       Burrower.MOVEMENT,
       Burrower.ATTACK,
