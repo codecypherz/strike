@@ -95,8 +95,6 @@ export class GameService {
     this.checkWinCondition();
     destCell.clearPiece();
     // Move the piece into the dest cell.
-    srcCell.clearPiece();
-    destCell.setPiece(srcPiece);
     this.playerService.endTurn();
     return true;
   }
