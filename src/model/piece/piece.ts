@@ -6,7 +6,8 @@ import { Position } from "../position";
  */
 export abstract class Piece {
 
-  private position: Position;
+  // Semi-invalid default, but don't want nullability.
+  private position: Position = new Position(0, 0);
 
   constructor(
     readonly name: string,

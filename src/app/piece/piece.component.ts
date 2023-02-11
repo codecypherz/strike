@@ -8,5 +8,5 @@ import { Piece } from 'src/model/piece/piece';
 })
 export class PieceComponent {
 
-  @Input() piece: Piece;
+  @Input() piece!: Piece;
 }

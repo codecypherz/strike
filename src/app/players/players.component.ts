@@ -9,8 +9,8 @@ import { PlayerService } from 'src/model/player.service';
 })
 export class PlayersComponent implements OnInit {
 
-  player1: Player;
-  player2: Player;
+  player1!: Player;
+  player2!: Player;
 
   constructor(private playerService: PlayerService) {}
 

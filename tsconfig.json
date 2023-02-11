@@ -5,7 +5,7 @@
         "baseUrl": "./",
         "outDir": "dist/tsc-out",
         "forceConsistentCasingInFileNames": true,
-        //"strict": true,
+        "strict": true,
         "noImplicitOverride": true,
         "noPropertyAccessFromIndexSignature": true,
         "noImplicitReturns": true,

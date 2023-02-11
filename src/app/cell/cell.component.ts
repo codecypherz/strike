@@ -9,7 +9,7 @@ import { Cell } from 'src/model/cell';
 })
 export class CellComponent {
 
-  @Input() cell: Cell;
+  @Input() cell!: Cell;
 
   constructor(private boardService: BoardService) {}
 

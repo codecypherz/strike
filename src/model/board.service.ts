@@ -9,7 +9,7 @@ import { GameService } from "./game.service";
 @Injectable()
 export class BoardService {
 
-  private selectedCell: Cell | null;
+  private selectedCell: Cell | null = null;
 
   constructor(
     private board: Board,

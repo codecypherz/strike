@@ -12,7 +12,7 @@ export class Board {
   static readonly WIDTH: number = 8;
   static readonly HEIGHT: number = 8;
 
-  private cells: Cell[][];
+  private cells!: Cell[][];
 
   constructor(@Optional() @SkipSelf() board?: Board) {
     if (board) {

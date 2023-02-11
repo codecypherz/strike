@@ -50,7 +50,7 @@ export class GameService {
       return false;
     }
 
-    let srcPiece = srcCell.getPiece();
+    let srcPiece = srcCell.getPiece()!;
     if (!srcPiece.player.isActive()) {
       // Player can only take action on own pieces.
       return false;
@@ -74,7 +74,7 @@ export class GameService {
 
   private attack(srcCell: Cell, destCell: Cell): boolean {
     let srcPiece = srcCell.getPiece();
-    let destPiece = destCell.getPiece();
+    let destPiece = destCell.getPiece()!;
     // This is an attack.
     // For now, the piece just dies.
     this.playerService.getActivePlayer().addPoints(destPiece.points);

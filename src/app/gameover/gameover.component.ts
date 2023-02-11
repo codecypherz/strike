@@ -11,7 +11,7 @@ import { PlayerService } from 'src/model/player.service';
 })
 export class GameoverComponent implements OnInit {
 
-  winningPlayer: Player;
+  winningPlayer!: Player;
 
   constructor(
     private gameService: GameService,

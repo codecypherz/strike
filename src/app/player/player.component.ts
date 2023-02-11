@@ -8,5 +8,5 @@ import { Player } from 'src/model/player';
 })
 export class PlayerComponent {
 
-  @Input() player: Player;
+  @Input() player!: Player;
 }

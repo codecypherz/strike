@@ -7,8 +7,8 @@ import { Position } from "./position";
  */
 export class Cell {
 
-  piece: Piece | null;
-  selected: boolean;
+  piece: Piece | null = null;
+  selected: boolean = false;
   readonly position: Position;
 
   constructor(row: number, col: number) {
