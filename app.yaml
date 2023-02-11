@@ -27,6 +27,12 @@ handlers:
   static_files: dist/\1
   upload: dist/(.*\.(bmp|gif|ico|jpeg|jpg|png))
 
+# font files
+- url: /(.*\.ttf)
+  mime_type: application/x-font-ttf
+  static_files: dist/\1
+  upload: dist/(.*\.ttf)
+
 # audio files
 - url: /(.*\.(mid|midi|mp3|wav))
   static_files: dist/\1
