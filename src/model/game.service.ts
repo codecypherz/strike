@@ -87,7 +87,14 @@ export class GameService {
   }
 
   private canMove(srcCell: Cell, destCell: Cell): boolean {
-    return true;
+    if (!srcCell.hasPiece() || destCell.hasPiece()) {
+      return false;
+    }
+    let piece = srcCell.getPiece()!;
+    // total row and col delta cannot exceed movement value
+    let delta = Math.abs(piece.getPosition().row - destCell.position.row);
+    delta += Math.abs(piece.getPosition().col - destCell.position.col);
+    return delta <= piece.movement;
   }
 
   private move(srcCell: Cell, destCell: Cell): boolean {
