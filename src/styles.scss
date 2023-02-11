@@ -11,4 +11,21 @@ body {
   text-align: center;
   margin: 0;
   padding: 40px;
+  background-color: var(--background_color);
+  color: var(--foreground_color);
+}
+
+button {
+  font-family: Horizon;
+  background: var(--foreground_color); // Intentional flip
+  color: var(--background_color);
+  border: 2px solid var(--background_color);
+  font-size: 20px;
+  cursor: pointer;
+}
+button:hover {
+  background: #ddd;
+}
+button:active {
+  background: #bbb;
 }

@@ -1,6 +1,7 @@
 .board {
   /* Unsure about this display value. */
   display: inline-grid;
+  border: solid var(--foreground_color) 1px;
 }
 
 app-cell{

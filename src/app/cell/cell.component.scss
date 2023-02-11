@@ -1,5 +1,5 @@
 .cell {
-  border: solid black 1px;
+  border: solid var(--foreground_color) 1px;
   padding: 4px;
   width: 100px;
   height: 100px;
@@ -7,7 +7,8 @@
 }
 
 .cell-selected {
-  border: solid black 6px;
+  border: solid var(--foreground_color) 6px;
+  border-radius: 36px;
   width: 108px;
   height: 108px;
   margin-left: -10px;
@@ -16,5 +17,5 @@
 }
 
 .cell:hover {
-  background-color: lightgreen;
+  background: var(--hover_color);
 }

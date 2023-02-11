@@ -5,6 +5,7 @@
   padding-bottom: 10px;
   /* Placeholder border to avoid dom shifting. */
   border: 4px solid transparent;
+  border-radius: 30px;
 }
 
 .player.active {
@@ -12,11 +13,11 @@
 }
 
 .player1.active {
-  border-color: var(--player1Color);
+  border-color: var(--player_1_color);
 }
 
 .player2.active {
-  border-color: var(--player2Color);
+  border-color: var(--player_2_color);
 }
 
 .player-name {

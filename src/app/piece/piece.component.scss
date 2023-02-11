@@ -4,12 +4,13 @@
   border: solid 4px transparent;
   margin-top: -4px;
   margin-left: -4px;
+  border-radius: 30px;
 }
 
 .piece.player1 {
-  border-color: var(--player1Color);
+  border-color: var(--player_1_color);
 }
 
 .piece.player2 {
-  border-color: var(--player2Color);
+  border-color: var(--player_2_color);
 }
