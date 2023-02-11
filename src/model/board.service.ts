@@ -44,15 +44,33 @@ export class BoardService {
           cell.setSelected(true);
           this.selectedCell = cell;
         }
-      } // Do nothing if same cell clicked.
+      } else {
+        // Same cell selected, so de-select.
+        this.selectedCell.setSelected(false);
+        this.selectedCell = null;
+      }
     } else {
       // There was no cell selected before.
       cell.setSelected(true);
       this.selectedCell = cell;
     }
+
+    // Always update this information.
+    this.showAvailableMoves();
   }
 
   public getSelectedCell(): Cell | null {
     return this.selectedCell;
+  }
+
+  private showAvailableMoves() {
+    for (var cell of this.board.getCells().flat()) {
+      if (!this.selectedCell) {
+        // No cell selected, so clear movement indicator.
+        cell.setAvailableMove(false);
+      } else {
+        cell.setAvailableMove(this.gameService.canMove(this.selectedCell, cell));
+      }
+    }
   }
 }

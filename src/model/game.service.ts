@@ -59,12 +59,12 @@ export class GameService {
       return false;
     }
 
-    if (this.canAttack(destCell)) {
-      return this.attack(srcCell, destCell);
-    }
-
     if (this.canMove(srcCell, destCell)) {
       return this.move(srcCell, destCell);
+    }
+
+    if (this.canAttack(destCell)) {
+      return this.attack(srcCell, destCell);
     }
 
     // Invalid move.
@@ -89,11 +89,14 @@ export class GameService {
     return true;
   }
 
-  private canMove(srcCell: Cell, destCell: Cell): boolean {
+  canMove(srcCell: Cell, destCell: Cell): boolean {
     if (!srcCell.hasPiece() || destCell.hasPiece()) {
       return false;
     }
     let piece = srcCell.getPiece()!;
+    if (!piece.player.isActive()) {
+      return false;
+    }
     // total row and col delta cannot exceed movement value
     let delta = Math.abs(piece.getPosition().row - destCell.position.row);
     delta += Math.abs(piece.getPosition().col - destCell.position.col);

@@ -5,6 +5,7 @@
       }"
     (click)="select()">
   <div *ngIf=cell.isSelected() class="cell-selected"></div>
+  <div *ngIf=cell.isAvailableMove() class="cell-available-move"></div>
 
   <!-- TODO: Render terrain once supported. -->
 
