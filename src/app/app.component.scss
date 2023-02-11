@@ -1,0 +1,25 @@
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--header_height);
+  overflow: hidden;
+  border-bottom: 1px solid var(--foreground_color);
+}
+
+.header>img {
+  margin-top: -180px;
+  margin-left: 0px;
+  zoom: 1.1;
+}
+
+.title {
+  font-size: 80px;
+  position: absolute;
+  top: 0;
+  left: 20px;
+  height: var(--header_height);
+  vertical-align: middle;
+  cursor: default;
+}
