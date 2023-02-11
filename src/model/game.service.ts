@@ -1,5 +1,6 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
+import { Cell } from "./cell";
 import { Burrower } from "./piece/burrower";
 import { PlayerService } from "./player.service";
 import { Position } from "./position";
@@ -34,45 +35,77 @@ export class GameService {
     this.board.getByRowCol(7, 4).setPiece(new Burrower(player2));
   }
 
-  movePiece(src: Position, dest: Position): boolean {
-    let srcCell = this.board.getCell(src);
+  /**
+   * Tries to take an action by interpreting intent.
+   * @param srcPos The position of the source piece.
+   * @param destPos The target of the action.
+   * @returns True if a move or attack took place.
+   */
+  public takeAction(srcPos: Position, destPos: Position): boolean {
+    let srcCell = this.board.getCell(srcPos);
+    let destCell = this.board.getCell(destPos);
+    
     if (!srcCell.hasPiece()) {
       // No piece to move.
       return false;
     }
+
     let srcPiece = srcCell.getPiece();
     if (!srcPiece.player.isActive()) {
-      // Can't move someone else's piece!
+      // Player can only take action on own pieces.
       return false;
     }
-    let destCell = this.board.getCell(dest);
-    if (destCell.hasPiece()) {
-      let destPiece = destCell.getPiece();
-      // This is an attack.
-      // For now, the piece just dies.
-      this.playerService.getActivePlayer().addPoints(destPiece.points);
-      this.checkWinCondition();
-      destCell.clearPiece();
-      // Move the piece into the dest cell.
-      srcCell.clearPiece();
-      destCell.setPiece(srcPiece);
-      return true;
+
+    if (this.canAttack(destCell)) {
+      return this.attack(srcCell, destCell);
     }
-    // Move is valid.
+
+    if (this.canMove(srcCell, destCell)) {
+      return this.move(srcCell, destCell);
+    }
+
+    // Invalid move.
+    return false;
+  }
+
+  private canAttack(destCell: Cell): boolean {
+    return destCell.hasPiece();
+  }
+
+  private attack(srcCell: Cell, destCell: Cell): boolean {
+    let srcPiece = srcCell.getPiece();
+    let destPiece = destCell.getPiece();
+    // This is an attack.
+    // For now, the piece just dies.
+    this.playerService.getActivePlayer().addPoints(destPiece.points);
+    this.checkWinCondition();
+    destCell.clearPiece();
+    // Move the piece into the dest cell.
+    srcCell.clearPiece();
+    destCell.setPiece(srcPiece);
+    return true;
+  }
+
+  private canMove(srcCell: Cell, destCell: Cell): boolean {
+    return true;
+  }
+
+  private move(srcCell: Cell, destCell: Cell): boolean {
+    let srcPiece = srcCell.getPiece();
     destCell.setPiece(srcPiece);
     srcCell.clearPiece();
     this.playerService.endTurn();
     return true;
   }
 
-  checkWinCondition(): void {
+  private checkWinCondition(): void {
     if (this.playerService.getActivePlayer().getPoints() >= 1) {
       console.log('Game over!');
       this.gameOver = true;
     }
   }
 
-  isGameOver(): boolean {
+  public isGameOver(): boolean {
     return this.gameOver;
   }
 }

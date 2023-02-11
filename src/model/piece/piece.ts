@@ -6,18 +6,13 @@ import { Position } from "../position";
  */
 export abstract class Piece {
 
-  readonly name: string;
-  readonly imageUrl: string;
-  readonly points: number;
-  readonly player: Player;
-
   private position: Position;
 
-  constructor(name: string, imageUrl: string, points: number, player: Player) {
-    this.name = name;
-    this.imageUrl = imageUrl;
-    this.points = points;
-    this.player = player;
+  constructor(
+    readonly name: string,
+    readonly points: number,
+    readonly movement: number,
+    readonly player: Player) {
   }
 
   setPosition(position: Position): void {

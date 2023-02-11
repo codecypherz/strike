@@ -20,25 +20,26 @@ export class BoardService {
     }
   }
 
-  reset(): void {
+  public reset(): void {
     this.selectedCell = null;
     this.board.reset();
   }
 
-  selectCell(cell: Cell): void {
+  public selectCell(cell: Cell): void {
     if (this.selectedCell) {
       // A cell was already selected.
       if (this.selectedCell != cell) {
-        // Let's determine if this is a piece move.
+        // The target cell wasn't the same.
         if (this.selectedCell.hasPiece()) {
-          this.gameService.movePiece(
+          // There is a source piece; try to take action.
+          this.gameService.takeAction(
             this.selectedCell.position, cell.position);
-          // Deselect everything after move attempt
+          // Deselect everything after trying to do something.
           this.selectedCell.setSelected(false);
           cell.setSelected(false);
           this.selectedCell = null;
         } else {
-          // No piece, so just change selection.
+          // No piece, so just change the selection.
           this.selectedCell.setSelected(false);
           cell.setSelected(true);
           this.selectedCell = cell;
@@ -51,7 +52,7 @@ export class BoardService {
     }
   }
 
-  getSelectedCell(): Cell | null {
+  public getSelectedCell(): Cell | null {
     return this.selectedCell;
   }
 }
