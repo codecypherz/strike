@@ -73,7 +73,7 @@ export class GameService {
     }
     let srcPiece = srcCell.getPiece()!;
     let destPiece = destCell.getPiece()!;
-    if (srcPiece.player == destPiece.player) {
+    if (!srcPiece.player.isActive() || srcPiece.player == destPiece.player) {
       return false;
     }
     // The target piece must be in range.
