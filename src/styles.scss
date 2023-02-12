@@ -15,10 +15,12 @@ body {
   font-family: ExcelsiorSans;
   text-align: center;
   margin: 0;
-  padding: 40px;
   background-color: var(--background_color);
   color: var(--foreground_color);
-  white-space: nowrap;
+  position: absolute;
+  left: 0;
+  right: 0;
+  min-width: 1300px;
 }
 
 button {

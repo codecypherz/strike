@@ -29,16 +29,19 @@
 .right-panel {
   display: inline-block;
   vertical-align: top;
+  margin-bottom: 40px;
 }
 
 .left-panel {
-  margin-top: 250px;
+  margin-top: 290px;
   margin-right: 40px;
   position: relative;
+  margin-left: 40px;
 }
 
 .right-panel {
-  margin-top: var(--header_height);
+  margin-top: 140px;
+  margin-right: 40px;
 }
 
 .audio-controls {
