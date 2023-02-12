@@ -23,9 +23,9 @@ handlers:
   upload: dist/(.*\.js\.map)
 
 # image files
-- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png))
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|webp))
   static_files: dist/\1
-  upload: dist/(.*\.(bmp|gif|ico|jpeg|jpg|png))
+  upload: dist/(.*\.(bmp|gif|ico|jpeg|jpg|png|webp))
 
 # font files
 - url: /(.*\.ttf)
