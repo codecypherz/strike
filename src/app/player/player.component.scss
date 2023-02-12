@@ -1,13 +1,23 @@
 .player {
   display: inline-block;
-  width: 49%;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  width: 44%;
+  padding: 10px 20px;
   /* Placeholder border to avoid dom shifting. */
   border: 4px solid transparent;
   border-radius: 30px;
   text-transform: uppercase;
-  position: relative;
+  position: absolute;
+  text-align: left;
+}
+
+.player1 {
+  left: 0;
+  right: 50%;
+}
+
+.player2 {
+  right: 0;
+  left: 50%;
 }
 
 .player.active {
@@ -34,6 +44,5 @@
 .end-turn {
   position: absolute;
   right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10px;
 }
