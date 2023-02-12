@@ -26,7 +26,8 @@
   padding: 0px 20px 10px 20px;
 }
 
-.selected-piece-image-container {
+.selected-piece-image-container,
+.selected-terrain-image-container {
   width: 100%;
   height: 400px;
   background: #666;
@@ -42,6 +43,7 @@
   top: 10px;
 }
 
+.selected-terrain-image,
 .selected-piece-image {
   width: 100%;
   top: 50%;
@@ -52,6 +54,7 @@
 
 .selected-piece-stats {
   font-size: 30px;
+  border-bottom: 1px solid var(--foreground_color);
 }
 
 .selected-piece-stat {
@@ -63,4 +66,9 @@
 .selected-piece-stat:last-child {
   display: inline-block;
   border-right: none;
+}
+
+.additional-details {
+  font-size: 20px;
+  padding: 10px;
 }

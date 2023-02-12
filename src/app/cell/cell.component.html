@@ -1,11 +1,8 @@
-<div
-    [ngClass]="{
-      'cell': true,
-      'selected': cell.isSelected()
-      }"
-    (click)="select()">
-  <div *ngIf=cell.isSelected()
-    [ngClass]="{'cell-selected': true, 'cell-has-piece': cell.hasPiece()}"></div>
+<div class="cell" [ngClass]="{'selected': cell.isSelected()}" (click)="select()">
+  <div class="cell-terrain" class="{{cell.getTerrain().type}}">
+    <!--<img class="cell-terrain-image" src="/images/{{cell.getTerrain().type}}.png">-->
+  </div>
+  <div *ngIf=cell.isSelected() class="cell-selected" [ngClass]="{'cell-has-piece': cell.hasPiece()}"></div>
 
   <div *ngIf=cell.isAvailableMove() class="cell-available-move">
     <!-- alternatives: ⁜, ☩, 🕂, ↔, ↕, ⟷ -->

@@ -38,14 +38,22 @@
           HP: {{getSelected()!.getPiece()!.maxHealth}}
         </div>
       </div>
+      <div class="additional-details">
+        No skills for this machine.
+      </div>
     </div>
 
     <!-- Terrain Selected -->
     <div *ngIf="!getSelected()!.hasPiece()">
       <div class="selected-piece-name">
-        No Terrain
+        {{getSelected()!.getTerrain().type}}
+      </div>
+      <div class="selected-terrain-image-container">
+        <img class="selected-terrain-image" src="/images/{{getSelected()!.getTerrain().type}}.png">
+      </div>
+      <div class="additional-details">
+        This terrain gives {{getSelected()!.getTerrain().elevation}} to power.
       </div>
     </div>
-
   </div>
 </div>

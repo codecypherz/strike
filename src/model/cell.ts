@@ -1,5 +1,6 @@
 import { Piece } from "./piece/piece";
 import { Position } from "./position";
+import { Terrain } from "./terrain";
 
 /**
  * A cell is a portion of the board. A cell has a certain type of terrain
@@ -12,9 +13,14 @@ export class Cell {
   availableMove: boolean = false;
   availableAttack: boolean = false;
   readonly position: Position;
+  terrain: Terrain = Terrain.GRASSLAND;
 
   constructor(row: number, col: number) {
     this.position = new Position(row, col);
+  }
+
+  getTerrain(): Terrain {
+    return this.terrain;
   }
 
   hasPiece(): boolean {
