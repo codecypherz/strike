@@ -29,10 +29,6 @@ export class TurnService {
     this.player1.setActive(true);
   }
 
-  isTurnOver(): boolean {
-    return this.getActivePlayer().isTurnOver();
-  }
-
   endTurn(): void {
     for (let cell of this.board.getCells().flat()) {
       if (cell.hasPiece()) {

@@ -27,13 +27,7 @@ export class Player {
   }
 
   canEndTurn(): boolean {
-    console.log('moves', this.moves);
     return this.moves == 2;
-  }
-
-  isTurnOver(): boolean {
-    // TODO: Handle starting with a single piece.
-    return this.attacks == 2;
   }
 
   canMove(): boolean {

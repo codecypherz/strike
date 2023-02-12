@@ -65,10 +65,6 @@ export class GameService {
     } else if (this.canAttack(srcCell, destCell)) {
       this.attack(srcCell, destCell);
     }
-
-    if (this.turnService.isTurnOver()) {
-      this.turnService.endTurn();
-    }
   }
 
   canAttack(srcCell: Cell, destCell: Cell): boolean {
