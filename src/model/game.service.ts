@@ -7,6 +7,8 @@ import { Scrapper } from "./piece/scrapper";
 import { Player } from "./player";
 import { TurnService } from "./turn.service";
 import { Position } from "./position";
+import { Lancehorn } from "./piece/lancehorn";
+import { Charger } from "./piece/charger";
 
 /**
  * Provides the main game engine logic.
@@ -33,9 +35,13 @@ export class GameService {
     let player1 = this.turnService.player1;
     this.board.getByRowCol(0, 2).setPiece(new Scrapper(player1));
     this.board.getByRowCol(0, 3).setPiece(new Burrower(player1));
+    this.board.getByRowCol(0, 4).setPiece(new Lancehorn(player1));
+    this.board.getByRowCol(0, 5).setPiece(new Charger(player1));
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
+    this.board.getByRowCol(7, 2).setPiece(new Lancehorn(player2));
+    this.board.getByRowCol(7, 3).setPiece(new Charger(player2));
     this.board.getByRowCol(7, 4).setPiece(new Bristleback(player2));
     this.board.getByRowCol(7, 5).setPiece(new Scrapper(player2));
   }
@@ -48,7 +54,7 @@ export class GameService {
   public takeAction(srcPos: Position, destPos: Position): void {
     let srcCell = this.board.getCell(srcPos);
     let destCell = this.board.getCell(destPos);
-    
+
     if (!srcCell.hasPiece()) {
       // No piece to move.
       return;
@@ -76,6 +82,9 @@ export class GameService {
     if (!srcPiece.player.isActive() || srcPiece.player == destPiece.player || srcPiece.hasAttacked()) {
       return false;
     }
+    if (!srcPiece.hasBeenActivated() && !this.turnService.getActivePlayer().canActivatePiece()) {
+      return false;
+    }
     // The target piece must be in range.
     let delta = this.delta(srcCell.position, destCell.position);
     return delta <= srcPiece.attackRange;
@@ -85,18 +94,21 @@ export class GameService {
     if (!srcCell.hasPiece() || !destCell.hasPiece()) {
       throw new Error('Cannot attack without two pieces');
     }
+    let activePlayer = this.turnService.getActivePlayer();
     let srcPiece = srcCell.getPiece()!;
+    if (!srcPiece.hasBeenActivated()) {
+      activePlayer.addActivatedPiece(srcPiece);
+    }
     let destPiece = destCell.getPiece()!;
     // This is an attack.
     let died = destPiece.takeDamage(srcPiece.attack);
     if (died) {
-      this.turnService.getActivePlayer().addPoints(destPiece.points);
+      activePlayer.addPoints(destPiece.points);
       destCell.clearPiece();
       this.checkWinCondition();
     }
     // Turn book-keeping
     srcPiece.attacked = true;
-    this.turnService.getActivePlayer().incrementAttacks();
   }
 
   canMove(srcCell: Cell, destCell: Cell): boolean {
@@ -106,26 +118,31 @@ export class GameService {
     if (!srcCell.hasPiece() || destCell.hasPiece()) {
       return false;
     }
-    let piece = srcCell.getPiece()!;
-    if (piece.hasMoved() || !piece.player.isActive()) {
+    let srcPiece = srcCell.getPiece()!;
+    if (srcPiece.hasMoved() || !srcPiece.player.isActive()) {
+      return false;
+    }
+    if (!srcPiece.hasBeenActivated() && !this.turnService.getActivePlayer().canActivatePiece()) {
       return false;
     }
     // total row and col delta cannot exceed movement value
-    let delta = this.delta(piece.getPosition(), destCell.position);
-    return delta <= piece.movement;
+    let delta = this.delta(srcPiece.getPosition(), destCell.position);
+    return delta <= srcPiece.movement;
   }
 
   private delta(srcPos: Position, destPos: Position) {
     return Math.abs(srcPos.row - destPos.row)
-        + Math.abs(srcPos.col - destPos.col);
+      + Math.abs(srcPos.col - destPos.col);
   }
 
   private move(srcCell: Cell, destCell: Cell): void {
     let srcPiece = srcCell.getPiece()!;
+    if (!srcPiece.hasBeenActivated()) {
+      this.turnService.getActivePlayer().addActivatedPiece(srcPiece);
+    }
     destCell.setPiece(srcPiece);
     srcCell.clearPiece();
     srcPiece.moved = true;
-    this.turnService.getActivePlayer().incrementMoves();
   }
 
   private checkWinCondition(): void {
@@ -145,7 +162,7 @@ export class GameService {
     return this.winningPlayer != null;
   }
 
-  public getWinningPlayer(): Player|null {
+  public getWinningPlayer(): Player | null {
     return this.winningPlayer;
   }
 }

@@ -62,6 +62,7 @@ export class BoardService {
     return this.selectedCell;
   }
 
+  // TODO: When a turn ends, refresh available actions.
   private showAvailableActions() {
     for (let cell of this.board.getCells().flat()) {
       if (!this.selectedCell) {

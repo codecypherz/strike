@@ -1,3 +1,4 @@
+import { Piece } from "./piece/piece";
 
 /**
  * A cell is a portion of the board. A cell has a certain type of terrain
@@ -12,8 +13,7 @@ export class Player {
   private points: number = 0;
 
   // Turn metadata
-  private attacks: number = 0;
-  private moves: number = 0;
+  private piecesActivated: Piece[] = new Array<Piece>();
 
   constructor(id: string, name: string) {
     this.id = id;
@@ -27,24 +27,33 @@ export class Player {
   }
 
   canEndTurn(): boolean {
-    return this.moves == 2;
+    return this.getNumMoved() == 2;
   }
 
   canMove(): boolean {
-    return this.moves < 2;
+    return this.getNumMoved() < 2;
   }
 
-  incrementAttacks() {
-    this.attacks++;
+  getNumMoved() {
+    let numMoved = 0;
+    for (let piece of this.piecesActivated) {
+      if (piece.hasMoved()) {
+        numMoved++;
+      }
+    }
+    return numMoved;
   }
 
-  incrementMoves() {
-    this.moves++;
+  addActivatedPiece(piece: Piece): void {
+    this.piecesActivated.push(piece);
+  }
+
+  canActivatePiece(): boolean {
+    return this.piecesActivated.length < 2;
   }
 
   clearTurnData(): void {
-    this.attacks = 0;
-    this.moves = 0;
+    this.piecesActivated = new Array<Piece>();
   }
 
   setActive(active: boolean): void {

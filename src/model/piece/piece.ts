@@ -62,4 +62,8 @@ export abstract class Piece {
   public hasAttacked(): boolean {
     return this.attacked;
   }
+
+  public hasBeenActivated(): boolean {
+    return this.hasMoved() || this.hasAttacked();
+  }
 }
