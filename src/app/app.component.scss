@@ -34,8 +34,15 @@
 .left-panel {
   margin-top: 250px;
   margin-right: 40px;
+  position: relative;
 }
 
 .right-panel {
   margin-top: var(--header_height);
+}
+
+.audio-controls {
+  position: absolute;
+  left: 0;
+  top: -96px;
 }
