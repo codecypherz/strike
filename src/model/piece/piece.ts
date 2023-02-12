@@ -58,4 +58,8 @@ export abstract class Piece {
   public hasMoved(): boolean {
     return this.moved;
   }
+
+  public hasAttacked(): boolean {
+    return this.attacked;
+  }
 }

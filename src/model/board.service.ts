@@ -34,10 +34,9 @@ export class BoardService {
           // There is a source piece; try to take action.
           this.gameService.takeAction(
             this.selectedCell.position, cell.position);
-          // Deselect everything after trying to do something.
           this.selectedCell.setSelected(false);
-          cell.setSelected(false);
-          this.selectedCell = null;
+          cell.setSelected(true);
+          this.selectedCell = cell;
         } else {
           // No piece, so just change the selection.
           this.selectedCell.setSelected(false);
