@@ -24,3 +24,18 @@
   vertical-align: middle;
   cursor: default;
 }
+
+.left-panel,
+.right-panel {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.left-panel {
+  margin-top: 250px;
+  margin-right: 40px;
+}
+
+.right-panel {
+  margin-top: var(--header_height);
+}

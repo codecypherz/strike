@@ -1,8 +1,16 @@
+<!-- This is a dialog that overlays everything -->
 <app-gameover></app-gameover>
+
 <div class="header">
   <img src="/images/banner.png">
   <div class="title">Strike</div>
 </div>
-<app-players></app-players>
-<app-selected></app-selected>
-<app-board></app-board>
+
+<div class="left-panel">
+  <app-selected></app-selected>
+</div>
+
+<div class="right-panel">
+  <app-players></app-players>
+  <app-board></app-board>
+</div>
