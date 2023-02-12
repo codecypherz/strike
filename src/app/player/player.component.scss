@@ -1,6 +1,4 @@
 .player {
-  display: inline-block;
-  width: 44%;
   padding: 10px 20px;
   /* Placeholder border to avoid dom shifting. */
   border: 4px solid transparent;
@@ -8,16 +6,17 @@
   text-transform: uppercase;
   position: absolute;
   text-align: left;
+  height: 100%;
 }
 
 .player1 {
   left: 0;
-  right: 50%;
+  right: 51%;
 }
 
 .player2 {
+  left: 51%;
   right: 0;
-  left: 50%;
 }
 
 .player.active {
@@ -36,33 +35,79 @@
   font-size: 40px;
 }
 
-.points-value {
-  margin-left: 20px;
-  font-size: 36px;
-  display: inline-block;
-  margin-top: -8px;
+.player-points {
+  position: relative;
+  width: 175px;
 }
 
-.arrow-up, .arrow-down {
-  display: inline-block;
-  margin-right: -6px;
+.arrows,
+.arrows-bg {
+  position: absolute;
+  left: 0;
 }
+
+.arrows {
+  left: 2.5px;
+  top: 2.5px;
+}
+
+.arrow-up-bg,
+.arrow-down-bg {
+  display: inline-block;
+  margin-right: -10.3px;
+}
+
+.arrow-up-bg {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 30px solid black;
+}
+
+.arrow-down-bg {
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-top: 30px solid black;
+}
+
+.arrow-up,
+.arrow-down {
+  display: inline-block;
+  margin-right: -5px;
+}
+
 .arrow-up {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  
-  border-bottom: 25px solid gold;
+  border-bottom: 25px solid #555;
+}
+
+.arrow-up.arrow-active {
+  border-bottom-color: gold;
 }
 
 .arrow-down {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
-  
-  border-top: 25px solid gold;
+  border-top: 25px solid #555;
+}
+
+.arrow-down.arrow-active {
+  border-top-color: gold;
+}
+
+.points-value {
+  font-size: 36px;
+  position: absolute;
+  right: 0;
+  top: -4px;
 }
 
 .end-turn {

@@ -9,13 +9,47 @@
   </div>
   <div class="player-points">
     <!--<div class="arrows">▲▼▲▼▲▼▲</div> -->
-    <div class="arrow-up"></div>
-    <div class="arrow-down"></div>
-    <div class="arrow-up"></div>
-    <div class="arrow-down"></div>
-    <div class="arrow-up"></div>
-    <div class="arrow-down"></div>
-    <div class="arrow-up"></div>
+    <!-- larger, background arrows -->
+    <div class="arrows-bg">
+      <div class="arrow-up-bg"></div>
+      <div class="arrow-down-bg"></div>
+      <div class="arrow-up-bg"></div>
+      <div class="arrow-down-bg"></div>
+      <div class="arrow-up-bg"></div>
+      <div class="arrow-down-bg"></div>
+      <div class="arrow-up-bg"></div>
+    </div>
+    <!-- smaller, foreground arrows -->
+    <div class="arrows">
+      <div [ngClass]="{
+        'arrow-up': true,
+        'arrow-active': player.getPoints() > 0
+        }"></div>
+        <div [ngClass]="{
+          'arrow-down': true,
+          'arrow-active': player.getPoints() > 1
+          }"></div>
+      <div [ngClass]="{
+        'arrow-up': true,
+        'arrow-active': player.getPoints() > 2
+        }"></div>
+        <div [ngClass]="{
+          'arrow-down': true,
+          'arrow-active': player.getPoints() > 3
+          }"></div>
+      <div [ngClass]="{
+        'arrow-up': true,
+        'arrow-active': player.getPoints() > 4
+        }"></div>
+        <div [ngClass]="{
+          'arrow-down': true,
+          'arrow-active': player.getPoints() > 5
+          }"></div>
+      <div [ngClass]="{
+        'arrow-up': true,
+        'arrow-active': player.getPoints() > 6
+        }"></div>
+    </div>
     <div class="points-value">{{player.getPoints()}}</div>
   </div>
 
