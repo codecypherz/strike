@@ -36,9 +36,33 @@
   font-size: 40px;
 }
 
-.player-points {
-  margin-top: 10px;
-  font-size: 20px;
+.points-value {
+  margin-left: 20px;
+  font-size: 36px;
+  display: inline-block;
+  margin-top: -8px;
+}
+
+.arrow-up, .arrow-down {
+  display: inline-block;
+  margin-right: -6px;
+}
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  
+  border-bottom: 25px solid gold;
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  
+  border-top: 25px solid gold;
 }
 
 .end-turn {
