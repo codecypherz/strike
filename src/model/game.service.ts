@@ -111,7 +111,7 @@ export class GameService {
       return false;
     }
     let piece = srcCell.getPiece()!;
-    if (!piece.player.isActive()) {
+    if (piece.hasMoved() || !piece.player.isActive()) {
       return false;
     }
     // total row and col delta cannot exceed movement value
