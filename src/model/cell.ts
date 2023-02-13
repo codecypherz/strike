@@ -23,6 +23,10 @@ export class Cell {
     return this.terrain;
   }
 
+  setTerrain(terrain: Terrain): void {
+    this.terrain = terrain;
+  }
+  
   hasPiece(): boolean {
     return this.piece != null;
   }

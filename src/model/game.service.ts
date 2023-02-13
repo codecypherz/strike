@@ -9,6 +9,7 @@ import { TurnService } from "./turn.service";
 import { Position } from "./position";
 import { Lancehorn } from "./piece/lancehorn";
 import { Charger } from "./piece/charger";
+import { Terrain } from "./terrain";
 
 /**
  * Provides the main game engine logic.
@@ -44,6 +45,36 @@ export class GameService {
     this.board.getByRowCol(7, 3).setPiece(new Charger(player2));
     this.board.getByRowCol(7, 4).setPiece(new Bristleback(player2));
     this.board.getByRowCol(7, 5).setPiece(new Scrapper(player2));
+
+    // Set some terrain
+    this.board.getByRowCol(3, 0).setTerrain(Terrain.FOREST);
+    this.board.getByRowCol(3, 1).setTerrain(Terrain.FOREST);
+    this.board.getByRowCol(3, 2).setTerrain(Terrain.FOREST);
+    this.board.getByRowCol(4, 7).setTerrain(Terrain.FOREST);
+    this.board.getByRowCol(4, 6).setTerrain(Terrain.FOREST);
+    this.board.getByRowCol(4, 5).setTerrain(Terrain.FOREST);
+
+    this.board.getByRowCol(4, 0).setTerrain(Terrain.HILL);
+    this.board.getByRowCol(4, 1).setTerrain(Terrain.HILL);
+    this.board.getByRowCol(3, 7).setTerrain(Terrain.HILL);
+    this.board.getByRowCol(3, 6).setTerrain(Terrain.HILL);
+
+    this.board.getByRowCol(5, 0).setTerrain(Terrain.MOUNTAIN);
+    this.board.getByRowCol(2, 7).setTerrain(Terrain.MOUNTAIN);
+
+    this.board.getByRowCol(2, 3).setTerrain(Terrain.CHASM);
+    this.board.getByRowCol(2, 4).setTerrain(Terrain.CHASM);
+    this.board.getByRowCol(5, 3).setTerrain(Terrain.CHASM);
+    this.board.getByRowCol(5, 4).setTerrain(Terrain.CHASM);
+
+    this.board.getByRowCol(0, 7).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(1, 6).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(2, 5).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(3, 4).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(4, 3).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(5, 2).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(6, 1).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(7, 0).setTerrain(Terrain.MARSH);
   }
 
   /**
@@ -101,7 +132,8 @@ export class GameService {
     }
     let destPiece = destCell.getPiece()!;
     // This is an attack.
-    let died = destPiece.takeDamage(srcPiece.attack);
+    let attackPower = srcPiece.attack + srcCell.getTerrain().elevation;
+    let died = destPiece.takeDamage(attackPower);
     if (died) {
       activePlayer.addPoints(destPiece.points);
       destCell.clearPiece();
@@ -155,7 +187,7 @@ export class GameService {
   }
 
   private hasWon(player: Player): boolean {
-    return player.getPoints() >= 2;
+    return player.getPoints() >= 4;
   }
 
   public isGameOver(): boolean {
