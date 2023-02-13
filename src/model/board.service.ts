@@ -18,6 +18,7 @@ export class BoardService {
     if (service) {
       throw new Error('Singleton violation: BoardService');
     }
+    (window as any).boardService = this;
   }
 
   public reset(): void {

@@ -26,6 +26,7 @@ export class GameService {
     if (service) {
       throw new Error('Singleton violation: GameService');
     }
+    (window as any).gameService = this;
 
     this.reset();
   }

@@ -30,6 +30,7 @@
   bottom: 0;
   padding: 3px;
 }
+
 .cell-terrain-image {
   width: 100%;
 }
@@ -48,27 +49,33 @@
   height: 80px;
   border-radius: 80px;
   position: absolute;
-  top: 14px;
-  left: 14px;
   cursor: pointer;
+  background: var(--background_color);
+  opacity: 70%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.cell-move-symbol-1, .cell-move-symbol-2 {
+.cell-move-symbol-1,
+.cell-move-symbol-2 {
   font-size: 35px;
   position: absolute;
-  top: 18px;
-  left: 20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
+
 .cell-move-symbol-2 {
   transform: rotate(90deg);
 }
 
 .cell-available-attack {
-  width: 100px;
-  height: 100px;
-  border-radius: 50px;
   position: absolute;
-  background: firebrick;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: red;
   cursor: pointer;
 }
 

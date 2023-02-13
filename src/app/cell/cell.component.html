@@ -6,17 +6,18 @@
 
   <div *ngIf=cell.isAvailableMove() class="cell-available-move">
     <!-- alternatives: ⁜, ☩, 🕂, ↔, ↕, ⟷ -->
-    <div class="cell-move-symbol-1">⟷</div>
-    <div class="cell-move-symbol-2">⟷</div>
-  </div>
-
-  <div *ngIf=cell.isAvailableAttack() class="cell-available-attack">
-    <!-- alternative: ⚔, ⤲ -->
-    <div class="cell-attack-symbol">⤱</div>
+    <div class="cell-move-symbol-1">☩</div>
+    <!--<div class="cell-move-symbol-2">⟷</div>-->
   </div>
 
   <!-- TODO: Render terrain once supported. -->
 
   <!-- Render the piece. -->
   <app-piece [piece]="cell.getPiece()!"></app-piece>
+
+  <!-- Render this as an overlay on the piece. -->
+  <div *ngIf=cell.isAvailableAttack() class="cell-available-attack">
+    <!-- alternative: ⚔, ⤲ -->
+    <div class="cell-attack-symbol">⤱</div>
+  </div>
 </div>
