@@ -7,6 +7,7 @@ Setting up for the first time:
 4. Run `sudo npm install -g n` to install node
 5. Run `sudo n stable` to update node
 6. Run `node -v` to verify version
+    * If running into trouble, run `nvm install 18` and `nvm use 18`
 7. Run `sudo npm install -g @angular/cli` to install angular command line
 8. Run `ng version` to verify version
 9. Run `npm install strike` to set up the project
