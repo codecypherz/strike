@@ -1,4 +1,4 @@
-<div class="cell" [ngClass]="{'selected': cell.isSelected()}" (click)="select()">
+<div class="cell" [ngClass]="{'selected': cell.isSelected()}" (click)="onCellClicked()">
   <div class="cell-terrain" class="{{cell.getTerrain().type}}">
     <img class="cell-terrain-image" src="/images/{{cell.getTerrain().type}}.png">
   </div>

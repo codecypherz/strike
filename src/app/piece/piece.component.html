@@ -8,4 +8,12 @@
       }">
   <div class="piece-name">{{piece.name}}</div>
   <div class="piece-health">❤ {{piece.getHealth()}}</div>
+  <div *ngIf="piece.isSelected()">
+    <!-- TODO: Keep implementing.
+    <button class="cancel-selection"
+        (click)="onCancel">
+      X
+    </button>
+    -->
+  </div>
 </div>

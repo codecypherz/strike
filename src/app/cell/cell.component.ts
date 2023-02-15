@@ -13,7 +13,7 @@ export class CellComponent {
 
   constructor(private boardService: BoardService) {}
 
-  select(): void {
-    this.boardService.selectCell(this.cell);
+  onCellClicked(): void {
+    this.boardService.onCellClicked(this.cell);
   }
 }

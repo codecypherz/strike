@@ -2,6 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { GameService } from "./game.service";
+import { Piece } from "./piece/piece";
 
 /**
  * Provides behavior and simple extractions of intent.
@@ -10,6 +11,7 @@ import { GameService } from "./game.service";
 export class BoardService {
 
   private selectedCell: Cell | null = null;
+  private selectedPiece: Piece | null = null;
 
   constructor(
     private board: Board,
@@ -26,41 +28,62 @@ export class BoardService {
     this.board.reset();
   }
 
-  public selectCell(cell: Cell): void {
-    if (this.selectedCell) {
-      // A cell was already selected.
-      if (this.selectedCell != cell) {
-        // The target cell wasn't the same.
-        if (this.selectedCell.hasPiece()) {
-          // There is a source piece; try to take action.
-          this.gameService.takeAction(
-            this.selectedCell.position, cell.position);
-          this.selectedCell.setSelected(false);
-          cell.setSelected(true);
-          this.selectedCell = cell;
-        } else {
-          // No piece, so just change the selection.
-          this.selectedCell.setSelected(false);
-          cell.setSelected(true);
-          this.selectedCell = cell;
-        }
-      } else {
-        // Same cell selected, so de-select.
-        this.selectedCell.setSelected(false);
-        this.selectedCell = null;
-      }
-    } else {
-      // There was no cell selected before.
-      cell.setSelected(true);
-      this.selectedCell = cell;
+  public onCellClicked(cell: Cell): void {
+    // Nothing was selected before, so just select this cell.
+    if (!this.selectedCell) {
+      this.selectCell(cell);
+      return;
     }
 
-    // Always update this information.
-    this.showAvailableActions();
+    // If the selected cell was clicked, then select the piece.
+    if (this.selectedCell == cell) {
+      if (this.selectedCell.hasPiece()) {
+        this.selectPiece(this.selectedCell.getPiece()!);
+      }
+      // Just do nothing if the selected cell was clicked without a piece.
+      // If terrain was selected and clicked again, do nothing.
+      return;
+    }
+
+    // If a different cell was clicked, it now depends if we had
+    // a selected piece.
+    if (!this.selectedPiece) {
+      // Just select a different cell.
+      this.selectCell(cell);
+      return;
+    }
+
+    // TODO: Keep implementing!
   }
 
   public getSelectedCell(): Cell | null {
     return this.selectedCell;
+  }
+
+  public selectCell(cell: Cell): void {
+    console.info('selecting cell', cell);
+    if (this.selectedCell) {
+      this.selectedCell.setSelected(false);
+      this.selectedCell = null;
+    }
+    if (cell) {
+      this.selectedCell = cell;
+      this.selectedCell.setSelected(true);
+    }
+    this.showAvailableActions();
+  }
+
+  public selectPiece(piece: Piece | null): void {
+    console.info('selecting piece', piece);
+    if (this.selectedPiece) {
+      this.selectedPiece.setSelected(false);
+      this.selectedPiece = null;
+    }
+    if (piece) {
+      this.selectedPiece = piece;
+      this.selectedPiece.setSelected(true);
+    }
+    this.showAvailableActions();
   }
 
   // TODO: When a turn ends, refresh available actions.

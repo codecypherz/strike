@@ -15,6 +15,7 @@ export abstract class Piece {
   // Per-turn data
   moved: boolean = false;
   attacked: boolean = false;
+  selected: boolean = false;
 
   constructor(
     readonly name: string,
@@ -65,5 +66,13 @@ export abstract class Piece {
 
   public hasBeenActivated(): boolean {
     return this.hasMoved() || this.hasAttacked();
+  }
+
+  isSelected(): boolean {
+    return this.selected;
+  }
+
+  setSelected(selected: boolean): void {
+    this.selected = selected;
   }
 }
