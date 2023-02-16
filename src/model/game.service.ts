@@ -184,16 +184,13 @@ export class GameService {
     return this.turnService.getActivePlayer().canActivatePiece();
   }
 
+  activatePiece(piece: Piece): void {
+    this.turnService.getActivePlayer().addActivatedPiece(piece);
+  }
+
   private delta(srcPos: Position, destPos: Position) {
     return Math.abs(srcPos.row - destPos.row)
       + Math.abs(srcPos.col - destPos.col);
-  }
-
-  public stagedMove(srcCell: Cell, destCell: Cell): void {
-    let srcPiece = srcCell.getPiece()!;
-    srcCell.clearPiece();
-    destCell.setPiece(srcPiece);
-    srcPiece.setStagedPosition(destCell.position);
   }
 
   private move(srcCell: Cell, destCell: Cell): void {

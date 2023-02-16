@@ -73,7 +73,10 @@ export class BoardService {
     if (this.gameService.canMove(srcCell, cell)) {
       // The piece is allowed to move here, but it hasn't been confirmed
       // by the player. Update the staged position.
-      this.gameService.stagedMove(srcCell, cell);
+      let srcPiece = srcCell.getPiece()!;
+      srcCell.clearPiece();
+      cell.setPiece(srcPiece);
+      srcPiece.setStagedPosition(cell.position);
       // Move selection with the piece.
       this.selectCell(cell);
     }
@@ -83,7 +86,7 @@ export class BoardService {
     return this.selectedCell;
   }
 
-  public cancelStaging() {
+  public cancelStaging(): void {
     if (!this.selectedPiece) {
       throw new Error('Canceled staging without a staged piece.');
     }
@@ -95,6 +98,22 @@ export class BoardService {
     this.selectedPiece.setPosition(originalCell.position);
     this.selectedPiece.setSelected(false);
     this.selectedPiece.setStagedPosition(null);
+    this.selectedPiece = null;
+    this.selectCell(null);
+  }
+
+  public confirmMove(): void {
+    if (!this.selectedPiece) {
+      throw new Error('Confirming move without a staged piece.');
+    }
+    const piece = this.selectedPiece;
+    const cell = this.board.getCell(piece.getStagedPosition());
+    piece.setPosition(cell.position);
+    piece.setMoved(true);
+    this.gameService.activatePiece(piece);
+    piece.setSelected(false);
+    piece.setStagedPosition(null);
+
     this.selectedPiece = null;
     this.selectCell(null);
   }
