@@ -44,30 +44,29 @@
 }
 
 .cell-available-move {
-  border: solid var(--foreground_color) 1px;
+  border: solid var(--foreground_color) 2px;
   width: 80px;
   height: 80px;
   border-radius: 80px;
   position: absolute;
   cursor: pointer;
-  background: var(--background_color);
-  opacity: 70%;
+  background: #aaa;
+  opacity: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.cell-move-symbol-1,
-.cell-move-symbol-2 {
-  font-size: 35px;
+.cell-available-move:hover {
+  opacity: 70%;
+}
+
+.cell-available-move>img {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-}
-
-.cell-move-symbol-2 {
-  transform: rotate(90deg);
+  width: 50%;
 }
 
 .cell-available-attack {
