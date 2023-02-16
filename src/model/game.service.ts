@@ -10,6 +10,7 @@ import { Position } from "./position";
 import { Lancehorn } from "./piece/lancehorn";
 import { Charger } from "./piece/charger";
 import { Terrain } from "./terrain";
+import { Piece } from "./piece/piece";
 
 /**
  * Provides the main game engine logic.
@@ -35,17 +36,17 @@ export class GameService {
     this.winningPlayer = null;
     // Player 1 pieces
     let player1 = this.turnService.player1;
-    this.board.getByRowCol(0, 2).setPiece(new Scrapper(player1));
-    this.board.getByRowCol(0, 3).setPiece(new Burrower(player1));
-    this.board.getByRowCol(0, 4).setPiece(new Lancehorn(player1));
-    this.board.getByRowCol(0, 5).setPiece(new Charger(player1));
+    this.addPiece(0, 2, new Scrapper(player1));
+    this.addPiece(0, 3, new Burrower(player1));
+    this.addPiece(0, 4, new Lancehorn(player1));
+    this.addPiece(0, 5, new Charger(player1));
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
-    this.board.getByRowCol(7, 2).setPiece(new Lancehorn(player2));
-    this.board.getByRowCol(7, 3).setPiece(new Charger(player2));
-    this.board.getByRowCol(7, 4).setPiece(new Bristleback(player2));
-    this.board.getByRowCol(7, 5).setPiece(new Scrapper(player2));
+    this.addPiece(7, 2, new Lancehorn(player2));
+    this.addPiece(7, 3, new Charger(player2));
+    this.addPiece(7, 4, new Bristleback(player2));
+    this.addPiece(7, 5, new Scrapper(player2));
 
     // Set some terrain
     this.board.getByRowCol(3, 0).setTerrain(Terrain.FOREST);
@@ -76,6 +77,12 @@ export class GameService {
     this.board.getByRowCol(5, 2).setTerrain(Terrain.MARSH);
     this.board.getByRowCol(6, 1).setTerrain(Terrain.MARSH);
     this.board.getByRowCol(7, 0).setTerrain(Terrain.MARSH);
+  }
+
+  private addPiece(row: number, col: number, piece: Piece): void {
+    const cell = this.board.getByRowCol(row, col);
+    cell.setPiece(piece);
+    piece.setPosition(cell.position);
   }
 
   /**
@@ -141,7 +148,7 @@ export class GameService {
       this.checkWinCondition();
     }
     // Turn book-keeping
-    srcPiece.attacked = true;
+    srcPiece.setAttacked(true);
   }
 
   canMove(srcCell: Cell, destCell: Cell): boolean {
@@ -163,9 +170,30 @@ export class GameService {
     return delta <= srcPiece.movement;
   }
 
+  canActivatePiece(piece: Piece): boolean {
+    // Can't activate unless it's active player's piece.
+    if (!piece.player.isActive()) {
+      return false;
+    }
+    // True if this piece has already been activated.
+    // TODO: Return false if both a move and attack have been made?
+    if (piece.hasBeenActivated()) {
+      return true;
+    }
+    // Piece hasn't been activated, so check if the player can still do that.
+    return this.turnService.getActivePlayer().canActivatePiece();
+  }
+
   private delta(srcPos: Position, destPos: Position) {
     return Math.abs(srcPos.row - destPos.row)
       + Math.abs(srcPos.col - destPos.col);
+  }
+
+  public stagedMove(srcCell: Cell, destCell: Cell): void {
+    let srcPiece = srcCell.getPiece()!;
+    srcCell.clearPiece();
+    destCell.setPiece(srcPiece);
+    srcPiece.setStagedPosition(destCell.position);
   }
 
   private move(srcCell: Cell, destCell: Cell): void {
@@ -173,9 +201,10 @@ export class GameService {
     if (!srcPiece.hasBeenActivated()) {
       this.turnService.getActivePlayer().addActivatedPiece(srcPiece);
     }
-    destCell.setPiece(srcPiece);
     srcCell.clearPiece();
-    srcPiece.moved = true;
+    destCell.setPiece(srcPiece);
+    srcPiece.setPosition(destCell.position);
+    srcPiece.setMoved(true);
   }
 
   private checkWinCondition(): void {

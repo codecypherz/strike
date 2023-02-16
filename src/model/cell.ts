@@ -36,10 +36,10 @@ export class Cell {
   }
 
   setPiece(piece: Piece | null) {
-    this.piece = piece;
-    if (this.piece) {
-      this.piece.setPosition(this.position);
+    if (!this.piece && !piece) {
+      throw new Error('Should not overwrite a piece');
     }
+    this.piece = piece;
   }
 
   clearPiece(): void {

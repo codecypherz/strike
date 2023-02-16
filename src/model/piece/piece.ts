@@ -13,9 +13,10 @@ export abstract class Piece {
   private health: number = 0;
 
   // Per-turn data
-  moved: boolean = false;
-  attacked: boolean = false;
-  selected: boolean = false;
+  private moved: boolean = false;
+  private attacked: boolean = false;
+  private selected: boolean = false;
+  private stagedPosition: Position | null = null;
 
   constructor(
     readonly name: string,
@@ -29,12 +30,29 @@ export abstract class Piece {
     this.health = maxHealth;
   }
 
+  public clearTurnData() {
+    this.moved = false;
+    this.attacked = false;
+    this.stagedPosition = null;
+  }
+
   public setPosition(position: Position): void {
     this.position = position;
   }
 
   public getPosition(): Position {
     return this.position;
+  }
+
+  public setStagedPosition(position: Position | null): void {
+    this.stagedPosition = position;
+  }
+
+  public getStagedPosition(): Position {
+    if (!this.stagedPosition) {
+      throw new Error('Attempting to access null staged position');
+    }
+    return this.stagedPosition;
   }
 
   public getHealth(): number {
@@ -51,17 +69,20 @@ export abstract class Piece {
     return this.health == 0;
   }
 
-  public clearTurnData() {
-    this.moved = false;
-    this.attacked = false;
-  }
-
   public hasMoved(): boolean {
     return this.moved;
   }
 
+  public setMoved(moved: boolean): void {
+    this.moved = moved;
+  }
+
   public hasAttacked(): boolean {
     return this.attacked;
+  }
+
+  public setAttacked(attacked: boolean): void {
+    this.attacked = attacked;
   }
 
   public hasBeenActivated(): boolean {

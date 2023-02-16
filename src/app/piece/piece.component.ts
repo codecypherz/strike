@@ -13,7 +13,9 @@ export class PieceComponent {
 
   constructor(private boardService: BoardService) {}
 
-  onCancel(): void {
-    this.boardService.selectPiece(null);
+  onCancel(event: Event): void {
+    // If we don't stop propagation here, the cell click event will fire.
+    event.stopPropagation();
+    this.boardService.cancelStaging();
   }
 }
