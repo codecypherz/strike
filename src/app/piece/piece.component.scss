@@ -53,6 +53,9 @@
   transform: translateX(-50%);
   top: -45px;
 }
+.cancel-selection > img {
+  width: 50%;
+}
 
 .confirm-move {
   left: -40px;
@@ -65,4 +68,7 @@
 .confirm-attack {
   right: -40px;
   top: -20px;
+}
+.confirm-attack > img {
+  width: 50%;
 }

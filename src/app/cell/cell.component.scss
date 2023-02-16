@@ -79,7 +79,10 @@
   cursor: pointer;
 }
 
-.cell-attack-symbol {
-  font-size: 45px;
-  margin-top: -5px;
+.cell-available-attack>img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
 }

@@ -11,7 +11,7 @@
   <div *ngIf="piece.isSelected()" class="piece-selected-buttons">
     <button class="piece-selected-button cancel-selection"
         (click)="cancel($event)">
-      🗙
+      <img src="/images/icon/cancel_icon.png">
     </button>
     <button class="piece-selected-button confirm-move"
         (click)="confirmMove($event)">
@@ -19,7 +19,7 @@
     </button>
     <button class="piece-selected-button confirm-attack"
         (click)="confirmAttack($event)">
-        ⤱
+      <img src="/images/icon/attack_icon.png">
     </button>
   </div>
 </div>
