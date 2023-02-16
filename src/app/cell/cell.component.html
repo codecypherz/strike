@@ -1,6 +1,6 @@
 <div class="cell" [ngClass]="{'selected': cell.isSelected()}" (click)="onCellClicked()">
   <div class="cell-terrain" class="{{cell.getTerrain().type}}">
-    <img class="cell-terrain-image" src="/images/{{cell.getTerrain().type}}.png">
+    <img class="cell-terrain-image" src="/images/terrain/{{cell.getTerrain().type}}.png">
   </div>
   <div *ngIf=cell.isSelected() class="cell-selected" [ngClass]="{'cell-has-piece': cell.hasPiece()}"></div>
 

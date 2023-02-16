@@ -6,7 +6,7 @@ import { Position } from "../position";
  */
 export abstract class Piece {
 
-  static IMAGE_PATH = '/images/';
+  static IMAGE_PATH = '/images/machine/';
 
   // Semi-invalid default, but don't want nullability.
   private position: Position = new Position(0, 0);
