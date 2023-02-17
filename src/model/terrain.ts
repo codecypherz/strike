@@ -7,6 +7,6 @@ export class Terrain {
   static HILL = new Terrain('hill', 2);
   static MOUNTAIN = new Terrain('mountain', 3);
 
-  constructor(readonly type: string, readonly elevation: number) {
+  private constructor(readonly type: string, readonly elevation: number) {
   }
 }

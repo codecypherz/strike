@@ -46,13 +46,13 @@
     <!-- Terrain Selected -->
     <div *ngIf="!getSelected()!.hasPiece()">
       <div class="selected-piece-name">
-        {{getSelected()!.getTerrain().type}}
+        {{getSelected()!.terrain.type}}
       </div>
       <div class="selected-terrain-image-container">
-        <img class="selected-terrain-image" src="/images/{{getSelected()!.getTerrain().type}}.png">
+        <img class="selected-terrain-image" src="/images/{{getSelected()!.terrain.type}}.png">
       </div>
       <div class="additional-details">
-        This terrain gives {{getSelected()!.getTerrain().elevation}} to power.
+        This terrain gives {{getSelected()!.terrain.elevation}} to power.
       </div>
     </div>
   </div>

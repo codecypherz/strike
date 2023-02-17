@@ -1,10 +1,10 @@
-<div class="cell" [ngClass]="{'selected': cell.isSelected()}" (click)="onCellClicked()">
-  <div class="cell-terrain" class="{{cell.getTerrain().type}}">
-    <img class="cell-terrain-image" src="/images/terrain/{{cell.getTerrain().type}}.png">
+<div class="cell" [ngClass]="{'selected': cell.selected}" (click)="onCellClicked()">
+  <div class="cell-terrain" class="{{cell.terrain.type}}">
+    <img class="cell-terrain-image" src="/images/terrain/{{cell.terrain.type}}.png">
   </div>
-  <div *ngIf=cell.isSelected() class="cell-selected" [ngClass]="{'cell-has-piece': cell.hasPiece()}"></div>
+  <div *ngIf=cell.selected class="cell-selected" [ngClass]="{'cell-has-piece': cell.hasPiece()}"></div>
 
-  <div *ngIf=cell.isAvailableMove() class="cell-available-move">
+  <div *ngIf=cell.availableMove class="cell-available-move">
     <!-- alternatives: ⁜, ☩, 🕂, ↔, ↕, ⟷ -->
     <img src="/images/icon/move_icon.ico">
   </div>
@@ -13,7 +13,7 @@
   <app-piece [piece]="cell.getPiece()!"></app-piece>
 
   <!-- Render this as an overlay on the piece. -->
-  <div *ngIf=cell.isAvailableAttack() class="cell-available-attack">
+  <div *ngIf=cell.availableAttack class="cell-available-attack">
     <!-- alternative: ⚔, ⤲ -->
     <img src="/images/icon/attack_icon.png">
   </div>

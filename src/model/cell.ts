@@ -19,14 +19,6 @@ export class Cell {
     this.position = new Position(row, col);
   }
 
-  getTerrain(): Terrain {
-    return this.terrain;
-  }
-
-  setTerrain(terrain: Terrain): void {
-    this.terrain = terrain;
-  }
-  
   hasPiece(): boolean {
     return this.piece != null;
   }
@@ -44,29 +36,5 @@ export class Cell {
 
   clearPiece(): void {
     this.setPiece(null);
-  }
-
-  isSelected(): boolean {
-    return this.selected;
-  }
-
-  setSelected(selected: boolean): void {
-    this.selected = selected;
-  }
-
-  setAvailableMove(availableMove: boolean): void {
-    this.availableMove = availableMove;
-  }
-
-  isAvailableMove(): boolean {
-    return this.availableMove;
-  }
-
-  setAvailableAttack(availableAttack: boolean): void {
-    this.availableAttack = availableAttack;
-  }
-
-  isAvailableAttack(): boolean {
-    return this.availableAttack;
   }
 }

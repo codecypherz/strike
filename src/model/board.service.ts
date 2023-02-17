@@ -69,14 +69,14 @@ export class BoardService {
     // Now we move the selected piece if it's valid based on its
     // original position.
     const piece = this.selectedPiece!;
-    const srcCell = this.board.getCell(piece.getStagedPosition());
+    const srcCell = this.board.getCell(piece.stagedPosition!);
     if (this.gameService.canMove(srcCell, cell)) {
       // The piece is allowed to move here, but it hasn't been confirmed
       // by the player. Update the staged position.
       let srcPiece = srcCell.getPiece()!;
       srcCell.clearPiece();
       cell.setPiece(srcPiece);
-      srcPiece.setStagedPosition(cell.position);
+      srcPiece.stagedPosition = cell.position;
       // Move selection with the piece.
       this.selectCell(cell);
     }
@@ -91,13 +91,13 @@ export class BoardService {
       throw new Error('Canceled staging without a staged piece.');
     }
     // Put the piece back in it's original position.
-    const currentCell = this.board.getCell(this.selectedPiece.getStagedPosition());
-    const originalCell = this.board.getCell(this.selectedPiece.getPosition());
+    const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
+    const originalCell = this.board.getCell(this.selectedPiece.position);
     currentCell.clearPiece();
     originalCell.setPiece(this.selectedPiece);
-    this.selectedPiece.setPosition(originalCell.position);
-    this.selectedPiece.setSelected(false);
-    this.selectedPiece.setStagedPosition(null);
+    this.selectedPiece.position = originalCell.position;
+    this.selectedPiece.selected = false;
+    this.selectedPiece.stagedPosition = null;
     this.selectedPiece = null;
     this.selectCell(null);
   }
@@ -107,12 +107,12 @@ export class BoardService {
       throw new Error('Confirming move without a staged piece.');
     }
     const piece = this.selectedPiece;
-    const cell = this.board.getCell(piece.getStagedPosition());
-    piece.setPosition(cell.position);
-    piece.setMoved(true);
+    const cell = this.board.getCell(piece.stagedPosition!);
+    piece.position = cell.position;
+    piece.moved = true;
     this.gameService.activatePiece(piece);
-    piece.setSelected(false);
-    piece.setStagedPosition(null);
+    piece.selected = false;
+    piece.stagedPosition = null;
 
     this.selectedPiece = null;
     this.selectCell(null);
@@ -120,12 +120,12 @@ export class BoardService {
 
   private selectCell(cell: Cell | null): void {
     if (this.selectedCell) {
-      this.selectedCell.setSelected(false);
+      this.selectedCell.selected = false;
       this.selectedCell = null;
     }
     if (cell) {
       this.selectedCell = cell;
-      this.selectedCell.setSelected(true);
+      this.selectedCell.selected = true;
     }
     this.showAvailableActions();
   }
@@ -135,8 +135,8 @@ export class BoardService {
       throw new Error('There is already a selected piece');
     }
     this.selectedPiece = piece;
-    this.selectedPiece.setSelected(true);
-    this.selectedPiece.setStagedPosition(piece.getPosition());
+    this.selectedPiece.selected = true;
+    this.selectedPiece.stagedPosition = piece.position;
     this.showAvailableActions();
   }
 
@@ -145,11 +145,11 @@ export class BoardService {
     for (let cell of this.board.getCells().flat()) {
       if (!this.selectedCell) {
         // No cell selected, so clear movement indicator.
-        cell.setAvailableMove(false);
-        cell.setAvailableAttack(false);
+        cell.availableMove = false;
+        cell.availableAttack = false;
       } else {
-        cell.setAvailableMove(this.gameService.canMove(this.selectedCell, cell));
-        cell.setAvailableAttack(this.gameService.canAttack(this.selectedCell, cell));
+        cell.availableMove = this.gameService.canMove(this.selectedCell, cell);
+        cell.availableAttack = this.gameService.canAttack(this.selectedCell, cell);
       }
     }
   }

@@ -49,40 +49,40 @@ export class GameService {
     this.addPiece(7, 5, new Scrapper(player2));
 
     // Set some terrain
-    this.board.getByRowCol(3, 0).setTerrain(Terrain.FOREST);
-    this.board.getByRowCol(3, 1).setTerrain(Terrain.FOREST);
-    this.board.getByRowCol(3, 2).setTerrain(Terrain.FOREST);
-    this.board.getByRowCol(4, 7).setTerrain(Terrain.FOREST);
-    this.board.getByRowCol(4, 6).setTerrain(Terrain.FOREST);
-    this.board.getByRowCol(4, 5).setTerrain(Terrain.FOREST);
+    this.board.getByRowCol(3, 0).terrain = Terrain.FOREST;
+    this.board.getByRowCol(3, 1).terrain = Terrain.FOREST;
+    this.board.getByRowCol(3, 2).terrain = Terrain.FOREST;
+    this.board.getByRowCol(4, 7).terrain = Terrain.FOREST;
+    this.board.getByRowCol(4, 6).terrain = Terrain.FOREST;
+    this.board.getByRowCol(4, 5).terrain = Terrain.FOREST;
 
-    this.board.getByRowCol(4, 0).setTerrain(Terrain.HILL);
-    this.board.getByRowCol(4, 1).setTerrain(Terrain.HILL);
-    this.board.getByRowCol(3, 7).setTerrain(Terrain.HILL);
-    this.board.getByRowCol(3, 6).setTerrain(Terrain.HILL);
+    this.board.getByRowCol(4, 0).terrain = Terrain.HILL;
+    this.board.getByRowCol(4, 1).terrain = Terrain.HILL;
+    this.board.getByRowCol(3, 7).terrain = Terrain.HILL;
+    this.board.getByRowCol(3, 6).terrain = Terrain.HILL;
 
-    this.board.getByRowCol(5, 0).setTerrain(Terrain.MOUNTAIN);
-    this.board.getByRowCol(2, 7).setTerrain(Terrain.MOUNTAIN);
+    this.board.getByRowCol(5, 0).terrain = Terrain.MOUNTAIN;
+    this.board.getByRowCol(2, 7).terrain = Terrain.MOUNTAIN;
 
-    this.board.getByRowCol(2, 3).setTerrain(Terrain.CHASM);
-    this.board.getByRowCol(2, 4).setTerrain(Terrain.CHASM);
-    this.board.getByRowCol(5, 3).setTerrain(Terrain.CHASM);
-    this.board.getByRowCol(5, 4).setTerrain(Terrain.CHASM);
+    this.board.getByRowCol(2, 3).terrain = Terrain.CHASM;
+    this.board.getByRowCol(2, 4).terrain = Terrain.CHASM;
+    this.board.getByRowCol(5, 3).terrain = Terrain.CHASM;
+    this.board.getByRowCol(5, 4).terrain = Terrain.CHASM;
 
-    this.board.getByRowCol(0, 7).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(1, 6).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(2, 5).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(3, 4).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(4, 3).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(5, 2).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(6, 1).setTerrain(Terrain.MARSH);
-    this.board.getByRowCol(7, 0).setTerrain(Terrain.MARSH);
+    this.board.getByRowCol(0, 7).terrain = Terrain.MARSH;
+    this.board.getByRowCol(1, 6).terrain = Terrain.MARSH;
+    this.board.getByRowCol(2, 5).terrain = Terrain.MARSH;
+    this.board.getByRowCol(3, 4).terrain = Terrain.MARSH;
+    this.board.getByRowCol(4, 3).terrain = Terrain.MARSH;
+    this.board.getByRowCol(5, 2).terrain = Terrain.MARSH;
+    this.board.getByRowCol(6, 1).terrain = Terrain.MARSH;
+    this.board.getByRowCol(7, 0).terrain = Terrain.MARSH;
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {
     const cell = this.board.getByRowCol(row, col);
     cell.setPiece(piece);
-    piece.setPosition(cell.position);
+    piece.position = cell.position;
   }
 
   /**
@@ -118,7 +118,7 @@ export class GameService {
     }
     let srcPiece = srcCell.getPiece()!;
     let destPiece = destCell.getPiece()!;
-    if (!srcPiece.player.isActive() || srcPiece.player == destPiece.player || srcPiece.hasAttacked()) {
+    if (!srcPiece.player.isActive() || srcPiece.player == destPiece.player || srcPiece.attacked) {
       return false;
     }
     if (!srcPiece.hasBeenActivated() && !this.turnService.getActivePlayer().canActivatePiece()) {
@@ -140,7 +140,7 @@ export class GameService {
     }
     let destPiece = destCell.getPiece()!;
     // This is an attack.
-    let attackPower = srcPiece.attack + srcCell.getTerrain().elevation;
+    let attackPower = srcPiece.attack + srcCell.terrain.elevation;
     let died = destPiece.takeDamage(attackPower);
     if (died) {
       activePlayer.addPoints(destPiece.points);
@@ -148,7 +148,7 @@ export class GameService {
       this.checkWinCondition();
     }
     // Turn book-keeping
-    srcPiece.setAttacked(true);
+    srcPiece.attacked = true;
   }
 
   canMove(srcCell: Cell, destCell: Cell): boolean {
@@ -159,14 +159,14 @@ export class GameService {
       return false;
     }
     let srcPiece = srcCell.getPiece()!;
-    if (srcPiece.hasMoved() || !srcPiece.player.isActive()) {
+    if (srcPiece.moved || !srcPiece.player.isActive()) {
       return false;
     }
     if (!srcPiece.hasBeenActivated() && !this.turnService.getActivePlayer().canActivatePiece()) {
       return false;
     }
     // total row and col delta cannot exceed movement value
-    let delta = this.delta(srcPiece.getPosition(), destCell.position);
+    let delta = this.delta(srcPiece.position, destCell.position);
     return delta <= srcPiece.movement;
   }
 
@@ -200,8 +200,8 @@ export class GameService {
     }
     srcCell.clearPiece();
     destCell.setPiece(srcPiece);
-    srcPiece.setPosition(destCell.position);
-    srcPiece.setMoved(true);
+    srcPiece.position = destCell.position;
+    srcPiece.moved = true;
   }
 
   private checkWinCondition(): void {

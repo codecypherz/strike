@@ -2,13 +2,13 @@
     *ngIf="piece"
     [ngClass]="{
       'piece': true,
-      'moved': piece.hasMoved(),
+      'moved': piece.moved,
       'player1' : piece.player.id == 'player1',
       'player2' : piece.player.id == 'player2'
       }">
   <div class="piece-name">{{piece.name}}</div>
   <div class="piece-health">❤ {{piece.getHealth()}}</div>
-  <div *ngIf="piece.isSelected()" class="piece-selected-buttons">
+  <div *ngIf="piece.selected" class="piece-selected-buttons">
     <button class="piece-selected-button cancel-selection"
         (click)="cancel($event)">
       <img src="/images/icon/cancel_icon_2.png">

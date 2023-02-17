@@ -9,14 +9,14 @@ export abstract class Piece {
   static IMAGE_PATH = '/images/machine/';
 
   // Semi-invalid default, but don't want nullability.
-  private position: Position = new Position(0, 0);
+  position = new Position(0, 0);
   private health: number = 0;
 
   // Per-turn data
-  private moved: boolean = false;
-  private attacked: boolean = false;
-  private selected: boolean = false;
-  private stagedPosition: Position | null = null;
+  moved = false;
+  attacked = false;
+  selected = false;
+  stagedPosition: Position | null = null;
 
   constructor(
     readonly name: string,
@@ -36,25 +36,6 @@ export abstract class Piece {
     this.stagedPosition = null;
   }
 
-  public setPosition(position: Position): void {
-    this.position = position;
-  }
-
-  public getPosition(): Position {
-    return this.position;
-  }
-
-  public setStagedPosition(position: Position | null): void {
-    this.stagedPosition = position;
-  }
-
-  public getStagedPosition(): Position {
-    if (!this.stagedPosition) {
-      throw new Error('Attempting to access null staged position');
-    }
-    return this.stagedPosition;
-  }
-
   public getHealth(): number {
     return this.health;
   }
@@ -69,31 +50,7 @@ export abstract class Piece {
     return this.health == 0;
   }
 
-  public hasMoved(): boolean {
-    return this.moved;
-  }
-
-  public setMoved(moved: boolean): void {
-    this.moved = moved;
-  }
-
-  public hasAttacked(): boolean {
-    return this.attacked;
-  }
-
-  public setAttacked(attacked: boolean): void {
-    this.attacked = attacked;
-  }
-
   public hasBeenActivated(): boolean {
-    return this.hasMoved() || this.hasAttacked();
-  }
-
-  isSelected(): boolean {
-    return this.selected;
-  }
-
-  setSelected(selected: boolean): void {
-    this.selected = selected;
+    return this.moved || this.attacked;
   }
 }
