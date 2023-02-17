@@ -54,12 +54,12 @@
   top: -45px;
 }
 .cancel-selection > img {
-  width: 50%;
+  width: 65%;
 }
 
 .confirm-move {
   left: -40px;
-  top: -20px;
+  top: 5px;
 }
 .confirm-move > img {
   width: 65%;
@@ -67,8 +67,25 @@
 
 .confirm-attack {
   right: -40px;
-  top: -20px;
+  top: 5px;
 }
 .confirm-attack > img {
   width: 50%;
+}
+
+.rotate-cw {
+  left: -20px;
+  bottom: -30px;
+}
+.rotate-cw > img {
+  width: 60%;
+}
+
+.rotate-ccw {
+  right: -20px;
+  bottom: -30px;
+}
+.rotate-ccw > img {
+  width: 60%;
+  transform: scaleX(-1);
 }

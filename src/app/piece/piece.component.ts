@@ -27,4 +27,14 @@ export class PieceComponent {
     event.stopPropagation();
     // TODO: Implement attack.
   }
+
+  rotateClockwise(event: Event): void {
+    event.stopPropagation();
+    // TODO: Implement.
+  }
+
+  rotateCounterClockwise(event: Event): void {
+    event.stopPropagation();
+    // TODO: Implement.
+  }
 }
