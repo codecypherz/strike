@@ -44,7 +44,7 @@
 }
 
 .cell-available-move {
-  border: solid var(--foreground_color) 2px;
+  border: solid black 2px;
   width: 80px;
   height: 80px;
   border-radius: 80px;
@@ -70,13 +70,17 @@
 }
 
 .cell-available-attack {
+  border: solid black 2px;
+  width: 80px;
+  height: 80px;
+  border-radius: 80px;
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  color: red;
   cursor: pointer;
+  background: yellow;
+  opacity: 70%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .cell-available-attack>img {
@@ -84,5 +88,5 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 40%;
 }
