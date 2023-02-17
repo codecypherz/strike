@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Cell } from "./cell";
 import { GameService } from "./game.service";
 import { Piece } from "./piece/piece";
+import { Position } from "./position";
 
 /**
  * Provides behavior and simple extractions of intent.
@@ -47,7 +48,7 @@ export class BoardService {
     }
 
     // Do nothing if you select the same cell.
-    if (this.selectedCell == cell) {
+    if (this.selectedCell.equals(cell)) {
       return;
     }
 
@@ -108,6 +109,14 @@ export class BoardService {
     }
     const piece = this.selectedPiece;
     const cell = this.board.getCell(piece.stagedPosition!);
+
+    // Cancel staging if the piece didn't actually move.
+    if (piece.position.equals(piece.stagedPosition)) {
+      this.cancelStaging();
+      return;
+    }
+
+    // Moving the piece - update all the metadata.
     piece.position = cell.position;
     piece.moved = true;
     this.gameService.activatePiece(piece);

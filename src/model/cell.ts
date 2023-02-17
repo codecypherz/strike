@@ -19,6 +19,10 @@ export class Cell {
     this.position = new Position(row, col);
   }
 
+  equals(other: Cell): boolean {
+    return this.position.equals(other.position);
+  }
+
   hasPiece(): boolean {
     return this.piece != null;
   }

@@ -6,4 +6,11 @@ export class Position {
     this.row = row;
     this.col = col;
   }
+
+  equals(other: Position|null|undefined): boolean {
+    if (!other) {
+      return false;
+    }
+    return this.row == other.row && this.col == other.col;
+  }
 }

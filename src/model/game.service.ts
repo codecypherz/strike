@@ -118,7 +118,7 @@ export class GameService {
     }
     let srcPiece = srcCell.getPiece()!;
     let destPiece = destCell.getPiece()!;
-    if (!srcPiece.player.isActive() || srcPiece.player == destPiece.player || srcPiece.attacked) {
+    if (!srcPiece.player.isActive() || srcPiece.player.equals(destPiece.player) || srcPiece.attacked) {
       return false;
     }
     if (!srcPiece.hasBeenActivated() && !this.turnService.getActivePlayer().canActivatePiece()) {

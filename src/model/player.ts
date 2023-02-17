@@ -20,6 +20,10 @@ export class Player {
     this.name = name;
   }
 
+  equals(other: Player): boolean {
+    return this.id == other.id;
+  }
+
   reset(): void {
     this.active = false;
     this.points = 0;
