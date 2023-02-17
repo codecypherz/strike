@@ -24,12 +24,18 @@ export class BoardService {
     (window as any).boardService = this;
   }
 
-  public reset(): void {
+  reset(): void {
     this.selectedCell = null;
     this.board.reset();
   }
 
-  public onCellClicked(cell: Cell): void {
+  // TODO: Listen to turn end and clear this.
+  clearTurnData(): void {
+    this.selectedCell = null;
+    this.selectedPiece = null;
+  }
+
+  onCellClicked(cell: Cell): void {
     if (!cell) {
       throw new Error('No cell was clicked');
     }
@@ -83,11 +89,11 @@ export class BoardService {
     }
   }
 
-  public getSelectedCell(): Cell | null {
+  getSelectedCell(): Cell | null {
     return this.selectedCell;
   }
 
-  public cancelStaging(): void {
+  cancelStaging(): void {
     if (!this.selectedPiece) {
       throw new Error('Canceled staging without a staged piece.');
     }
@@ -103,12 +109,12 @@ export class BoardService {
     this.selectCell(null);
   }
 
-  public confirmMove(): void {
+  confirmMove(): void {
     if (!this.selectedPiece) {
       throw new Error('Confirming move without a staged piece.');
     }
     const piece = this.selectedPiece;
-    const cell = this.board.getCell(piece.stagedPosition!);
+    const stagedCell = this.board.getCell(piece.stagedPosition!);
 
     // Cancel staging if the piece didn't actually move.
     if (piece.position.equals(piece.stagedPosition)) {
@@ -117,12 +123,64 @@ export class BoardService {
     }
 
     // Moving the piece - update all the metadata.
-    piece.position = cell.position;
+    piece.position = stagedCell.position;
     piece.moved = true;
     this.gameService.activatePiece(piece);
     piece.selected = false;
     piece.stagedPosition = null;
 
+    this.selectedPiece = null;
+    this.selectCell(null);
+  }
+
+  confirmAttack(): void {
+    if (!this.selectedPiece) {
+      throw new Error('Confirming attack without a staged piece.');
+    }
+    const piece = this.selectedPiece;
+    const stagedCell = this.board.getCell(piece.stagedPosition!);
+
+    // This is an action that can combine with movement, but checking attack first.
+
+    // TODO: Pull a candidate set of attack cells from the piece itself?
+    let cellToAttack = null;
+    for (let targetCell of this.board.getCells().flat()) {
+      if (this.gameService.canAttack(stagedCell, targetCell)) {
+        cellToAttack = targetCell;
+        break;
+      }
+    }
+    // There's nothing to attack, so just cancel.
+    // Can disable the button later if this is deemed confusing.
+    if (!cellToAttack) {
+      this.cancelStaging();
+      return;
+    }
+    if (!cellToAttack.hasPiece()) {
+      throw new Error('Cell to attack does not have a piece.');
+    }
+    const targetPiece = cellToAttack!.getPiece()!;
+
+    // Determine if there is movement.
+    if (!piece.position.equals(piece.stagedPosition)) {
+      piece.position = stagedCell.position;
+      piece.moved = true;
+    }
+
+    // Perform the attack.
+    console.info(piece, ' is attacking ', targetPiece);
+    let attackPower = piece.attack + stagedCell.terrain.elevation;
+    let died = targetPiece.takeDamage(attackPower);
+    if (died) {
+      piece.player.addPoints(targetPiece.points);
+      cellToAttack.clearPiece();
+      this.gameService.checkWinCondition();
+    }
+    piece.attacked = true;
+    this.gameService.activatePiece(piece);
+
+    piece.selected = false;
+    piece.stagedPosition = null;
     this.selectedPiece = null;
     this.selectCell(null);
   }

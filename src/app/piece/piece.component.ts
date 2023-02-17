@@ -25,7 +25,7 @@ export class PieceComponent {
 
   confirmAttack(event: Event): void {
     event.stopPropagation();
-    // TODO: Implement attack.
+    this.boardService.confirmAttack();
   }
 
   rotateClockwise(event: Event): void {

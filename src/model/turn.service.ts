@@ -1,5 +1,6 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
+import { BoardService } from "./board.service";
 import { Player } from "./player";
 
 /**

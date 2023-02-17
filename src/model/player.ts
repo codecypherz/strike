@@ -13,6 +13,7 @@ export class Player {
   private points: number = 0;
 
   // Turn metadata
+  // TODO: Make this a Set which implies Piece identification.
   private piecesActivated: Piece[] = new Array<Piece>();
 
   constructor(id: string, name: string) {

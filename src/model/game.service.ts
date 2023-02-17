@@ -38,7 +38,7 @@ export class GameService {
     let player1 = this.turnService.player1;
     this.addPiece(0, 2, new Scrapper(player1));
     this.addPiece(0, 3, new Burrower(player1));
-    this.addPiece(0, 4, new Lancehorn(player1));
+    this.addPiece(6, 4, new Lancehorn(player1));
     this.addPiece(0, 5, new Charger(player1));
 
     // Player 2 pieces
@@ -47,36 +47,6 @@ export class GameService {
     this.addPiece(7, 3, new Charger(player2));
     this.addPiece(7, 4, new Bristleback(player2));
     this.addPiece(7, 5, new Scrapper(player2));
-
-    // Set some terrain
-    this.board.getByRowCol(3, 0).terrain = Terrain.FOREST;
-    this.board.getByRowCol(3, 1).terrain = Terrain.FOREST;
-    this.board.getByRowCol(3, 2).terrain = Terrain.FOREST;
-    this.board.getByRowCol(4, 7).terrain = Terrain.FOREST;
-    this.board.getByRowCol(4, 6).terrain = Terrain.FOREST;
-    this.board.getByRowCol(4, 5).terrain = Terrain.FOREST;
-
-    this.board.getByRowCol(4, 0).terrain = Terrain.HILL;
-    this.board.getByRowCol(4, 1).terrain = Terrain.HILL;
-    this.board.getByRowCol(3, 7).terrain = Terrain.HILL;
-    this.board.getByRowCol(3, 6).terrain = Terrain.HILL;
-
-    this.board.getByRowCol(5, 0).terrain = Terrain.MOUNTAIN;
-    this.board.getByRowCol(2, 7).terrain = Terrain.MOUNTAIN;
-
-    this.board.getByRowCol(2, 3).terrain = Terrain.CHASM;
-    this.board.getByRowCol(2, 4).terrain = Terrain.CHASM;
-    this.board.getByRowCol(5, 3).terrain = Terrain.CHASM;
-    this.board.getByRowCol(5, 4).terrain = Terrain.CHASM;
-
-    this.board.getByRowCol(0, 7).terrain = Terrain.MARSH;
-    this.board.getByRowCol(1, 6).terrain = Terrain.MARSH;
-    this.board.getByRowCol(2, 5).terrain = Terrain.MARSH;
-    this.board.getByRowCol(3, 4).terrain = Terrain.MARSH;
-    this.board.getByRowCol(4, 3).terrain = Terrain.MARSH;
-    this.board.getByRowCol(5, 2).terrain = Terrain.MARSH;
-    this.board.getByRowCol(6, 1).terrain = Terrain.MARSH;
-    this.board.getByRowCol(7, 0).terrain = Terrain.MARSH;
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {
@@ -84,34 +54,7 @@ export class GameService {
     cell.setPiece(piece);
     piece.position = cell.position;
   }
-
-  /**
-   * Tries to take an action by interpreting intent.
-   * @param srcPos The position of the source piece.
-   * @param destPos The target of the action.
-   */
-  public takeAction(srcPos: Position, destPos: Position): void {
-    let srcCell = this.board.getCell(srcPos);
-    let destCell = this.board.getCell(destPos);
-
-    if (!srcCell.hasPiece()) {
-      // No piece to move.
-      return;
-    }
-
-    let srcPiece = srcCell.getPiece()!;
-    if (!srcPiece.player.isActive()) {
-      // Player can only take action on own pieces.
-      return;
-    }
-
-    if (this.canMove(srcCell, destCell)) {
-      this.move(srcCell, destCell);
-    } else if (this.canAttack(srcCell, destCell)) {
-      this.attack(srcCell, destCell);
-    }
-  }
-
+  
   canAttack(srcCell: Cell, destCell: Cell): boolean {
     if (!srcCell.hasPiece() || !destCell.hasPiece()) {
       return false;
@@ -127,28 +70,6 @@ export class GameService {
     // The target piece must be in range.
     let delta = this.delta(srcCell.position, destCell.position);
     return delta <= srcPiece.attackRange;
-  }
-
-  private attack(srcCell: Cell, destCell: Cell): void {
-    if (!srcCell.hasPiece() || !destCell.hasPiece()) {
-      throw new Error('Cannot attack without two pieces');
-    }
-    let activePlayer = this.turnService.getActivePlayer();
-    let srcPiece = srcCell.getPiece()!;
-    if (!srcPiece.hasBeenActivated()) {
-      activePlayer.addActivatedPiece(srcPiece);
-    }
-    let destPiece = destCell.getPiece()!;
-    // This is an attack.
-    let attackPower = srcPiece.attack + srcCell.terrain.elevation;
-    let died = destPiece.takeDamage(attackPower);
-    if (died) {
-      activePlayer.addPoints(destPiece.points);
-      destCell.clearPiece();
-      this.checkWinCondition();
-    }
-    // Turn book-keeping
-    srcPiece.attacked = true;
   }
 
   canMove(srcCell: Cell, destCell: Cell): boolean {
@@ -193,18 +114,7 @@ export class GameService {
       + Math.abs(srcPos.col - destPos.col);
   }
 
-  private move(srcCell: Cell, destCell: Cell): void {
-    let srcPiece = srcCell.getPiece()!;
-    if (!srcPiece.hasBeenActivated()) {
-      this.turnService.getActivePlayer().addActivatedPiece(srcPiece);
-    }
-    srcCell.clearPiece();
-    destCell.setPiece(srcPiece);
-    srcPiece.position = destCell.position;
-    srcPiece.moved = true;
-  }
-
-  private checkWinCondition(): void {
+  checkWinCondition(): void {
     if (this.hasWon(this.turnService.player1)) {
       this.winningPlayer = this.turnService.player1;
     }
@@ -217,11 +127,11 @@ export class GameService {
     return player.getPoints() >= 4;
   }
 
-  public isGameOver(): boolean {
+  isGameOver(): boolean {
     return this.winningPlayer != null;
   }
 
-  public getWinningPlayer(): Player | null {
+  getWinningPlayer(): Player | null {
     return this.winningPlayer;
   }
 }
