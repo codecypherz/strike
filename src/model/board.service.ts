@@ -3,7 +3,7 @@ import { Board } from "./board";
 import { Cell } from "./cell";
 import { GameService } from "./game.service";
 import { Piece } from "./piece/piece";
-import { Position } from "./position";
+import { TurnService } from "./turn.service";
 
 /**
  * Provides behavior and simple extractions of intent.
@@ -16,23 +16,26 @@ export class BoardService {
 
   constructor(
     private board: Board,
+    private turnService: TurnService,
     private gameService: GameService,
     @Optional() @SkipSelf() service?: BoardService) {
+
     if (service) {
       throw new Error('Singleton violation: BoardService');
     }
+
+    turnService.addEventListener(TurnService.END_TURN_EVENT, this.onEndTurn.bind(this));
+
     (window as any).boardService = this;
   }
 
   reset(): void {
-    this.selectedCell = null;
+    this.exitStaging();
     this.board.reset();
   }
 
-  // TODO: Listen to turn end and clear this.
-  clearTurnData(): void {
-    this.selectedCell = null;
-    this.selectedPiece = null;
+  onEndTurn(): void {
+    this.exitStaging();
   }
 
   onCellClicked(cell: Cell): void {
@@ -89,18 +92,16 @@ export class BoardService {
     }
   }
 
-  getSelectedCell(): Cell | null {
-    return this.selectedCell;
-  }
-
-  cancelStaging(): void {
+  exitStaging(): void {
     if (!this.selectedPiece) {
-      throw new Error('Canceled staging without a staged piece.');
+      return;
     }
     // Put the piece back in it's original position.
-    const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
+    if (this.selectedPiece.stagedPosition) {
+      const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
+      currentCell.clearPiece();
+    }
     const originalCell = this.board.getCell(this.selectedPiece.position);
-    currentCell.clearPiece();
     originalCell.setPiece(this.selectedPiece);
     this.selectedPiece.position = originalCell.position;
     this.selectedPiece.selected = false;
@@ -118,7 +119,7 @@ export class BoardService {
 
     // Cancel staging if the piece didn't actually move.
     if (piece.position.equals(piece.stagedPosition)) {
-      this.cancelStaging();
+      this.exitStaging();
       return;
     }
 
@@ -126,11 +127,8 @@ export class BoardService {
     piece.position = stagedCell.position;
     piece.moved = true;
     this.gameService.activatePiece(piece);
-    piece.selected = false;
-    piece.stagedPosition = null;
 
-    this.selectedPiece = null;
-    this.selectCell(null);
+    this.exitStaging();
   }
 
   confirmAttack(): void {
@@ -153,7 +151,7 @@ export class BoardService {
     // There's nothing to attack, so just cancel.
     // Can disable the button later if this is deemed confusing.
     if (!cellToAttack) {
-      this.cancelStaging();
+      this.exitStaging();
       return;
     }
     if (!cellToAttack.hasPiece()) {
@@ -179,10 +177,7 @@ export class BoardService {
     piece.attacked = true;
     this.gameService.activatePiece(piece);
 
-    piece.selected = false;
-    piece.stagedPosition = null;
-    this.selectedPiece = null;
-    this.selectCell(null);
+    this.exitStaging();
   }
 
   private selectCell(cell: Cell | null): void {
@@ -191,10 +186,14 @@ export class BoardService {
       this.selectedCell = null;
     }
     if (cell) {
+      cell.selected = true;
       this.selectedCell = cell;
-      this.selectedCell.selected = true;
     }
     this.showAvailableActions();
+  }
+
+  getSelectedCell(): Cell | null {
+    return this.selectedCell;
   }
 
   private selectPiece(piece: Piece): void {
@@ -207,7 +206,6 @@ export class BoardService {
     this.showAvailableActions();
   }
 
-  // TODO: When a turn ends, refresh available actions.
   private showAvailableActions() {
     for (let cell of this.board.getCells().flat()) {
       if (!this.selectedCell) {

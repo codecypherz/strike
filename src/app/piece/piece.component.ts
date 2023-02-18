@@ -15,7 +15,7 @@ export class PieceComponent {
 
   cancel(event: Event): void {
     event.stopPropagation();
-    this.boardService.cancelStaging();
+    this.boardService.exitStaging();
   }
 
   confirmMove(event: Event): void {

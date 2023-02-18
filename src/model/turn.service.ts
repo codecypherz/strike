@@ -1,18 +1,21 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
-import { BoardService } from "./board.service";
 import { Player } from "./player";
 
 /**
  * Provides the data for each player.
  */
 @Injectable()
-export class TurnService {
+export class TurnService extends EventTarget {
+
+  static END_TURN_EVENT = 'end_turn';
 
   readonly player1: Player;
   readonly player2: Player;
 
   constructor(private board: Board, @Optional() @SkipSelf() service?: TurnService) {
+    super();
+
     if (service) {
       throw new Error('Singleton violation: TurnService');
     }
@@ -38,6 +41,8 @@ export class TurnService {
     }
     this.player1.toggleActive();
     this.player2.toggleActive();
+    console.info('dispatching event');
+    this.dispatchEvent(new Event(TurnService.END_TURN_EVENT));
   }
 
   getActivePlayer(): Player {

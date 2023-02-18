@@ -11,7 +11,7 @@ export class CellComponent {
 
   @Input() cell!: Cell;
 
-  constructor(private boardService: BoardService) {}
+  constructor(private boardService: BoardService) { }
 
   onCellClicked(): void {
     this.boardService.onCellClicked(this.cell);
