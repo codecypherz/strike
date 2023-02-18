@@ -5,10 +5,14 @@
       'player2' : piece.player.id == 'player2'
       }">
   <div class="piece-outline" [style.transform]="getPieceRotationTransform()">
-    <div class="piece-top">T</div>
-    <div class="piece-left">L</div>
-    <div class="piece-right">R</div>
-    <div class="piece-bottom">B</div>
+    <div class="piece-background"></div>
+    <div class="piece-left"></div>
+    <div class="piece-right"></div>
+    <div class="piece-bottom"></div>
+    <div class="piece-top">
+      <div class="piece-top-triangle-outline"></div>
+      <div class="piece-top-triangle-background"></div>
+    </div>
   </div>
   <div class="piece-name">{{piece.name}}</div>
   <div class="piece-health">❤ {{piece.getHealth()}}</div>
