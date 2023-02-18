@@ -98,7 +98,7 @@
   right: -20px;
   bottom: -30px;
 }
-.rotate-ccw-image {
+.piece-button-img-container > img.rotate-ccw-image {
   width: 60%;
-  transform: scaleX(-1);
+  transform: translate(-50%, -50%) scaleX(-1);
 }
