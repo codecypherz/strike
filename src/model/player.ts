@@ -13,8 +13,7 @@ export class Player {
   private points: number = 0;
 
   // Turn metadata
-  // TODO: Make this a Set which implies Piece identification.
-  private piecesActivated: Piece[] = new Array<Piece>();
+  private piecesActivated: Set<Piece> = new Set<Piece>();
 
   constructor(id: string, name: string) {
     this.id = id;
@@ -50,15 +49,15 @@ export class Player {
   }
 
   addActivatedPiece(piece: Piece): void {
-    this.piecesActivated.push(piece);
+    this.piecesActivated.add(piece);
   }
 
   canActivatePiece(): boolean {
-    return this.piecesActivated.length < 2;
+    return this.piecesActivated.size < 2;
   }
 
   clearTurnData(): void {
-    this.piecesActivated = new Array<Piece>();
+    this.piecesActivated = new Set<Piece>();
   }
 
   setActive(active: boolean): void {
