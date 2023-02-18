@@ -45,14 +45,7 @@ export class BoardService {
 
     // Nothing was selected before, so just select this cell.
     if (!this.selectedCell) {
-      this.selectCell(cell);
-      // Also select the piece if there is one.
-      if (this.selectedCell!.hasPiece()) {
-        const piece = this.selectedCell!.getPiece()!;
-        if (this.gameService.canActivatePiece(piece)) {
-          this.selectPiece(piece);
-        }
-      }
+      this.selectCellAndMaybePiece(cell);
       return;
     }
 
@@ -64,14 +57,7 @@ export class BoardService {
     // If a different cell was clicked, it now depends if we had
     // a selected piece.
     if (!this.selectedPiece) {
-      this.selectCell(cell);
-      // Also select the piece if there is one.
-      if (this.selectedCell!.hasPiece()) {
-        const piece = this.selectedCell!.getPiece()!;
-        if (this.gameService.canActivatePiece(piece)) {
-          this.selectPiece(piece);
-        }
-      }
+      this.selectCellAndMaybePiece(cell);
       return;
     }
 
@@ -89,6 +75,22 @@ export class BoardService {
       srcPiece.stagedPosition = cell.position;
       // Move selection with the piece.
       this.selectCell(cell);
+    } else {
+      // The piece cannot move here, so select this cell instead.
+      // Also cancel any staged action.
+      this.exitStaging();
+      this.selectCellAndMaybePiece(cell);
+    }
+  }
+
+  private selectCellAndMaybePiece(cell: Cell) {
+    this.selectCell(cell);
+    // Also select the piece if there is one.
+    if (this.selectedCell!.hasPiece()) {
+      const piece = this.selectedCell!.getPiece()!;
+      if (this.gameService.canActivatePiece(piece)) {
+        this.selectPiece(piece);
+      }
     }
   }
 
