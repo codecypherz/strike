@@ -1,6 +1,4 @@
-<div
-    *ngIf="piece"
-    [ngClass]="{
+<div *ngIf="piece" [ngClass]="{
       'piece': true,
       'moved': piece.moved,
       'player1' : piece.player.id == 'player1',
@@ -8,26 +6,31 @@
       }">
   <div class="piece-name">{{piece.name}}</div>
   <div class="piece-health">❤ {{piece.getHealth()}}</div>
-  <div *ngIf="piece.selected" class="piece-selected-buttons">
-    <button class="piece-selected-button cancel-selection"
-        (click)="cancel($event)">
-      <img src="/images/icon/cancel_icon_2.png">
+  <div *ngIf="piece.selected" class="piece-buttons">
+    <button class="piece-button cancel-selection" (click)="cancel($event)">
+      <div class="piece-button-img-container">
+        <img class="cancel-selection-image" src="/images/icon/cancel_icon_2.png">
+      </div>
     </button>
-    <button class="piece-selected-button confirm-move"
-        (click)="confirmMove($event)">
-      <img src="/images/icon/move_icon.ico">
+    <button class="piece-button confirm-move" (click)="confirmMove($event)">
+      <div class="piece-button-img-container">
+        <img class="confirm-move-image" src="/images/icon/move_icon.ico">
+      </div>
     </button>
-    <button class="piece-selected-button confirm-attack"
-        (click)="confirmAttack($event)">
-      <img src="/images/icon/attack_icon.png">
+    <button class="piece-button confirm-attack" (click)="confirmAttack($event)">
+      <div class="piece-button-img-container">
+        <img class="confirm-attack-image" src="/images/icon/attack_icon.png">
+      </div>
     </button>
-    <button class="piece-selected-button rotate-cw"
-        (click)="rotateClockwise($event)">
-      <img src="/images/icon/rotate_icon.ico">
+    <button class="piece-button rotate-cw" (click)="rotateClockwise($event)">
+      <div class="piece-button-img-container">
+        <img class="rotate-cw-image" src="/images/icon/rotate_icon.ico">
+      </div>
     </button>
-    <button class="piece-selected-button rotate-ccw"
-        (click)="rotateCounterClockwise($event)">
-      <img src="/images/icon/rotate_icon.ico">
+    <button class="piece-button rotate-ccw" (click)="rotateCounterClockwise($event)">
+      <div class="piece-button-img-container">
+        <img class="rotate-ccw-image" src="/images/icon/rotate_icon.ico">
+      </div>
     </button>
   </div>
 </div>
