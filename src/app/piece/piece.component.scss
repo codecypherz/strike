@@ -19,6 +19,35 @@
   border-color: var(--player_2_color);
 }
 
+.piece-outline {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.piece-outline > div {
+  position: absolute;
+}
+.piece-top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.piece-left {
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.piece-right {
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.piece-bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .piece-name {
   position: absolute;
   left: 0;

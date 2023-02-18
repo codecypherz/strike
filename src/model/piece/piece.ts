@@ -10,13 +10,15 @@ export abstract class Piece {
 
   // Semi-invalid default, but don't want nullability.
   position = new Position(0, 0);
-  private health: number = 0;
+  private health = 0;
+  private direction = 0; // Valid values: 0, 90, 180, 270
 
   // Per-turn data
   moved = false;
   attacked = false;
   selected = false;
   stagedPosition: Position | null = null;
+  stagedDirection: number | null = null;
 
   constructor(
     readonly name: string,
@@ -30,13 +32,14 @@ export abstract class Piece {
     this.health = maxHealth;
   }
 
-  public clearTurnData() {
+  clearTurnData() {
     this.moved = false;
     this.attacked = false;
     this.stagedPosition = null;
+    this.stagedDirection = null;
   }
 
-  public getHealth(): number {
+  getHealth(): number {
     return this.health;
   }
 
@@ -45,12 +48,63 @@ export abstract class Piece {
    * @param amount The amount of damage to take
    * @returns True if the piece died
    */
-  public takeDamage(amount: number): boolean {
+  takeDamage(amount: number): boolean {
     this.health = Math.max(0, this.health - amount);
     return this.health == 0;
   }
 
-  public hasBeenActivated(): boolean {
+  hasBeenActivated(): boolean {
     return this.moved || this.attacked;
+  }
+
+  getDirection(): number {
+    return this.isStaged() ? this.stagedDirection! : this.direction;
+  }
+
+  confirmDirection(): void {
+    if (!this.isStaged()) {
+      throw new Error('Trying to confirm direction without being staged');
+    }
+    this.direction = this.stagedDirection!;
+  }
+
+  rotateClockwise(): void {
+    if (this.isStaged()) {
+      this.stagedDirection = this.clockwise(this.stagedDirection!);
+    } else {
+      this.direction = this.clockwise(this.direction);
+    }
+  }
+
+  rotateCounterClockwise(): void {
+    if (this.isStaged()) {
+      this.stagedDirection = this.counterClockwise(this.stagedDirection!);
+    } else {
+      this.direction = this.counterClockwise(this.direction);
+    }
+  }
+
+  private clockwise(degrees: number): number {
+    return (degrees + 90) % 360;
+  }
+
+  private counterClockwise(degrees: number): number {
+    return (degrees + 270) % 360;
+  }
+
+  select(): void {
+    this.selected = true;
+    this.stagedPosition = this.position;
+    this.stagedDirection = this.direction;
+  }
+
+  deselect(): void {
+    this.selected = false;
+    this.stagedPosition = null;
+    this.stagedDirection = null;
+  }
+
+  isStaged(): boolean {
+    return this.stagedPosition != null;
   }
 }

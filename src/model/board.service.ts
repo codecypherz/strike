@@ -104,8 +104,7 @@ export class BoardService {
     const originalCell = this.board.getCell(this.selectedPiece.position);
     originalCell.setPiece(this.selectedPiece);
     this.selectedPiece.position = originalCell.position;
-    this.selectedPiece.selected = false;
-    this.selectedPiece.stagedPosition = null;
+    this.selectedPiece.deselect();
     this.selectedPiece = null;
     this.selectCell(null);
   }
@@ -125,6 +124,7 @@ export class BoardService {
 
     // Moving the piece - update all the metadata.
     piece.position = stagedCell.position;
+    piece.confirmDirection();
     piece.moved = true;
     this.gameService.activatePiece(piece);
 
@@ -201,8 +201,7 @@ export class BoardService {
       throw new Error('There is already a selected piece');
     }
     this.selectedPiece = piece;
-    this.selectedPiece.selected = true;
-    this.selectedPiece.stagedPosition = piece.position;
+    this.selectedPiece.select();
     this.showAvailableActions();
   }
 

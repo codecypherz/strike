@@ -13,6 +13,10 @@ export class PieceComponent {
 
   constructor(private boardService: BoardService) {}
 
+  getPieceRotationTransform() {
+    return "rotate(" + this.piece.getDirection() + "deg)";
+  }
+
   cancel(event: Event): void {
     event.stopPropagation();
     this.boardService.exitStaging();
@@ -30,11 +34,11 @@ export class PieceComponent {
 
   rotateClockwise(event: Event): void {
     event.stopPropagation();
-    // TODO: Implement.
+    this.piece.rotateClockwise();
   }
 
   rotateCounterClockwise(event: Event): void {
     event.stopPropagation();
-    // TODO: Implement.
+    this.piece.rotateCounterClockwise();
   }
 }
