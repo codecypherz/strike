@@ -16,6 +16,8 @@
   </div>
   <div class="piece-name">{{piece.name}}</div>
   <div class="piece-health">❤ {{piece.getHealth()}}</div>
+
+  <!-- These are the buttons that show up once the piece is selected. -->
   <div *ngIf="piece.selected" class="piece-buttons">
     <button class="piece-button cancel-selection" (click)="cancel($event)">
       <div class="piece-button-img-container">

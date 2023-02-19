@@ -161,6 +161,8 @@ export class BoardService {
     }
     const targetPiece = cellToAttack!.getPiece()!;
 
+    // Always confirm direction.
+    piece.confirmDirection();
     // Determine if there is movement.
     if (!piece.position.equals(piece.stagedPosition)) {
       piece.position = stagedCell.position;
