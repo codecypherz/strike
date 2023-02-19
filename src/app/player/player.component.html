@@ -9,56 +9,71 @@
   </div>
   <div class="player-points">
     <!--<div class="arrows">▲▼▲▼▲▼▲</div> -->
-    <!-- larger, background arrows -->
-    <div class="arrows-bg">
-      <div class="arrow-up-bg"></div>
-      <div class="arrow-down-bg"></div>
-      <div class="arrow-up-bg"></div>
-      <div class="arrow-down-bg"></div>
-      <div class="arrow-up-bg"></div>
-      <div class="arrow-down-bg"></div>
-      <div class="arrow-up-bg"></div>
-    </div>
-    <!-- smaller, foreground arrows -->
+
     <div class="arrows">
-      <div [ngClass]="{
-        'arrow-up': true,
-        'arrow-active': player.getPoints() > 0
-        }"></div>
+      <div class="arrow-container">
+        <div class="arrow-up-bg"></div>
+        <div [ngClass]="{
+          'arrow-up': true,
+          'arrow-active': player.getPoints() > 0
+          }"></div>
+      </div>
+
+      <div class="arrow-container">
+        <div class="arrow-down-bg"></div>
         <div [ngClass]="{
           'arrow-down': true,
           'arrow-active': player.getPoints() > 1
           }"></div>
-      <div [ngClass]="{
-        'arrow-up': true,
-        'arrow-active': player.getPoints() > 2
-        }"></div>
+      </div>
+
+
+      <div class="arrow-container">
+        <div class="arrow-up-bg"></div>
+        <div [ngClass]="{
+          'arrow-up': true,
+          'arrow-active': player.getPoints() > 2
+          }"></div>
+      </div>
+
+      <div class="arrow-container">
+        <div class="arrow-down-bg"></div>
         <div [ngClass]="{
           'arrow-down': true,
           'arrow-active': player.getPoints() > 3
           }"></div>
-      <div [ngClass]="{
-        'arrow-up': true,
-        'arrow-active': player.getPoints() > 4
-        }"></div>
+      </div>
+
+      <div class="arrow-container">
+        <div class="arrow-up-bg"></div>
+        <div [ngClass]="{
+          'arrow-up': true,
+          'arrow-active': player.getPoints() > 4
+          }"></div>
+      </div>
+
+      <div class="arrow-container">
+        <div class="arrow-down-bg"></div>
         <div [ngClass]="{
           'arrow-down': true,
           'arrow-active': player.getPoints() > 5
           }"></div>
-      <div [ngClass]="{
-        'arrow-up': true,
-        'arrow-active': player.getPoints() > 6
-        }"></div>
+      </div>
+
+      <div class="arrow-container">
+        <div class="arrow-up-bg"></div>
+        <div [ngClass]="{
+          'arrow-up': true,
+          'arrow-active': player.getPoints() > 6
+          }"></div>
+      </div>
     </div>
     <div class="points-value">{{player.getPoints()}}</div>
   </div>
 
   <!-- Active player content -->
   <div *ngIf="player.isActive()">
-    <button
-        class="end-turn"
-        [disabled]="!player.canEndTurn()"
-        (click)="endTurn()">
+    <button class="end-turn" [disabled]="!player.canEndTurn()" (click)="endTurn()">
       End Turn
     </button>
   </div>

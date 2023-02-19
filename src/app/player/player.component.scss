@@ -59,34 +59,34 @@
   bottom: 0;
 }
 
-.arrows,
-.arrows-bg {
+.arrows {
   position: absolute;
   left: 0;
 }
 
-.arrows {
-  left: 2.5px;
-  top: 2.5px;
+.arrow-container {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  vertical-align: top;
 }
 
 .arrow-up-bg,
 .arrow-down-bg {
-  display: inline-block;
-  margin-right: -10.3px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
 }
 
 .arrow-up-bg {
-  width: 0;
-  height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
   border-bottom: 30px solid black;
 }
 
 .arrow-down-bg {
-  width: 0;
-  height: 0;
   border-left: 15px solid transparent;
   border-right: 15px solid transparent;
   border-top: 30px solid black;
@@ -94,13 +94,14 @@
 
 .arrow-up,
 .arrow-down {
-  display: inline-block;
-  margin-right: -5px;
+  position: absolute;
+  left: 2.7px;
+  top: 2.5px;
+  width: 0;
+  height: 0;
 }
 
 .arrow-up {
-  width: 0;
-  height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   border-bottom: 25px solid #555;
@@ -111,8 +112,6 @@
 }
 
 .arrow-down {
-  width: 0;
-  height: 0;
   border-left: 12px solid transparent;
   border-right: 12px solid transparent;
   border-top: 25px solid #555;
