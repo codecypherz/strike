@@ -16,7 +16,7 @@ export class BoardService {
 
   constructor(
     private board: Board,
-    private turnService: TurnService,
+    turnService: TurnService,
     private gameService: GameService,
     @Optional() @SkipSelf() service?: BoardService) {
 
@@ -36,6 +36,7 @@ export class BoardService {
 
   onEndTurn(): void {
     this.exitStaging();
+    this.showAvailableActions();
   }
 
   onCellClicked(cell: Cell): void {
