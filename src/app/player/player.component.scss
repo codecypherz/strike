@@ -1,12 +1,13 @@
 .player {
   padding: 10px 20px;
-  /* Placeholder border to avoid dom shifting. */
-  border: 4px solid transparent;
+  border: 1px solid var(--foreground_color);
   border-radius: 30px;
   text-transform: uppercase;
   position: absolute;
   text-align: left;
   height: 100%;
+  background-color: var(--background_color);
+  margin-top: 3px;
 }
 
 .player1 {
@@ -21,6 +22,7 @@
 
 .player.active {
   border: 4px solid;
+  margin-top: 0;
 }
 
 .player1.active {
@@ -32,13 +34,29 @@
 }
 
 .player-name {
-  font-size: 40px;
+  font-size: 35px;
   height: 45px;
+}
+
+.end-turn {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  height: 40px;
 }
 
 .player-points {
   position: relative;
-  width: 175px;
+  width: 170px;
+  height: 34px;
+  margin-top: 3px;
+}
+
+.points-value {
+  font-size: 30px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 
 .arrows,
@@ -102,18 +120,4 @@
 
 .arrow-down.arrow-active {
   border-top-color: gold;
-}
-
-.points-value {
-  font-size: 36px;
-  position: absolute;
-  right: 0;
-  top: -4px;
-}
-
-.end-turn {
-  position: absolute;
-  right: 20px;
-  top: 10px;
-  height: 40px;
 }

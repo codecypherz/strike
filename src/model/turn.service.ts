@@ -41,7 +41,6 @@ export class TurnService extends EventTarget {
     }
     this.player1.toggleActive();
     this.player2.toggleActive();
-    console.info('dispatching event');
     this.dispatchEvent(new Event(TurnService.END_TURN_EVENT));
   }
 

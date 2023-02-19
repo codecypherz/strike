@@ -25,6 +25,20 @@
   cursor: default;
 }
 
+.app-background {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 101px;
+  bottom: 0;
+}
+
+.app-background > img {
+  width: 143%;
+  margin-left: -265px;
+  opacity: 30%;
+}
+
 .left-panel,
 .right-panel {
   display: inline-block;

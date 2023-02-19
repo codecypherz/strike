@@ -4,25 +4,28 @@
   border: 1.5px solid var(--foreground_color);
   position: relative;
   text-transform: uppercase;
-  font-size: 40px;
+  font-size: 26px;
   border-radius: 20px;
   overflow: hidden;
+  background-color: var(--background_color);
 }
 
 .nothing-selected-image {
-  width: 100%;
+  width: 160%;
   display: block;
+  margin-left: -84px;
+  margin-bottom: -14px;
+  margin-top: 5px;
 }
 
 .selected-piece-name {
   text-align: left;
   padding: 10px 20px 2px 20px;
-  height: 50px;
 }
 
 .selected-piece-type {
   color: #999;
-  font-size: 20px;
+  font-size: 18px;
   height: 20px;
   text-align: left;
   padding: 0px 20px 10px 20px;
@@ -36,10 +39,11 @@
   position: relative;
   border-top: 1px solid var(--foreground_color);
   border-bottom: 1px solid var(--foreground_color);
+  margin-top: 5px;
 }
 
 .selected-piece-points {
-  font-size: 40px;
+  font-size: 30px;
   position: absolute;
   right: 20px;
   top: 10px;
@@ -55,7 +59,7 @@
 }
 
 .selected-piece-stats {
-  font-size: 30px;
+  font-size: 20px;
   border-bottom: 1px solid var(--foreground_color);
 }
 
@@ -72,7 +76,8 @@
 }
 
 .additional-details {
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: 100;
   padding: 10px;
   height: 20px;
 }
