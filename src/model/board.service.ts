@@ -209,7 +209,7 @@ export class BoardService {
     this.showAvailableActions();
   }
 
-  private showAvailableActions() {
+  showAvailableActions() {
     for (let cell of this.board.getCells().flat()) {
       if (!this.selectedCell) {
         // No cell selected, so clear movement indicator.

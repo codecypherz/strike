@@ -11,6 +11,7 @@ import { Lancehorn } from "./piece/lancehorn";
 import { Charger } from "./piece/charger";
 import { Terrain } from "./terrain";
 import { Piece } from "./piece/piece";
+import { Direction } from "./piece/direction";
 
 /**
  * Provides the main game engine logic.
@@ -68,8 +69,26 @@ export class GameService {
       return false;
     }
     // The target piece must be in range.
-    let delta = this.delta(srcCell.position, destCell.position);
-    return delta <= srcPiece.attackRange;
+    const delta = this.delta(srcCell.position, destCell.position);
+    const inRange = (delta <= srcPiece.attackRange);
+    if (!inRange) {
+      return false;
+    }
+    // The cell must be in front of the piece.
+    if (srcPiece.getDirection() == Direction.DOWN) {
+      return destCell.position.row > srcCell.position.row
+          && destCell.position.col == srcCell.position.col;
+    } else if (srcPiece.getDirection() == Direction.UP) {
+      return destCell.position.row < srcCell.position.row
+          && destCell.position.col == srcCell.position.col;
+    } else if (srcPiece.getDirection() == Direction.RIGHT) {
+      return destCell.position.col > srcCell.position.col
+          && destCell.position.row == srcCell.position.row;
+    } else if (srcPiece.getDirection() == Direction.LEFT) {
+      return destCell.position.col < srcCell.position.col
+          && destCell.position.row == srcCell.position.row;
+    }
+    throw new Error('Did not handle direction properly.');
   }
 
   canMove(srcCell: Cell, destCell: Cell): boolean {

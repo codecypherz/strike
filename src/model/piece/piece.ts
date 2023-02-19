@@ -1,5 +1,6 @@
 import { Player } from "../player";
 import { Position } from "../position";
+import { Direction } from "./direction";
 
 /**
  * Represents the data common to all pieces.
@@ -58,8 +59,9 @@ export abstract class Piece {
     return this.moved || this.attacked;
   }
 
-  getDirection(): number {
-    return this.isStaged() ? this.stagedDirection! : this.direction;
+  getDirection(): Direction {
+    const degrees = this.isStaged() ? this.stagedDirection! : this.direction;
+    return Direction.for(degrees);
   }
 
   confirmDirection(): void {
