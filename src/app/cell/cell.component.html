@@ -13,7 +13,9 @@
   <app-piece [piece]="cell.getPiece()!"></app-piece>
 
   <!-- Render this as an overlay on the piece. -->
-  <div *ngIf=cell.availableAttack class="cell-available-attack">
+  <div *ngIf=cell.availableAttack
+      class="cell-available-attack"
+      [ngClass]="{'empty-attack-cell' : !cell.hasPiece()}">
     <!-- alternative: ⚔, ⤲ -->
     <img src="/images/icon/attack_icon.png">
   </div>

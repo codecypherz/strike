@@ -67,7 +67,7 @@ export class BoardService {
     // original position.
     const piece = this.selectedPiece!;
     const srcCell = this.board.getCell(piece.stagedPosition!);
-    if (this.gameService.canMove(srcCell, cell)) {
+    if (piece.canMoveTo(this.board, cell)) {
       // The piece is allowed to move here, but it hasn't been confirmed
       // by the player. Update the staged position.
       let srcPiece = srcCell.getPiece()!;
@@ -89,7 +89,7 @@ export class BoardService {
     // Also select the piece if there is one.
     if (this.selectedCell!.hasPiece()) {
       const piece = this.selectedCell!.getPiece()!;
-      if (this.gameService.canActivatePiece(piece)) {
+      if (piece.hasBeenActivated() || piece.canBeActivated()) {
         this.selectPiece(piece);
       }
     }
@@ -129,7 +129,7 @@ export class BoardService {
     piece.position = stagedCell.position;
     piece.confirmDirection();
     piece.moved = true;
-    this.gameService.activatePiece(piece);
+    piece.activate();
 
     this.exitStaging();
   }
@@ -142,11 +142,9 @@ export class BoardService {
     const stagedCell = this.board.getCell(piece.stagedPosition!);
 
     // This is an action that can combine with movement, but checking attack first.
-
-    // TODO: Pull a candidate set of attack cells from the piece itself?
     let cellToAttack = null;
-    for (let targetCell of this.board.getCells().flat()) {
-      if (this.gameService.canAttack(stagedCell, targetCell)) {
+    for (let targetCell of piece.getAttackCells(this.board)) {
+      if (targetCell.hasPiece()) {
         cellToAttack = targetCell;
         break;
       }
@@ -171,7 +169,6 @@ export class BoardService {
     }
 
     // Perform the attack.
-    console.info(piece, ' is attacking ', targetPiece);
     let attackPower = piece.attack + stagedCell.terrain.elevation;
     let died = targetPiece.takeDamage(attackPower);
     if (died) {
@@ -180,7 +177,7 @@ export class BoardService {
       this.gameService.checkWinCondition();
     }
     piece.attacked = true;
-    this.gameService.activatePiece(piece);
+    piece.activate();
 
     this.exitStaging();
   }
@@ -212,13 +209,20 @@ export class BoardService {
 
   showAvailableActions() {
     for (let cell of this.board.getCells().flat()) {
-      if (!this.selectedCell) {
-        // No cell selected, so clear movement indicator.
-        cell.availableMove = false;
-        cell.availableAttack = false;
-      } else {
-        cell.availableMove = this.gameService.canMove(this.selectedCell, cell);
-        cell.availableAttack = this.gameService.canAttack(this.selectedCell, cell);
+      // Reset state for all cells.
+      cell.availableMove = false;
+      cell.availableAttack = false;
+    }
+    if (this.selectedPiece) {
+      if (this.selectedPiece.canMove()) {
+        for (let cell of this.selectedPiece.getMoveCells(this.board)) {
+          cell.availableMove = true;
+        }
+      }
+      if (this.selectedPiece.canAttack()) {
+        for (let cell of this.selectedPiece.getAttackCells(this.board)) {
+          cell.availableAttack = true;
+        }
       }
     }
   }

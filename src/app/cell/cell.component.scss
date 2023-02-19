@@ -88,3 +88,7 @@
   transform: translate(-50%, -50%);
   width: 40%;
 }
+
+.cell-available-attack.empty-attack-cell {
+  border-style: dashed;
+}

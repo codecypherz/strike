@@ -1,6 +1,7 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Cell } from "./cell";
 import { Burrower } from "./piece/burrower";
+import { Direction } from "./piece/direction";
 import { Position } from "./position";
 import { Terrain } from "./terrain";
 
@@ -10,8 +11,7 @@ import { Terrain } from "./terrain";
 @Injectable()
 export class Board {
 
-  static readonly WIDTH: number = 8;
-  static readonly HEIGHT: number = 8;
+  static readonly SIZE: number = 8;
 
   private cells!: Cell[][];
 
@@ -25,9 +25,9 @@ export class Board {
 
   reset() {
     this.cells = new Array<Array<Cell>>();
-    for (let row = 0; row < Board.HEIGHT; row++) {
+    for (let row = 0; row < Board.SIZE; row++) {
       let rowArr: Cell[] = new Array<Cell>();
-      for (let col = 0; col < Board.WIDTH; col++) {
+      for (let col = 0; col < Board.SIZE; col++) {
         rowArr.push(new Cell(row, col));
       }
       this.cells.push(rowArr);
@@ -76,11 +76,33 @@ export class Board {
     return this.getByRowCol(position.row, position.col);
   }
 
-  getWidth() {
-    return Board.WIDTH;
+  getSurroundingCells(pos: Position): Array<Cell> {
+    const cells = new Array<Cell>();
+    if (pos.row > 0) {
+      cells.push(this.getByRowCol(pos.row - 1, pos.col));
+    }
+    if (pos.row < Board.SIZE - 1) {
+      cells.push(this.getByRowCol(pos.row + 1, pos.col));
+    }
+    if (pos.col > 0) {
+      cells.push(this.getByRowCol(pos.row, pos.col - 1));
+    }
+    if (pos.col < Board.SIZE - 1) {
+      cells.push(this.getByRowCol(pos.row, pos.col + 1));
+    }
+    return cells;
   }
 
-  getHeight() {
-    return Board.HEIGHT;
+  getCellInDirection(pos: Position, dir: Direction): Cell | null {
+    if (dir == Direction.UP && pos.row > 0) {
+      return this.getByRowCol(pos.row - 1, pos.col);
+    } else if (dir == Direction.DOWN && pos.row < Board.SIZE - 1) {
+      return this.getByRowCol(pos.row + 1, pos.col);
+    } else if (dir == Direction.LEFT && pos.col > 0) {
+      return this.getByRowCol(pos.row, pos.col - 1);
+    } else if (dir == Direction.RIGHT && pos.col < Board.SIZE - 1) {
+      return this.getByRowCol(pos.row, pos.col + 1);
+    }
+    return null;
   }
 }

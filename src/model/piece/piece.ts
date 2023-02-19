@@ -1,3 +1,5 @@
+import { Board } from "../board";
+import { Cell } from "../cell";
 import { Player } from "../player";
 import { Position } from "../position";
 import { Direction } from "./direction";
@@ -25,7 +27,7 @@ export abstract class Piece {
     readonly name: string,
     readonly imageUrl: string,
     readonly points: number,
-    readonly movement: number,
+    readonly moveRange: number,
     readonly attack: number,
     readonly attackRange: number,
     readonly maxHealth: number,
@@ -59,20 +61,147 @@ export abstract class Piece {
     return this.moved || this.attacked;
   }
 
+  canBeActivated(): boolean {
+    // Can't activate unless it's this player's turn.
+    if (!this.player.isActive()) {
+      return false;
+    }
+    // True if this piece has already been activated.
+    // TODO: Return false if both a move and attack have been made?
+    if (this.hasBeenActivated()) {
+      return true;
+    }
+    // Piece hasn't been activated, so check if the player can still do that.
+    return this.player.canActivatePiece();
+  }
+
+  activate(): void {
+    this.player.addActivatedPiece(this);
+  }
+
+  canMove(): boolean {
+    // Can't move twice... for now.
+    // TODO: Support overdrive.
+    if (this.moved) {
+      return false;
+    }
+    if (!this.player.isActive()) {
+      return false;
+    }
+    if (!this.hasBeenActivated() && !this.player.canActivatePiece()) {
+      return false;
+    }
+    return true;
+  }
+
+  canMoveTo(board: Board, cell: Cell): boolean {
+    if (!this.canMove()) {
+      return false;
+    }
+    for (let moveCell of this.getMoveCells(board)) {
+      if (moveCell.position.equals(cell.position)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getMoveCells(board: Board): Array<Cell> {
+    return Array.from(this.getMoveCells_(board, this.position, this.moveRange));
+  }
+
+  private getMoveCells_(board: Board, pos: Position, moveRemaining: number): Set<Cell> {
+    let cells = new Set<Cell>();
+    if (moveRemaining == 0) {
+      return cells;
+    }
+    for (let cell of board.getSurroundingCells(pos)) {
+      if (cell.hasPiece()) {
+        const piece = cell.getPiece()!;
+        if (piece != this) {
+          // Can't move through other pieces.
+          continue;
+        }
+        // You can move through yourself.
+      }
+      // Can move to this cell.
+      cells.add(cell);
+      // Explore paths at the new point, but with reduced movement.
+      // Recurse.
+      let subsequentCells = this.getMoveCells_(board, cell.position, moveRemaining - 1);
+      subsequentCells.forEach(cells.add, cells);
+    }
+    return cells;
+  }
+
+  canAttack(): boolean {
+    // Can't attack twice... for now.
+    // TODO: Support overdrive.
+    if (this.attacked) {
+      return false;
+    }
+    if (!this.player.isActive()) {
+      return false;
+    }
+    if (!this.hasBeenActivated() && !this.player.canActivatePiece()) {
+      return false;
+    }
+    return true;
+  }
+
+  getAttackCells(board: Board): Array<Cell> {
+    return Array.from(
+      this.getAttackCells_(
+        board, this.getPosition(), this.getDirection(), this.attackRange));
+  }
+
+  private getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): Set<Cell> {
+    let cells = new Set<Cell>();
+    if (rangeRemaining == 0) {
+      return cells;
+    }
+    const cell = board.getCellInDirection(pos, dir);
+    // Can't run off the board.
+    if (!cell) {
+      return cells;
+    }
+    if (cell.hasPiece()) {
+      const piece = cell.getPiece()!;
+      // Can't attack your own pieces nor can you attack through them.
+      if (this.player.equals(piece.player)) {
+        return cells;
+      } else {
+        // Found a piece to attack, no need to search further.
+        cells.add(cell);
+        return cells;
+      }
+    }
+    // This cell is attackable, but there's nothing there.
+    cells.add(cell);
+    // Keep looking for something to attack at the new point, but with reduced range.
+    // Recurse.
+    let subsequentCells = this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1);
+    subsequentCells.forEach(cells.add, cells);
+    return cells;
+  }
+
+  getPosition(): Position {
+    return this.selected ? this.stagedPosition! : this.position;
+  }
   getDirection(): Direction {
-    const degrees = this.isStaged() ? this.stagedDirection! : this.direction;
+    const degrees = this.selected ? this.stagedDirection! : this.direction;
     return Direction.for(degrees);
   }
 
   confirmDirection(): void {
-    if (!this.isStaged()) {
+    if (!this.selected) {
       throw new Error('Trying to confirm direction without being staged');
     }
     this.direction = this.stagedDirection!;
   }
 
   rotateClockwise(): void {
-    if (this.isStaged()) {
+    if (this.selected) {
       this.stagedDirection = this.clockwise(this.stagedDirection!);
     } else {
       this.direction = this.clockwise(this.direction);
@@ -80,7 +209,7 @@ export abstract class Piece {
   }
 
   rotateCounterClockwise(): void {
-    if (this.isStaged()) {
+    if (this.selected) {
       this.stagedDirection = this.counterClockwise(this.stagedDirection!);
     } else {
       this.direction = this.counterClockwise(this.direction);
@@ -105,9 +234,5 @@ export abstract class Piece {
     this.selected = false;
     this.stagedPosition = null;
     this.stagedDirection = null;
-  }
-
-  isStaged(): boolean {
-    return this.stagedPosition != null;
   }
 }

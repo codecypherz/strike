@@ -32,7 +32,7 @@ export class Cell {
   }
 
   setPiece(piece: Piece | null) {
-    if (!this.piece && !piece) {
+    if (this.piece && piece) {
       throw new Error('Should not overwrite a piece');
     }
     this.piece = piece;
