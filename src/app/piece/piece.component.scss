@@ -13,6 +13,9 @@
   height: 100%;
   position: absolute;
   top: 10px;
+  // Changing the origin makes rotation around the center of
+  // the piece, which is offset by 10px with the "top" property.
+  transform-origin: 50px 40px;
 }
 
 .piece-outline>div {
@@ -38,7 +41,8 @@
 }
 
 .piece-top-triangle-outline {
-  border-bottom-color: #35A1C9;
+  border-bottom-color: #2CA3E8;
+  //border-bottom-color: #35A1C9;
 }
 
 .piece-top-triangle-background {
