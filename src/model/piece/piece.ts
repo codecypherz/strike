@@ -30,6 +30,7 @@ export abstract class Piece {
     readonly maxHealth: number,
     readonly player: Player) {
     this.health = maxHealth;
+    this.direction = player.defaultDirection;
   }
 
   clearTurnData() {

@@ -6,18 +6,16 @@ import { Piece } from "./piece/piece";
  */
 export class Player {
 
-  readonly id: string;
-  readonly name: string;
-
   private active: boolean = false;
   private points: number = 0;
 
   // Turn metadata
   private piecesActivated: Set<Piece> = new Set<Piece>();
 
-  constructor(id: string, name: string) {
-    this.id = id;
-    this.name = name;
+  constructor(
+    readonly id: string,
+    readonly name: string,
+    readonly defaultDirection: number) {
   }
 
   equals(other: Player): boolean {

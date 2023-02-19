@@ -20,8 +20,8 @@ export class TurnService extends EventTarget {
       throw new Error('Singleton violation: TurnService');
     }
 
-    this.player1 = new Player('player1', 'Player 1');
-    this.player2 = new Player('player2', 'Player 2');
+    this.player1 = new Player('player1', 'Player 1', 180);
+    this.player2 = new Player('player2', 'Player 2', 0);
 
     this.reset();
   }
