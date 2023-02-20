@@ -1,7 +1,8 @@
 import { Player } from "../player";
 import { Piece } from "./piece";
+import { RamPiece } from "./rampiece";
 
-export class Bristleback extends Piece {
+export class Bristleback extends RamPiece {
 
   static NAME = 'Bristleback';
   static IMAGE_URL = Piece.IMAGE_PATH + 'bristleback.webp';

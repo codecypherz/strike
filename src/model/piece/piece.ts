@@ -54,6 +54,9 @@ export abstract class Piece {
     this.stagedHealth = null;
   }
 
+  abstract getPieceType(): string;
+  abstract getPieceTypeDescription(): string;
+
   getHealth(): number {
     return this.isStagedAttack() ? this.stagedHealth! : this.health;
   }

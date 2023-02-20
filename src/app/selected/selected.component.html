@@ -13,29 +13,32 @@
     <!-- Piece Selected -->
     <div *ngIf="getSelected()!.hasPiece()">
       <div class="selected-piece-name">
-        {{getSelected()!.getPiece()!.name}}
+        {{getPiece().name}}
       </div>
       <div class="selected-piece-type">
-        TODO: TYPE
+        <b>TYPE: </b>{{getPiece().getPieceType()}}
+      </div>
+      <div class="selected-piece-type-description">
+        {{getPiece().getPieceTypeDescription()}}
       </div>
       <div class="selected-piece-image-container">
-        <img class="selected-piece-image" src="{{getSelected()!.getPiece()!.imageUrl}}">
+        <img class="selected-piece-image" src="{{getPiece().imageUrl}}">
         <div class="selected-piece-points">
-          VP: {{getSelected()!.getPiece()!.points}}
+          VP: {{getPiece().points}}
         </div>
       </div>
       <div class="selected-piece-stats">
         <div class="selected-piece-stat">
-          AT: {{getSelected()!.getPiece()!.attack}}
+          AT: {{getPiece().attack}}
         </div>
         <div class="selected-piece-stat">
-          AR: {{getSelected()!.getPiece()!.attackRange}}
+          AR: {{getPiece().attackRange}}
         </div>
         <div class="selected-piece-stat">
-          MV: {{getSelected()!.getPiece()!.moveRange}}
+          MV: {{getPiece().moveRange}}
         </div>
         <div class="selected-piece-stat">
-          HP: {{getSelected()!.getPiece()!.maxHealth}}
+          HP: {{getPiece().maxHealth}}
         </div>
       </div>
       <div class="additional-details">

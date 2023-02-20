@@ -3,7 +3,6 @@
   width: 300px;
   border: 1.5px solid var(--foreground_color);
   position: relative;
-  text-transform: uppercase;
   font-size: 26px;
   border-radius: 20px;
   overflow: hidden;
@@ -19,15 +18,26 @@
 }
 
 .selected-piece-name {
+  text-transform: uppercase;
   text-align: left;
   padding: 10px 20px 2px 20px;
 }
 
+.selected-piece-type-description,
 .selected-piece-type {
-  color: #999;
-  font-size: 18px;
-  height: 20px;
+  color: #aaa;
   text-align: left;
+}
+
+.selected-piece-type {
+  text-transform: uppercase;
+  font-size: 18px;
+  border-top: 1px solid var(--foreground_color);
+  padding: 10px 20px 5px 20px;
+}
+
+.selected-piece-type-description {
+  font-size: 15px;
   padding: 0px 20px 10px 20px;
 }
 
@@ -76,7 +86,6 @@
 }
 
 .additional-details {
-  text-transform: none;
   font-size: 15px;
   padding: 15px;
   text-align: left;

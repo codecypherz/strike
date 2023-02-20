@@ -1,7 +1,8 @@
 import { Player } from "../player";
+import { DashPiece } from "./dashpiece";
 import { Piece } from "./piece";
 
-export class Charger extends Piece {
+export class Charger extends DashPiece {
 
   static NAME = 'Charger';
   static IMAGE_URL = Piece.IMAGE_PATH + 'charger.png';

@@ -1,7 +1,8 @@
 import { Player } from "../player";
+import { GunnerPiece } from "./gunnerpiece";
 import { Piece } from "./piece";
 
-export class Scrapper extends Piece {
+export class Scrapper extends GunnerPiece {
 
   static NAME = 'Scrapper';
   static IMAGE_URL = Piece.IMAGE_PATH + 'scrapper.webp';

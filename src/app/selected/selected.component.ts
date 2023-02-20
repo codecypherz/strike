@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { BoardService } from 'src/model/board.service';
 import { Cell } from 'src/model/cell';
+import { Piece } from 'src/model/piece/piece';
 import { Terrain } from 'src/model/terrain';
 
 @Component({
@@ -21,6 +22,10 @@ export class SelectedComponent implements OnInit {
     return this.boardService.getSelectedCell();
   }
 
+  getPiece(): Piece {
+    return this.getSelected()!.getPiece()!;
+  }
+  
   getTerrain(): Terrain {
     return this.getSelected()!.terrain;
   }

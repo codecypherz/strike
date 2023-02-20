@@ -1,7 +1,8 @@
 import { Player } from "../player";
+import { MeleePiece } from "./meleepiece";
 import { Piece } from "./piece";
 
-export class Burrower extends Piece {
+export class Burrower extends MeleePiece {
 
   static NAME = 'Burrower';
   static IMAGE_URL = Piece.IMAGE_PATH + 'burrower.webp';
