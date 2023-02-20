@@ -34,11 +34,6 @@ export class TurnService extends EventTarget {
   }
 
   endTurn(): void {
-    for (let cell of this.board.getCells().flat()) {
-      if (cell.hasPiece()) {
-        cell.getPiece()!.clearTurnData();
-      }
-    }
     this.player1.toggleActive();
     this.player2.toggleActive();
     this.dispatchEvent(new Event(TurnService.END_TURN_EVENT));

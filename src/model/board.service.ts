@@ -36,6 +36,15 @@ export class BoardService {
 
   onEndTurn(): void {
     this.exitStaging();
+    // This part needs to happen after exiting staging in order for
+    // a staged piece to be properly reset.
+    for (let cell of this.board.getCells().flat()) {
+      // Clear selection on end turn as well.
+      cell.selected = false;
+      if (cell.hasPiece()) {
+        cell.getPiece()!.clearTurnData();
+      }
+    }
     this.showAvailableActions();
   }
 
@@ -99,15 +108,13 @@ export class BoardService {
     if (!this.selectedPiece) {
       return;
     }
-    // Check to see if there was a position change.
-    if (this.selectedPiece.position.equals(this.selectedPiece.stagedPosition)) {
       // Put the piece back in it's original position.
-      const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
-      currentCell.clearPiece();
-      const originalCell = this.board.getCell(this.selectedPiece.position);
-      originalCell.setPiece(this.selectedPiece);
-      this.selectedPiece.position = originalCell.position;
-    }
+    const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
+    currentCell.clearPiece();
+    const originalCell = this.board.getCell(this.selectedPiece.position);
+    originalCell.clearPiece();
+    originalCell.setPiece(this.selectedPiece);
+    this.selectedPiece.position = originalCell.position;
     this.selectedPiece.deselect();
     this.selectedPiece = null;
     this.selectCell(null);

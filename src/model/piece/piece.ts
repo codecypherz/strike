@@ -197,6 +197,7 @@ export abstract class Piece {
   getPosition(): Position {
     return this.selected ? this.stagedPosition! : this.position;
   }
+
   getDirection(): Direction {
     const degrees = this.selected ? this.stagedDirection! : this.direction;
     return Direction.for(degrees);
