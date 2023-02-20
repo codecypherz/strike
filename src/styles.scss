@@ -46,3 +46,11 @@ button:disabled {
   background: var(--hover_color);
   cursor: default;
 }
+
+.stat-buffed {
+  color: var(--buffed_color) !important;
+}
+
+.stat-debuffed {
+  color: var(--debuffed_color) !important;
+}

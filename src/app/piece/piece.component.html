@@ -17,6 +17,18 @@
 
   <div class="piece-name">{{piece.name}}</div>
 
+  <div class="piece-defense">
+    <div class="piece-defense-background"></div>
+    <img src="/images/icon/shield_icon.png">
+    <div
+      [ngClass]="{
+        'piece-defense-number': true,
+        'stat-buffed': getDefense() > 0,
+        'stat-debuffed': getDefense() < 0}">
+      {{getDefense()}}
+    </div>
+  </div>
+
   <div class="piece-health">
     <div class="piece-health-background"></div>
     <img src="/images/icon/black_heart.png">

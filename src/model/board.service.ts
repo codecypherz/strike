@@ -177,8 +177,10 @@ export class BoardService {
     }
 
     // Perform the attack.
-    let attackPower = piece.attack + stagedCell.terrain.elevation;
-    let died = targetPiece.takeDamage(attackPower);
+    const attackPower = piece.attack + stagedCell.terrain.elevation;
+    const defense = targetPiece.getDefense(this.board);
+    const damage = Math.max(0, attackPower - defense);
+    const died = targetPiece.takeDamage(damage);
     if (died) {
       piece.player.addPoints(targetPiece.points);
       cellToAttack.clearPiece();
@@ -190,6 +192,10 @@ export class BoardService {
     this.exitStaging();
   }
 
+  /**
+   * Selects or deselects just the cell portion. Piece is handled separately.
+   * @param cell 
+   */
   private selectCell(cell: Cell | null): void {
     if (this.selectedCell) {
       this.selectedCell.selected = false;

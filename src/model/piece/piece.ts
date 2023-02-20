@@ -48,6 +48,15 @@ export abstract class Piece {
     return this.health;
   }
 
+  getDefense(board: Board): number {
+    const cell = this.getCell(board);
+    return cell.terrain.elevation;
+  }
+
+  getCell(board: Board): Cell {
+    return board.getCell(this.getPosition());
+  }
+
   /**
    * Makes this piece take some damage
    * @param amount The amount of damage to take
