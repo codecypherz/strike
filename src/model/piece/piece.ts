@@ -224,7 +224,8 @@ export abstract class Piece {
         board, this.getPosition(), this.getDirection(), this.attackRange));
   }
 
-  private getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): Set<Cell> {
+  // TODO: Make abstract once all piece types override.
+  getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): Set<Cell> {
     let cells = new Set<Cell>();
     if (rangeRemaining == 0) {
       return cells;
