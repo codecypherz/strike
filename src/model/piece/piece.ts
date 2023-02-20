@@ -221,11 +221,20 @@ export abstract class Piece {
 
   attackPiece(cell: Cell, targetCell: Cell, targetPiece: Piece): void {
     let attack = this.getAttack(cell);
-    console.info('Target side strength:', this.getTargetSideStrength(targetPiece));
-    // TODO: Incorporate side strength once working.
-    const defense = targetPiece.getDefense(targetCell);
-    const damage = Math.max(0, attack - defense);
-    targetPiece.health = Math.max(0, targetPiece.health - damage);
+    let defense = targetPiece.getDefense(targetCell);
+    const targetSideStrength = this.getTargetSideStrength(targetPiece);
+    if (targetSideStrength == Strength.STRONG) {
+      defense++;
+    } else if (targetSideStrength == Strength.WEAK) {
+      attack++;
+    }
+    // Deal damage to the target piece.
+    const damageToTarget = Math.max(0, attack - defense);
+    targetPiece.health = Math.max(0, targetPiece.health - damageToTarget);
+    // Maybe deal damage to the attacking piece.
+    if (attack < defense) {
+      this.health -= (defense - attack);
+    }
     this.attacked = true;
     this.activate();
   }
@@ -247,8 +256,10 @@ export abstract class Piece {
   }
   
   getSideStrengthWithRotation(dir: Direction): Strength {
-    const sideToLookUp = (dir.degrees + this.getDirection().degrees) % 360;
-    console.info('looking up side:', sideToLookUp);
+    // This is how much rotation it would take to get back to facing up.
+    const correction = 360 - this.getDirection().degrees;
+    // Add the desired direction to a piece that's facing up to get the proper lookup.
+    const sideToLookUp = (dir.degrees + correction) % 360;
     return this.sideStrengths.get(sideToLookUp)!;
   }
 
