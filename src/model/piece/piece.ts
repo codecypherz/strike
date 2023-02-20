@@ -47,6 +47,7 @@ export abstract class Piece {
   clearTurnData() {
     this.moved = false;
     this.attacked = false;
+    this.selected = false;
     this.stagedPosition = null;
     this.stagedDirection = null;
   }

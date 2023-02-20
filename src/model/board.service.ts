@@ -36,10 +36,11 @@ export class BoardService {
 
   onEndTurn(): void {
     this.exitStaging();
+    this.selectedCell = null;
+    this.selectedPiece = null;
     // This part needs to happen after exiting staging in order for
     // a staged piece to be properly reset.
     for (let cell of this.board.getCells().flat()) {
-      // Clear selection on end turn as well.
       cell.selected = false;
       if (cell.hasPiece()) {
         cell.getPiece()!.clearTurnData();
