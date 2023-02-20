@@ -2,6 +2,7 @@ import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
 import { BoardService } from 'src/model/board.service';
 import { Cell } from 'src/model/cell';
+import { Terrain } from 'src/model/terrain';
 
 @Component({
   selector: 'app-selected',
@@ -18,5 +19,17 @@ export class SelectedComponent implements OnInit {
 
   getSelected(): Cell | null {
     return this.boardService.getSelectedCell();
+  }
+
+  getTerrain(): Terrain {
+    return this.getSelected()!.terrain;
+  }
+
+  getCombatPower(): string {
+    const power = this.getTerrain().elevation;
+    if (power > 0) {
+      return '+' + power;
+    }
+    return power.toString();
   }
 }

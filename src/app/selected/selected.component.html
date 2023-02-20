@@ -46,13 +46,20 @@
     <!-- Terrain Selected -->
     <div *ngIf="!getSelected()!.hasPiece()">
       <div class="selected-piece-name">
-        {{getSelected()!.terrain.type}}
+        {{getTerrain().type}}
       </div>
       <div class="selected-terrain-image-container">
-        <img class="selected-terrain-image" src="/images/terrain/{{getSelected()!.terrain.type}}.png">
+        <img class="selected-terrain-image" src="/images/terrain/{{getTerrain().type}}.png">
       </div>
       <div class="additional-details">
-        This terrain gives {{getSelected()!.terrain.elevation}} to power.
+        Gives
+        <span [ngClass]="{
+          'stat-buffed': getTerrain().elevation > 0,
+          'stat-debuffed': getTerrain().elevation < 0}">
+          <b>{{getCombatPower()}}</b>
+        </span>
+        to combat power.
+        <span *ngIf="getTerrain().note"><br><br><b>NOTE: </b>{{getTerrain().note}}</span>
       </div>
     </div>
   </div>
