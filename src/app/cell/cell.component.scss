@@ -12,6 +12,15 @@
   background: var(--hover_color);
 }
 
+.cell:hover .cell-available-move {
+  opacity: 70%;
+  cursor: pointer;
+}
+
+.cell:hover .cell-available-attack {
+  cursor: pointer;
+}
+
 .cell-selected {
   border: solid var(--foreground_color) 6px;
   width: 108px;
@@ -35,30 +44,17 @@
   width: 100%;
 }
 
-.cell-selected.cell-has-piece {
-  border-radius: 60px;
-  width: 108px;
-  height: 108px;
-  margin-left: -10px;
-  margin-top: -10px;
-}
-
 .cell-available-move {
   border: solid black 2px;
   width: 80px;
   height: 80px;
   border-radius: 80px;
   position: absolute;
-  cursor: pointer;
   background: #aaa;
   opacity: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.cell-available-move:hover {
-  opacity: 70%;
 }
 
 .cell-available-move>img {
@@ -71,8 +67,8 @@
 
 .cell-available-attack {
   border: solid black 2px;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 80px;
   position: absolute;
   background: yellow;

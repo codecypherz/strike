@@ -2,7 +2,6 @@
   width: 100%;
   height: 100%;
   position: relative;
-  font-size: 12px;
   cursor: pointer;
   color: black;
 }
@@ -14,10 +13,6 @@
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 10px;
-  // Changing the origin makes rotation around the center of
-  // the piece, which is offset by 10px with the "top" property.
-  transform-origin: 50px 40px;
 }
 
 .piece-outline>div {
@@ -34,12 +29,22 @@
 .piece-top-triangle-background {
   width: 0;
   height: 0;
-  border-left: 31px solid transparent;
-  border-right: 31px solid transparent;
-  border-bottom: 35px solid var(--neutral_color); // color placeholder
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.piece-top-triangle-outline {
+  top: 10px;
+  border-left: 29px solid transparent;
+  border-right: 29px solid transparent;
+  border-bottom: 30px solid var(--neutral_color); // color placeholder
+}
+
+.piece-top-triangle-background {
+  border-left: 27px solid transparent;
+  border-right: 27px solid transparent;
+  border-bottom: 30px solid var(--neutral_color); // color placeholder
 }
 
 .strength-strong .piece-top-triangle-outline {
@@ -50,7 +55,7 @@
 }
 
 .piece-top-triangle-background {
-  top: 7px;
+  top: 16px;
 }
 
 .player1 .piece-top-triangle-background {
@@ -76,8 +81,8 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   border-radius: 40px;
   border: 5px solid transparent; // color placeholder
 }
@@ -117,9 +122,10 @@
 // =============================================
 .piece-name {
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 38%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
 }
 
 // =============================================
@@ -260,8 +266,8 @@
 }
 
 .confirm-move {
-  left: -40px;
-  top: 5px;
+  left: -45px;
+  top: -45px;
 }
 
 .confirm-move-image {
@@ -269,8 +275,8 @@
 }
 
 .confirm-attack {
-  right: -40px;
-  top: 5px;
+  right: -45px;
+  top: -45px;
 }
 
 .confirm-attack-image {
@@ -278,8 +284,8 @@
 }
 
 .rotate-cw {
-  left: -20px;
-  bottom: -30px;
+  left: -45px;
+  bottom: -45px;
 }
 
 .rotate-cw-image {
@@ -287,8 +293,8 @@
 }
 
 .rotate-ccw {
-  right: -20px;
-  bottom: -30px;
+  right: -45px;
+  bottom: -45px;
 }
 
 .piece-button-img-container>img.rotate-ccw-image {
