@@ -99,14 +99,15 @@ export class BoardService {
     if (!this.selectedPiece) {
       return;
     }
-    // Put the piece back in it's original position.
-    if (this.selectedPiece.stagedPosition) {
+    // Check to see if there was a position change.
+    if (this.selectedPiece.position.equals(this.selectedPiece.stagedPosition)) {
+      // Put the piece back in it's original position.
       const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
       currentCell.clearPiece();
+      const originalCell = this.board.getCell(this.selectedPiece.position);
+      originalCell.setPiece(this.selectedPiece);
+      this.selectedPiece.position = originalCell.position;
     }
-    const originalCell = this.board.getCell(this.selectedPiece.position);
-    originalCell.setPiece(this.selectedPiece);
-    this.selectedPiece.position = originalCell.position;
     this.selectedPiece.deselect();
     this.selectedPiece = null;
     this.selectCell(null);
