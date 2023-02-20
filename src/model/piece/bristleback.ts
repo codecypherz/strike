@@ -23,4 +23,13 @@ export class Bristleback extends RamPiece {
       Bristleback.MAX_HEALTH,
       player);
   }
+
+  override hasAbility(): boolean {
+    return true;
+  }
+
+  override getAbilityDescription(): string {
+    return 'All machines in attack range lose 1 HP, ' +
+        'friend or foe, during the start of every turn.';
+  }
 }

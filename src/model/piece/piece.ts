@@ -57,6 +57,14 @@ export abstract class Piece {
   abstract getPieceType(): string;
   abstract getPieceTypeDescription(): string;
 
+  hasAbility(): boolean {
+    return false;
+  }
+  
+  getAbilityDescription(): string {
+    return '';
+  }
+
   getHealth(): number {
     return this.isStagedAttack() ? this.stagedHealth! : this.health;
   }

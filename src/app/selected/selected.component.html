@@ -41,7 +41,10 @@
           HP: {{getPiece().maxHealth}}
         </div>
       </div>
-      <div class="additional-details">
+      <div *ngIf="getPiece().hasAbility()" class="additional-details">
+        <b>Ability: </b>{{getPiece().getAbilityDescription()}}
+      </div>
+      <div *ngIf="!getPiece().hasAbility()" class="additional-details">
         No skills for this machine.
       </div>
     </div>
