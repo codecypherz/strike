@@ -169,6 +169,10 @@ export class BoardService {
     }
     const targetPiece = cellToAttack!.getPiece()!;
 
+    // Clear staging.
+    this.selectedPiece.clearStagedAttack();
+    targetPiece.clearStagedAttack();
+
     // Always confirm direction.
     piece.confirmDirection();
     // Determine if there is movement.
@@ -222,6 +226,9 @@ export class BoardService {
       // Reset state for all cells.
       cell.availableMove = false;
       cell.availableAttack = false;
+      if (cell.hasPiece()) {
+        cell.getPiece()!.clearStagedAttack();
+      }
     }
     if (this.selectedPiece) {
       if (this.selectedPiece.canMove()) {
@@ -230,8 +237,15 @@ export class BoardService {
         }
       }
       if (this.selectedPiece.canAttack()) {
-        for (let cell of this.selectedPiece.getAttackCells(this.board)) {
-          cell.availableAttack = true;
+        for (let targetCell of this.selectedPiece.getAttackCells(this.board)) {
+          if (targetCell.hasPiece()) {
+            const targetPiece = targetCell.getPiece()!;
+            this.selectedPiece.stageAttack();
+            targetPiece.stageAttack();
+            const cell = this.board.getCell(this.selectedPiece.getPosition());
+            this.selectedPiece.attackPiece(cell, targetCell, targetPiece);
+          }
+          targetCell.availableAttack = true;
         }
       }
     }

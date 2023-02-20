@@ -30,6 +30,7 @@ export abstract class Piece {
   selected = false;
   stagedPosition: Position | null = null;
   stagedDirection: number | null = null;
+  stagedHealth: number | null = null;
 
   constructor(
     readonly name: string,
@@ -50,10 +51,31 @@ export abstract class Piece {
     this.selected = false;
     this.stagedPosition = null;
     this.stagedDirection = null;
+    this.stagedHealth = null;
   }
 
   getHealth(): number {
+    return this.isStagedAttack() ? this.stagedHealth! : this.health;
+  }
+
+  getUnstagedHealth(): number {
     return this.health;
+  }
+
+  setHealth(health: number): void {
+    this.isStagedAttack() ? this.stagedHealth = health : this.health = health;
+  }
+
+  isStagedAttack(): boolean {
+    return this.stagedHealth != null;
+  }
+
+  stageAttack(): void {
+    this.stagedHealth = this.health;
+  }
+
+  clearStagedAttack(): void {
+    this.stagedHealth = null;
   }
 
   getBaseAttack(): number {
@@ -240,13 +262,15 @@ export abstract class Piece {
     }
     // Deal damage to the target piece.
     const damageToTarget = Math.max(0, attack - defense);
-    targetPiece.health = Math.max(0, targetPiece.health - damageToTarget);
+    targetPiece.setHealth(Math.max(0, targetPiece.getHealth() - damageToTarget));
     // Maybe deal damage to the attacking piece.
     if (attack < defense) {
-      this.health -= (defense - attack);
+      this.setHealth(this.getHealth() - (defense - attack));
     }
-    this.attacked = true;
-    this.activate();
+    if (!this.isStagedAttack()) {
+      this.attacked = true;
+      this.activate();
+    }
   }
 
   private getTargetSideStrength(targetPiece: Piece): Strength {

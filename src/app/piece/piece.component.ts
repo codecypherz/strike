@@ -23,19 +23,11 @@ export class PieceComponent {
     return this.piece.getAttack(cell);
   }
 
-  getBaseAttack(): number {
-    return this.piece.getBaseAttack();
-  }
-
   getDefense(): number {
     const cell = this.piece.getCell(this.board);
     return this.piece.getDefense(cell);
   }
 
-  getBaseDefense(): number {
-    return this.piece.getBaseDefense();
-  }
-  
   getFrontStrength(): string {
     return 'strength-' + this.piece.getFrontStrength();
   }

@@ -23,8 +23,8 @@
     <img src="/images/icon/attack_icon_2.webp">
     <div class="piece-attack-number"
       [ngClass]="{
-        'stat-buffed': getAttack() > getBaseAttack(),
-        'stat-debuffed': getAttack() < getBaseAttack()}">
+        'stat-buffed': getAttack() > piece.getBaseAttack(),
+        'stat-debuffed': getAttack() < piece.getBaseAttack()}">
       {{getAttack()}}
     </div>
   </div>
@@ -34,15 +34,18 @@
     <img src="/images/icon/shield_icon.png">
     <div class="piece-defense-number"
       [ngClass]="{
-        'stat-buffed': getDefense() > getBaseDefense(),
-        'stat-debuffed': getDefense() < getBaseDefense()}">
+        'stat-buffed': getDefense() > piece.getBaseDefense(),
+        'stat-debuffed': getDefense() < piece.getBaseDefense()}">
       {{getDefense()}}
     </div>
   </div>
 
   <div class="piece-health">
     <img src="/images/icon/black_heart.png">
-    <div class="piece-health-number">
+    <div class="piece-health-number"
+      [ngClass]="{
+        'stat-buffed': piece.getHealth() > piece.getUnstagedHealth(),
+        'stat-debuffed': piece.getHealth() < piece.getUnstagedHealth()}">
       {{piece.getHealth()}}
     </div>
   </div>
