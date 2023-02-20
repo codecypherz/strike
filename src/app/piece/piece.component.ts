@@ -18,6 +18,11 @@ export class PieceComponent {
     return "rotate(" + this.piece.getDirection().degrees + "deg)";
   }
 
+  getAttack(): number {
+    const cell = this.piece.getCell(this.board);
+    return this.piece.getAttack(cell);
+  }
+
   getDefense(): number {
     const cell = this.piece.getCell(this.board);
     return this.piece.getDefense(cell);
