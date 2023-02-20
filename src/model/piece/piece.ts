@@ -4,6 +4,7 @@ import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
 import { Direction } from "./direction";
+import { Strength } from "./strength";
 
 /**
  * Represents the data common to all pieces.
@@ -51,6 +52,22 @@ export abstract class Piece {
   getDefense(board: Board): number {
     const cell = this.getCell(board);
     return cell.terrain.elevation;
+  }
+
+  getFrontStrength() {
+    return Strength.STRONG;
+  }
+
+  getRightStrength() {
+    return Strength.NEUTRAL;
+  }
+
+  getLeftStrength() {
+    return Strength.NEUTRAL;
+  }
+
+  getBackStrength() {
+    return Strength.WEAK;
   }
 
   getCell(board: Board): Cell {

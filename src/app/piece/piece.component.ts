@@ -22,6 +22,19 @@ export class PieceComponent {
     return this.piece.getDefense(this.board);
   }
 
+  getFrontStrength(): string {
+    return 'strength-' + this.piece.getFrontStrength();
+  }
+  getLeftStrength(): string {
+    return 'strength-' + this.piece.getLeftStrength();
+  }
+  getRightStrength(): string {
+    return 'strength-' + this.piece.getRightStrength();
+  }
+  getBackStrength(): string {
+    return 'strength-' + this.piece.getBackStrength();
+  }
+
   cancel(event: Event): void {
     event.stopPropagation();
     this.boardService.exitStaging();

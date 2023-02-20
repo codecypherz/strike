@@ -6,10 +6,10 @@
       }">
   <div class="piece-outline" [style.transform]="getPieceRotationTransform()">
     <div class="piece-background"></div>
-    <div class="piece-left"></div>
-    <div class="piece-right"></div>
-    <div class="piece-bottom"></div>
-    <div class="piece-top">
+    <div class="piece-left" [ngClass]="getLeftStrength()"></div>
+    <div class="piece-right" [ngClass]="getRightStrength()"></div>
+    <div class="piece-bottom" [ngClass]="getBackStrength()"></div>
+    <div class="piece-top" [ngClass]="getFrontStrength()">
       <div class="piece-top-triangle-outline"></div>
       <div class="piece-top-triangle-background"></div>
     </div>
@@ -20,9 +20,8 @@
   <div class="piece-defense">
     <div class="piece-defense-background"></div>
     <img src="/images/icon/shield_icon.png">
-    <div
+    <div class="piece-defense-number"
       [ngClass]="{
-        'piece-defense-number': true,
         'stat-buffed': getDefense() > 0,
         'stat-debuffed': getDefense() < 0}">
       {{getDefense()}}
