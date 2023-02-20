@@ -64,7 +64,7 @@ export class GameService {
   }
 
   private hasWon(player: Player): boolean {
-    return player.getPoints() >= 4;
+    return player.getPoints() >= 7;
   }
 
   isGameOver(): boolean {
