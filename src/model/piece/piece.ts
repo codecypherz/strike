@@ -2,6 +2,7 @@ import { Board } from "../board";
 import { Cell } from "../cell";
 import { Player } from "../player";
 import { Position } from "../position";
+import { Terrain } from "../terrain";
 import { Direction } from "./direction";
 
 /**
@@ -124,8 +125,16 @@ export abstract class Piece {
         }
         // You can move through yourself.
       }
+      if (cell.terrain == Terrain.CHASM) {
+        // Can't move through chasms.
+        continue;
+      }
       // Can move to this cell.
       cells.add(cell);
+      if (cell.terrain == Terrain.MARSH) {
+        // If you hit a marsh, you have to stop movement.
+        continue;
+      }
       // Explore paths at the new point, but with reduced movement.
       // Recurse.
       let subsequentCells = this.getMoveCells_(board, cell.position, moveRemaining - 1);

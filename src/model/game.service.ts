@@ -40,7 +40,7 @@ export class GameService {
     this.addPiece(6, 3, new Lancehorn(player1));
     let charger = new Charger(player1);
     charger.rotateClockwise();
-    this.addPiece(6, 6, charger);
+    this.addPiece(4, 4, charger);
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
