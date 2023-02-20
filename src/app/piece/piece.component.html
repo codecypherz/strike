@@ -32,22 +32,26 @@
         <img class="cancel-selection-image" src="/images/icon/cancel_icon_2.png">
       </div>
     </button>
-    <button class="piece-button confirm-move" (click)="confirmMove($event)">
+    <button class="piece-button confirm-move" (click)="confirmMove($event)"
+        [disabled]="piece.moved">
       <div class="piece-button-img-container">
         <img class="confirm-move-image" src="/images/icon/move_icon.ico">
       </div>
     </button>
-    <button class="piece-button confirm-attack" (click)="confirmAttack($event)">
+    <button class="piece-button confirm-attack" (click)="confirmAttack($event)"
+        [disabled]="piece.attacked">
       <div class="piece-button-img-container">
         <img class="confirm-attack-image" src="/images/icon/attack_icon.png">
       </div>
     </button>
-    <button class="piece-button rotate-cw" (click)="rotateClockwise($event)">
+    <button class="piece-button rotate-cw" (click)="rotateClockwise($event)"
+      [disabled]="piece.moved && piece.attacked">
       <div class="piece-button-img-container">
         <img class="rotate-cw-image" src="/images/icon/rotate_icon.ico">
       </div>
     </button>
-    <button class="piece-button rotate-ccw" (click)="rotateCounterClockwise($event)">
+    <button class="piece-button rotate-ccw" (click)="rotateCounterClockwise($event)"
+        [disabled]="piece.moved && piece.attacked">
       <div class="piece-button-img-container">
         <img class="rotate-ccw-image" src="/images/icon/rotate_icon.ico">
       </div>
