@@ -56,6 +56,15 @@ export abstract class Piece {
     return this.health;
   }
 
+  getBaseAttack(): number {
+    return this.attack;
+  }
+
+  getBaseDefense(): number {
+    // By default, pieces don't have defense.
+    return 0;
+  }
+
   getAttack(cell: Cell): number {
     return this.attack + cell.terrain.elevation;
   }
