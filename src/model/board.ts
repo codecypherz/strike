@@ -33,7 +33,52 @@ export class Board {
       this.cells.push(rowArr);
     }
 
-    // Set some terrain
+    this.setBoard1();
+  }
+
+  private setBoard1(): void {
+    this.getByRowCol(0, 3).terrain = Terrain.FOREST;
+    this.getByRowCol(0, 5).terrain = Terrain.FOREST;
+
+    this.getByRowCol(1, 0).terrain = Terrain.FOREST;
+    this.getByRowCol(1, 1).terrain = Terrain.FOREST;
+    this.getByRowCol(1, 2).terrain = Terrain.MOUNTAIN;
+    this.getByRowCol(1, 4).terrain = Terrain.FOREST;
+    this.getByRowCol(1, 6).terrain = Terrain.FOREST;
+
+    this.getByRowCol(2, 2).terrain = Terrain.MOUNTAIN;
+    this.getByRowCol(2, 3).terrain = Terrain.FOREST;
+    this.getByRowCol(2, 4).terrain = Terrain.FOREST;
+    this.getByRowCol(2, 6).terrain = Terrain.HILL;
+    this.getByRowCol(2, 7).terrain = Terrain.FOREST;
+
+    this.getByRowCol(3, 1).terrain = Terrain.HILL;
+    this.getByRowCol(3, 2).terrain = Terrain.FOREST;
+    this.getByRowCol(3, 4).terrain = Terrain.HILL;
+    this.getByRowCol(3, 6).terrain = Terrain.MOUNTAIN;
+
+    this.getByRowCol(4, 1).terrain = Terrain.MOUNTAIN;
+    this.getByRowCol(4, 3).terrain = Terrain.HILL;
+    this.getByRowCol(4, 5).terrain = Terrain.FOREST;
+    this.getByRowCol(4, 6).terrain = Terrain.HILL;
+
+    this.getByRowCol(5, 0).terrain = Terrain.FOREST;
+    this.getByRowCol(5, 1).terrain = Terrain.HILL;
+    this.getByRowCol(5, 3).terrain = Terrain.FOREST;
+    this.getByRowCol(5, 4).terrain = Terrain.FOREST;
+    this.getByRowCol(5, 5).terrain = Terrain.MOUNTAIN;
+
+    this.getByRowCol(6, 1).terrain = Terrain.FOREST;
+    this.getByRowCol(6, 3).terrain = Terrain.FOREST;
+    this.getByRowCol(6, 5).terrain = Terrain.MOUNTAIN;
+    this.getByRowCol(6, 6).terrain = Terrain.FOREST;
+    this.getByRowCol(6, 7).terrain = Terrain.FOREST;
+
+    this.getByRowCol(7, 2).terrain = Terrain.FOREST;
+    this.getByRowCol(7, 4).terrain = Terrain.FOREST;
+  }
+
+  private setBoard2(): void {
     this.getByRowCol(3, 0).terrain = Terrain.FOREST;
     this.getByRowCol(3, 1).terrain = Terrain.FOREST;
     this.getByRowCol(3, 2).terrain = Terrain.FOREST;
