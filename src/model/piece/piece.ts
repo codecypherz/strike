@@ -17,6 +17,12 @@ export abstract class Piece {
   position = new Position(0, 0);
   private health = 0;
   private direction = 0; // Valid values: 0, 90, 180, 270
+  private sideStrengths = new Map<number, Strength>([
+    [Direction.UP.degrees, Strength.STRONG],
+    [Direction.RIGHT.degrees, Strength.NEUTRAL],
+    [Direction.LEFT.degrees, Strength.NEUTRAL],
+    [Direction.DOWN.degrees, Strength.WEAK]
+  ]);
 
   // Per-turn data
   moved = false;
@@ -49,39 +55,32 @@ export abstract class Piece {
     return this.health;
   }
 
-  getDefense(board: Board): number {
-    const cell = this.getCell(board);
+  getAttack(cell: Cell): number {
+    return this.attack + cell.terrain.elevation;
+  }
+
+  getDefense(cell: Cell): number {
     return cell.terrain.elevation;
   }
 
-  getFrontStrength() {
-    return Strength.STRONG;
+  getFrontStrength(): Strength {
+    return this.sideStrengths.get(Direction.UP.degrees)!;
   }
 
   getRightStrength() {
-    return Strength.NEUTRAL;
+    return this.sideStrengths.get(Direction.RIGHT.degrees)!;
   }
 
   getLeftStrength() {
-    return Strength.NEUTRAL;
+    return this.sideStrengths.get(Direction.LEFT.degrees)!;
   }
 
   getBackStrength() {
-    return Strength.WEAK;
+    return this.sideStrengths.get(Direction.DOWN.degrees)!;
   }
 
   getCell(board: Board): Cell {
     return board.getCell(this.getPosition());
-  }
-
-  /**
-   * Makes this piece take some damage
-   * @param amount The amount of damage to take
-   * @returns True if the piece died
-   */
-  takeDamage(amount: number): boolean {
-    this.health = Math.max(0, this.health - amount);
-    return this.health == 0;
   }
 
   hasBeenActivated(): boolean {
@@ -218,6 +217,39 @@ export abstract class Piece {
     let subsequentCells = this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1);
     subsequentCells.forEach(cells.add, cells);
     return cells;
+  }
+
+  attackPiece(cell: Cell, targetCell: Cell, targetPiece: Piece): void {
+    let attack = this.getAttack(cell);
+    console.info('Target side strength:', this.getTargetSideStrength(targetPiece));
+    // TODO: Incorporate side strength once working.
+    const defense = targetPiece.getDefense(targetCell);
+    const damage = Math.max(0, attack - defense);
+    targetPiece.health = Math.max(0, targetPiece.health - damage);
+    this.attacked = true;
+    this.activate();
+  }
+
+  private getTargetSideStrength(targetPiece: Piece): Strength {
+    const pos = this.getPosition();
+    const targetPos = targetPiece.getPosition();
+    const direction = this.getDirection();
+    if (direction == Direction.UP) {
+      return targetPiece.getSideStrengthWithRotation(Direction.DOWN);
+    } else if (direction == Direction.DOWN) {
+      return targetPiece.getSideStrengthWithRotation(Direction.UP);
+    } else if (direction == Direction.LEFT) {
+      return targetPiece.getSideStrengthWithRotation(Direction.RIGHT);
+    } else if (direction == Direction.RIGHT) {
+      return targetPiece.getSideStrengthWithRotation(Direction.LEFT);
+    }
+    throw new Error('Unhandled direction');
+  }
+  
+  getSideStrengthWithRotation(dir: Direction): Strength {
+    const sideToLookUp = (dir.degrees + this.getDirection().degrees) % 360;
+    console.info('looking up side:', sideToLookUp);
+    return this.sideStrengths.get(sideToLookUp)!;
   }
 
   getPosition(): Position {

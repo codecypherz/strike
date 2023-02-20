@@ -37,17 +37,23 @@ export class GameService {
     scrapper.rotateCounterClockwise();
     this.addPiece(0, 2, scrapper);
     this.addPiece(0, 3, new Burrower(player1));
-    this.addPiece(6, 3, new Lancehorn(player1));
+    let lancehorn = new Lancehorn(player1);
+    lancehorn.rotateClockwise();
+    this.addPiece(6, 4, lancehorn);
     let charger = new Charger(player1);
     charger.rotateClockwise();
     this.addPiece(4, 4, charger);
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
-    this.addPiece(7, 2, new Lancehorn(player2));
+    let lancehorn2 = new Lancehorn(player2);
+    lancehorn2.rotateCounterClockwise();
+    this.addPiece(7, 2, lancehorn2);
     this.addPiece(1, 3, new Charger(player2));
     this.addPiece(7, 4, new Bristleback(player2));
-    this.addPiece(6, 5, new Scrapper(player2));
+    let scrapper2 = new Scrapper(player2);
+    scrapper2.rotateCounterClockwise();
+    this.addPiece(6, 5, scrapper2);
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {

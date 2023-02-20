@@ -19,7 +19,8 @@ export class PieceComponent {
   }
 
   getDefense(): number {
-    return this.piece.getDefense(this.board);
+    const cell = this.piece.getCell(this.board);
+    return this.piece.getDefense(cell);
   }
 
   getFrontStrength(): string {

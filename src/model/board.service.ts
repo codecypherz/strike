@@ -177,17 +177,12 @@ export class BoardService {
     }
 
     // Perform the attack.
-    const attackPower = piece.attack + stagedCell.terrain.elevation;
-    const defense = targetPiece.getDefense(this.board);
-    const damage = Math.max(0, attackPower - defense);
-    const died = targetPiece.takeDamage(damage);
-    if (died) {
+    piece.attackPiece(stagedCell, cellToAttack, targetPiece);
+    if (targetPiece.getHealth() == 0) {
       piece.player.addPoints(targetPiece.points);
       cellToAttack.clearPiece();
       this.gameService.checkWinCondition();
     }
-    piece.attacked = true;
-    piece.activate();
 
     this.exitStaging();
   }
