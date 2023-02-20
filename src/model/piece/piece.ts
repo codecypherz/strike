@@ -17,7 +17,7 @@ export abstract class Piece {
   position = new Position(0, 0);
   private health = 0;
   private direction = 0; // Valid values: 0, 90, 180, 270
-  private sideStrengths = new Map<number, Strength>([
+  sideStrengths = new Map<number, Strength>([
     [Direction.UP.degrees, Strength.STRONG],
     [Direction.RIGHT.degrees, Strength.NEUTRAL],
     [Direction.LEFT.degrees, Strength.NEUTRAL],
@@ -60,7 +60,7 @@ export abstract class Piece {
   hasAbility(): boolean {
     return false;
   }
-  
+
   getAbilityDescription(): string {
     return '';
   }

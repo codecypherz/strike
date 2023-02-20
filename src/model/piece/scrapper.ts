@@ -10,7 +10,7 @@ export class Scrapper extends GunnerPiece {
   static MOVEMENT = 2;
   static ATTACK = 3;
   static ATTACK_RANGE = 2;
-  static MAX_HEALTH = 5;
+  static MAX_HEALTH = 4;
 
   constructor(player: Player) {
     super(
