@@ -227,6 +227,53 @@
 }
 
 // =============================================
+// Piece Knockback
+// =============================================
+.knockback-indicator {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.knockback-indicator span {
+  display: block;
+  width: 30px;
+  height: 30px;
+  border-bottom: 5px solid white;
+  border-right: 5px solid white;
+  transform: rotate(225deg);
+  animation: knockback_animate 1.5s infinite;
+  margin-left: 33px;
+  margin-top: -30px;
+  border-bottom-color: var(--attack_color);
+  border-right-color: var(--attack_color);
+
+}
+
+.knockback-indicator span:nth-child(2) {
+  animation-delay: -0.2s;
+}
+
+.knockback-indicator span:nth-child(3) {
+  animation-delay: -0.4s;
+}
+
+@keyframes knockback_animate {
+  0% {
+      opacity: 0;
+      transform: rotate(225deg) translate(-15px, -15px);
+  }
+  50% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+      transform: rotate(225deg) translate(15px, 15px);
+  }
+}
+
+// =============================================
 // Piece Buttons
 // =============================================
 .piece-buttons {

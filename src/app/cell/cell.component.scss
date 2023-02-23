@@ -71,7 +71,7 @@
   height: 50px;
   border-radius: 80px;
   position: absolute;
-  background: yellow;
+  background: var(--attack_color);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

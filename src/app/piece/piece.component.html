@@ -50,6 +50,14 @@
     </div>
   </div>
 
+  <div *ngIf="piece.wouldBeKnockedBack()"
+      class="knockback-indicator"
+      [style.transform]="getKnockbackRotationTransform()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
   <!-- These are the buttons that show up once the piece is selected. -->
   <div *ngIf="piece.selected" class="piece-buttons">
     <button class="piece-button cancel-selection" (click)="cancel($event)">

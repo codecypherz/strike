@@ -164,14 +164,18 @@ export class BoardService {
       this.exitStaging();
       return;
     }
+    // TODO: This is a bug and will break for other piece types.
     if (!cellToAttack.hasPiece()) {
       throw new Error('Cell to attack does not have a piece.');
     }
     const targetPiece = cellToAttack!.getPiece()!;
 
-    // Clear staging.
-    this.selectedPiece.clearStagedAttack();
-    targetPiece.clearStagedAttack();
+    // Clear staging for all pieces.
+    for (let cell of this.board.getCells().flat()) {
+      if (cell.hasPiece()) {
+        cell.getPiece()!.clearStagedAttack();
+      }
+    }
 
     // Always confirm direction.
     piece.confirmDirection();
@@ -182,7 +186,8 @@ export class BoardService {
     }
 
     // Perform the attack.
-    piece.attackPiece(stagedCell, cellToAttack, targetPiece);
+    piece.attack(this.board);
+    // TODO: Look at all pieces for a death condition.
     if (targetPiece.getHealth() == 0) {
       piece.player.addPoints(targetPiece.points);
       cellToAttack.clearPiece();
@@ -227,7 +232,9 @@ export class BoardService {
       cell.availableMove = false;
       cell.availableAttack = false;
       if (cell.hasPiece()) {
+        // Reset staged attack for all pieces.
         cell.getPiece()!.clearStagedAttack();
+        cell.getPiece()!.stageAttack();
       }
     }
     if (this.selectedPiece) {
@@ -237,16 +244,13 @@ export class BoardService {
         }
       }
       if (this.selectedPiece.canAttack()) {
+        // Highlight all the cells for which an attack could be made.
         for (let targetCell of this.selectedPiece.getAttackCells(this.board)) {
-          if (targetCell.hasPiece()) {
-            const targetPiece = targetCell.getPiece()!;
-            this.selectedPiece.stageAttack();
-            targetPiece.stageAttack();
-            const cell = this.board.getCell(this.selectedPiece.getPosition());
-            this.selectedPiece.attackPiece(cell, targetCell, targetPiece);
-          }
           targetCell.availableAttack = true;
         }
+        // Since we are staged, this will show the impact of an attack made
+        // with the selected piece.
+        this.selectedPiece.attack(this.board);
       }
     }
   }

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Board } from 'src/model/board';
 import { BoardService } from 'src/model/board.service';
+import { Direction } from 'src/model/piece/direction';
 import { Piece } from 'src/model/piece/piece';
 
 @Component({
@@ -15,12 +16,20 @@ export class PieceComponent {
   constructor(private boardService: BoardService, private board: Board) {}
 
   getPieceRotationTransform() {
-    return "rotate(" + this.piece.getDirection().degrees + "deg)";
+    return 'rotate(' + this.piece.getDirection().degrees + 'deg)';
+  }
+
+  getKnockbackRotationTransform() {
+    const kbDirection = this.piece.getKnockbackDirection();
+    if (kbDirection == null) {
+      return '';
+    }
+    return 'rotate(' + kbDirection.degrees + 'deg)';
   }
 
   getAttack(): number {
     const cell = this.piece.getCell(this.board);
-    return this.piece.getAttack(cell);
+    return this.piece.getAttackPower(cell);
   }
 
   getDefense(): number {

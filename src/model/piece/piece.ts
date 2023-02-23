@@ -31,13 +31,14 @@ export abstract class Piece {
   stagedPosition: Position | null = null;
   stagedDirection: number | null = null;
   stagedHealth: number | null = null;
+  stagedKnockbackDirection: Direction | null = null;
 
   constructor(
     readonly name: string,
     readonly imageUrl: string,
     readonly points: number,
     readonly moveRange: number,
-    readonly attack: number,
+    readonly attackPower: number,
     readonly attackRange: number,
     readonly maxHealth: number,
     readonly player: Player) {
@@ -51,7 +52,20 @@ export abstract class Piece {
     this.selected = false;
     this.stagedPosition = null;
     this.stagedDirection = null;
+    this.clearStagedAttack();
+  }
+
+  clearStagedAttack(): void {
     this.stagedHealth = null;
+    this.stagedKnockbackDirection = null;
+  }
+
+  isStagedAttack(): boolean {
+    return this.stagedHealth != null;
+  }
+
+  stageAttack(): void {
+    this.stagedHealth = this.health;
   }
 
   abstract getPieceType(): string;
@@ -74,23 +88,16 @@ export abstract class Piece {
   }
 
   setHealth(health: number): void {
-    this.isStagedAttack() ? this.stagedHealth = health : this.health = health;
+    let newValue = Math.max(0, health); // no negative health allowed.
+    this.isStagedAttack() ? this.stagedHealth = newValue : this.health = newValue;
   }
 
-  isStagedAttack(): boolean {
-    return this.stagedHealth != null;
-  }
-
-  stageAttack(): void {
-    this.stagedHealth = this.health;
-  }
-
-  clearStagedAttack(): void {
-    this.stagedHealth = null;
+  private takeDamage(damage: number): void {
+    this.setHealth(this.getHealth() - damage);
   }
 
   getBaseAttack(): number {
-    return this.attack;
+    return this.attackPower;
   }
 
   getBaseDefense(): number {
@@ -98,8 +105,19 @@ export abstract class Piece {
     return 0;
   }
 
-  getAttack(cell: Cell): number {
-    return this.attack + cell.terrain.elevation;
+  wouldBeKnockedBack(): boolean {
+    if (!this.isStagedAttack()) {
+      return false;
+    }
+    return this.stagedKnockbackDirection != null;
+  }
+
+  getKnockbackDirection(): Direction | null {
+    return this.stagedKnockbackDirection;
+  }
+
+  getAttackPower(cell: Cell): number {
+    return this.attackPower + cell.terrain.elevation;
   }
 
   getDefense(cell: Cell): number {
@@ -263,8 +281,27 @@ export abstract class Piece {
     return cells;
   }
 
-  attackPiece(cell: Cell, targetCell: Cell, targetPiece: Piece): void {
-    let attack = this.getAttack(cell);
+  attack(board: Board): void {
+    // TODO: Refine this part to be more elegant.
+    // TODO: This breaks for other piece types.
+    // Grab the target being attacked.
+    let targetCell = null;
+    let targetPiece = null;
+    for (let attackCell of this.getAttackCells(board)) {
+      if (attackCell.hasPiece()) {
+        targetCell = attackCell;
+        targetPiece = attackCell.getPiece()!;
+        break;
+      }
+    }
+    if (!targetCell || !targetPiece) {
+      // No attack to be made.
+      return;
+    }
+
+    // Perform the attack.
+    const cell = board.getCell(this.getPosition());
+    let attack = this.getAttackPower(cell);
     let defense = targetPiece.getDefense(targetCell);
     const targetSideStrength = this.getTargetSideStrength(targetPiece);
     if (targetSideStrength == Strength.STRONG) {
@@ -272,12 +309,38 @@ export abstract class Piece {
     } else if (targetSideStrength == Strength.WEAK) {
       attack++;
     }
-    // Deal damage to the target piece.
-    const damageToTarget = Math.max(0, attack - defense);
-    targetPiece.setHealth(Math.max(0, targetPiece.getHealth() - damageToTarget));
-    // Maybe deal damage to the attacking piece.
-    if (attack < defense) {
-      this.setHealth(this.getHealth() - (defense - attack));
+
+    if (attack > defense) {
+      // Deal damage to the target piece.
+      targetPiece.takeDamage(attack - defense);
+    } else {
+      // If the attack is <= defense, then each piece takes 1 damage and the
+      // target piece gets knocked back.
+      this.takeDamage(1);
+      targetPiece.takeDamage(1);
+      // Knockback direction is always in the direction the attacking piece is facing.
+      const kbDir = this.getDirection();
+      targetPiece.stagedKnockbackDirection = kbDir;
+      // Preview the impact of the knockback as well.
+      const kbCell = board.getCellInDirection(targetPiece.getPosition(), kbDir);
+      if (kbCell) {
+        if (kbCell.hasPiece()) {
+          // Make both the target piece and this piece take 1 damage.
+          kbCell.getPiece()!.takeDamage(1);
+          targetPiece.takeDamage(1);
+        } else {
+          // Move target piece to the empty cell.
+          // Don't do this for a staged attack, because it's confusing.
+          if (!this.isStagedAttack()) {
+            targetCell.clearPiece();
+            kbCell.setPiece(targetPiece);
+            targetPiece.position = kbCell.position;
+          }
+        }
+      } else {
+        // Edge of board, so deal an extra damage to the target.
+        targetPiece.takeDamage(1);
+      }
     }
     if (!this.isStagedAttack()) {
       this.attacked = true;
@@ -300,7 +363,7 @@ export abstract class Piece {
     }
     throw new Error('Unhandled direction');
   }
-  
+
   getSideStrengthWithRotation(dir: Direction): Strength {
     // This is how much rotation it would take to get back to facing up.
     const correction = 360 - this.getDirection().degrees;
