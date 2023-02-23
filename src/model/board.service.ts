@@ -187,13 +187,18 @@ export class BoardService {
 
     // Perform the attack.
     piece.attack(this.board);
-    // TODO: Look at all pieces for a death condition.
-    if (targetPiece.getHealth() == 0) {
-      piece.player.addPoints(targetPiece.points);
-      cellToAttack.clearPiece();
-      this.gameService.checkWinCondition();
+    // Look for all pieces that might have died as a result.
+    for (let cell of this.board.getCells().flat()) {
+      if (cell.hasPiece()) {
+        const p = cell.getPiece()!;
+        if (p.getHealth() == 0) {
+          // Award points to the attacking piece's player (active player).
+          piece.player.addPoints(p.points);
+          cell.clearPiece();
+        }
+      }
     }
-
+    this.gameService.checkWinCondition();
     this.exitStaging();
   }
 
