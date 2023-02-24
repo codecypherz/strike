@@ -46,7 +46,7 @@ export class BoardService {
         cell.getPiece()!.clearTurnData();
       }
     }
-    this.showAvailableActions();
+    this.showSelectedActions();
   }
 
   onCellClicked(cell: Cell): void {
@@ -71,19 +71,14 @@ export class BoardService {
       this.selectCellAndMaybePiece(cell);
       return;
     }
+    const piece = this.selectedPiece!;
 
     // We clicked a different cell with a selected piece.
     // Now we move the selected piece if it's valid based on its
     // original position.
-    const piece = this.selectedPiece!;
-    const srcCell = this.board.getCell(piece.stagedPosition!);
     if (piece.canMoveTo(this.board, cell)) {
-      // The piece is allowed to move here, but it hasn't been confirmed
-      // by the player. Update the staged position.
-      let srcPiece = srcCell.getPiece()!;
-      srcCell.clearPiece();
-      cell.setPiece(srcPiece);
-      srcPiece.stagedPosition = cell.position;
+      // Move the piece.
+      piece.moveTo(this.board, cell);
       // Move selection with the piece.
       this.selectCell(cell);
     } else {
@@ -109,14 +104,7 @@ export class BoardService {
     if (!this.selectedPiece) {
       return;
     }
-      // Put the piece back in it's original position.
-    const currentCell = this.board.getCell(this.selectedPiece.stagedPosition!);
-    currentCell.clearPiece();
-    const originalCell = this.board.getCell(this.selectedPiece.position);
-    originalCell.clearPiece();
-    originalCell.setPiece(this.selectedPiece);
-    this.selectedPiece.position = originalCell.position;
-    this.selectedPiece.deselect();
+    this.selectedPiece.deselect(this.board);
     this.selectedPiece = null;
     this.selectCell(null);
   }
@@ -126,20 +114,15 @@ export class BoardService {
       throw new Error('Confirming move without a staged piece.');
     }
     const piece = this.selectedPiece;
-    const stagedCell = this.board.getCell(piece.stagedPosition!);
 
     // Cancel staging if the piece didn't actually move.
-    if (piece.position.equals(piece.stagedPosition)) {
+    if (!piece.isMoveStaged()) {
       this.exitStaging();
       return;
     }
 
-    // Moving the piece - update all the metadata.
-    piece.position = stagedCell.position;
-    piece.confirmDirection();
-    piece.moved = true;
-    piece.activate();
-
+    // Confirm the move, then exit staging for the next action.
+    piece.confirmMove();
     this.exitStaging();
   }
 
@@ -173,7 +156,7 @@ export class BoardService {
     // Clear staging for all pieces.
     for (let cell of this.board.getCells().flat()) {
       if (cell.hasPiece()) {
-        cell.getPiece()!.clearStagedAttack();
+        cell.getPiece()!.clearStagedAttackData();
       }
     }
 
@@ -215,7 +198,7 @@ export class BoardService {
       cell.selected = true;
       this.selectedCell = cell;
     }
-    this.showAvailableActions();
+    this.showSelectedActions();
   }
 
   getSelectedCell(): Cell | null {
@@ -228,17 +211,17 @@ export class BoardService {
     }
     this.selectedPiece = piece;
     this.selectedPiece.select();
-    this.showAvailableActions();
+    this.showSelectedActions();
   }
 
-  showAvailableActions() {
+  showSelectedActions() {
     for (let cell of this.board.getCells().flat()) {
       // Reset state for all cells.
       cell.availableMove = false;
       cell.availableAttack = false;
       if (cell.hasPiece()) {
         // Reset staged attack for all pieces.
-        cell.getPiece()!.clearStagedAttack();
+        cell.getPiece()!.clearStagedAttackData();
         cell.getPiece()!.stageAttack();
       }
     }

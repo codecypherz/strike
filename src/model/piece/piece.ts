@@ -25,11 +25,20 @@ export abstract class Piece {
   ]);
 
   // Per-turn data
+  // This data is only cleared when a turn ends.
   moved = false;
   attacked = false;
+
+  // Selected metadata
+  // This data is cleared if selection changes and when a turn ends.
   selected = false;
   stagedPosition: Position | null = null;
   stagedDirection: number | null = null;
+
+  // Attack metadata
+  // This data is cleared if selection changes, when a turn ends,
+  // and when movement or rotation happens.
+  stagedAttack = false;
   stagedHealth: number | null = null;
   stagedKnockbackDirection: Direction | null = null;
 
@@ -46,26 +55,64 @@ export abstract class Piece {
     this.direction = player.defaultDirection;
   }
 
+  /**
+   * Resets all piece data.
+   */
   clearTurnData() {
+    if (this.selected) {
+      // The caller needs to handle deselection in order to ensure a
+      // staged piece is properly reset.
+      throw new Error('The piece needs to be deselected before turn end.');
+    }
     this.moved = false;
     this.attacked = false;
-    this.selected = false;
-    this.stagedPosition = null;
-    this.stagedDirection = null;
-    this.clearStagedAttack();
+    this.clearSelectionData();
+    this.clearStagedAttackData();
   }
 
-  clearStagedAttack(): void {
+  clearStagedAttackData(): void {
+    this.stagedAttack = false;
     this.stagedHealth = null;
     this.stagedKnockbackDirection = null;
   }
 
+  private clearSelectionData(): void {
+    this.selected = false;
+    this.stagedPosition = null;
+    this.stagedDirection = null;
+  }
+
   isStagedAttack(): boolean {
-    return this.stagedHealth != null;
+    return this.stagedAttack;
   }
 
   stageAttack(): void {
+    this.stagedAttack = true;
     this.stagedHealth = this.health;
+  }
+
+  select(): void {
+    this.selected = true;
+    this.stagedPosition = this.position;
+    this.stagedDirection = this.direction;
+  }
+
+  deselect(board: Board): void {
+    if (!this.selected) {
+      throw new Error('Trying to deselect a non selected piece');
+    }
+
+    // Undo the selection by putting the piece back where it was.
+    const currentCell = board.getCell(this.stagedPosition!);
+    currentCell.clearPiece();
+    const originalCell = board.getCell(this.position);
+    originalCell.clearPiece();
+    originalCell.setPiece(this);
+    this.position = originalCell.position;
+
+    // Clear metadata.
+    this.clearSelectionData();
+    this.clearStagedAttackData();
   }
 
   abstract getPieceType(): string;
@@ -181,16 +228,47 @@ export abstract class Piece {
     return true;
   }
 
-  canMoveTo(board: Board, cell: Cell): boolean {
+  canMoveTo(board: Board, destCell: Cell): boolean {
+    // Can't move to a cell that already contains a piece.
+    if (destCell.hasPiece()) {
+      return false;
+    }
+    // The piece needs to be able to move in the first place.
     if (!this.canMove()) {
       return false;
     }
+    // Make sure the destination cell is one of the valid move cells.
     for (let moveCell of this.getMoveCells(board)) {
-      if (moveCell.position.equals(cell.position)) {
+      if (moveCell.position.equals(destCell.position)) {
         return true;
       }
     }
     return false;
+  }
+
+  moveTo(board: Board, destCell: Cell) {
+    if (!this.canMoveTo(board, destCell)) {
+      throw new Error('Cannot move to this cell: ' + destCell.position.toString());
+    }
+
+    const srcCell = board.getCell(this.getPosition());
+    srcCell.clearPiece();
+    destCell.setPiece(this);
+    this.setPosition(destCell.position);
+  }
+
+  isMoveStaged(): boolean {
+    return this.stagedPosition != null && !this.position.equals(this.stagedPosition);
+  }
+
+  confirmMove(): void {
+    if (!this.isMoveStaged()) {
+      throw new Error('Cannot confirm move if no move is staged.');
+    }
+    this.position = this.stagedPosition!;
+    this.confirmDirection();
+    this.moved = true;
+    this.activate();
   }
 
   getMoveCells(board: Board): Array<Cell> {
@@ -376,6 +454,14 @@ export abstract class Piece {
     return this.selected ? this.stagedPosition! : this.position;
   }
 
+  setPosition(pos: Position): void {
+    if (this.selected) {
+      this.stagedPosition = pos;
+    } else {
+      this.position = pos;
+    }
+  }
+
   getDirection(): Direction {
     const degrees = this.selected ? this.stagedDirection! : this.direction;
     return Direction.for(degrees);
@@ -410,17 +496,5 @@ export abstract class Piece {
 
   private counterClockwise(degrees: number): number {
     return (degrees + 270) % 360;
-  }
-
-  select(): void {
-    this.selected = true;
-    this.stagedPosition = this.position;
-    this.stagedDirection = this.direction;
-  }
-
-  deselect(): void {
-    this.selected = false;
-    this.stagedPosition = null;
-    this.stagedDirection = null;
   }
 }

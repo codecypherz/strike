@@ -68,12 +68,12 @@ export class PieceComponent {
   rotateClockwise(event: Event): void {
     event.stopPropagation();
     this.piece.rotateClockwise();
-    this.boardService.showAvailableActions();
+    this.boardService.showSelectedActions();
   }
 
   rotateCounterClockwise(event: Event): void {
     event.stopPropagation();
     this.piece.rotateCounterClockwise();
-    this.boardService.showAvailableActions();
+    this.boardService.showSelectedActions();
   }
 }
