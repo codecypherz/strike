@@ -103,6 +103,7 @@ export abstract class Piece {
     }
 
     // Undo the selection by putting the piece back where it was.
+    // Note: this is happening even after confirming a move, but it's a no-op.
     const currentCell = board.getCell(this.stagedPosition!);
     currentCell.clearPiece();
     const originalCell = board.getCell(this.position);
@@ -209,7 +210,7 @@ export abstract class Piece {
     return this.player.canActivatePiece();
   }
 
-  activate(): void {
+  private activate(): void {
     this.player.addActivatedPiece(this);
   }
 
@@ -442,7 +443,7 @@ export abstract class Piece {
     throw new Error('Unhandled direction');
   }
 
-  getSideStrengthWithRotation(dir: Direction): Strength {
+  private getSideStrengthWithRotation(dir: Direction): Strength {
     // This is how much rotation it would take to get back to facing up.
     const correction = 360 - this.getDirection().degrees;
     // Add the desired direction to a piece that's facing up to get the proper lookup.
@@ -454,7 +455,7 @@ export abstract class Piece {
     return this.selected ? this.stagedPosition! : this.position;
   }
 
-  setPosition(pos: Position): void {
+  private setPosition(pos: Position): void {
     if (this.selected) {
       this.stagedPosition = pos;
     } else {
@@ -463,31 +464,19 @@ export abstract class Piece {
   }
 
   getDirection(): Direction {
-    const degrees = this.selected ? this.stagedDirection! : this.direction;
-    return Direction.for(degrees);
+    return Direction.for(this.getDirectionDegrees());
   }
 
-  confirmDirection(): void {
-    if (!this.selected) {
-      throw new Error('Trying to confirm direction without being staged');
-    }
-    this.direction = this.stagedDirection!;
+  private getDirectionDegrees(): number {
+    return this.selected ? this.stagedDirection! : this.direction;
   }
 
   rotateClockwise(): void {
-    if (this.selected) {
-      this.stagedDirection = this.clockwise(this.stagedDirection!);
-    } else {
-      this.direction = this.clockwise(this.direction);
-    }
+    this.setDirection(this.clockwise(this.getDirectionDegrees()));
   }
 
   rotateCounterClockwise(): void {
-    if (this.selected) {
-      this.stagedDirection = this.counterClockwise(this.stagedDirection!);
-    } else {
-      this.direction = this.counterClockwise(this.direction);
-    }
+    this.setDirection(this.counterClockwise(this.getDirectionDegrees()));
   }
 
   private clockwise(degrees: number): number {
@@ -496,5 +485,20 @@ export abstract class Piece {
 
   private counterClockwise(degrees: number): number {
     return (degrees + 270) % 360;
+  }
+
+  private setDirection(degrees: number): void {
+    if (this.selected) {
+      this.stagedDirection = degrees;
+    } else {
+      this.direction = degrees;
+    }
+  }
+
+  confirmDirection(): void {
+    if (!this.selected) {
+      throw new Error('Trying to confirm direction without being staged');
+    }
+    this.direction = this.stagedDirection!;
   }
 }
