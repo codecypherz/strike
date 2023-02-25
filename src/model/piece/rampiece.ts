@@ -1,3 +1,4 @@
+import { AttackCells } from "../attackcells";
 import { Piece } from "./piece";
 
 export class RamPiece extends Piece {
@@ -12,11 +13,11 @@ export class RamPiece extends Piece {
       'terrain left behind by the opposing machine.';
   }
 
-  override attack(): void {
+  override attack(): AttackCells {
     // Determine the piece and cell being attacked.
     const attackCells = this.getAttackCells();
     if (!this.hasConfirmableAttack_(attackCells)) {
-      return;
+      return attackCells;
     }
     if (attackCells.toAttack.size != 1) {
       // Base piece does not support attacking more than 1 piece at a time.
@@ -51,5 +52,6 @@ export class RamPiece extends Piece {
     }
 
     this.activatePieceIfNotStaged_();
+    return attackCells;
   }
 }

@@ -328,7 +328,7 @@ export abstract class Piece extends EventTarget {
     return this.getMoveCells_(this.position, this.canSprint(), this.moveRange);
   }
 
-  private getMoveCells_(
+  getMoveCells_(
     pos: Position, includeSprint: boolean, moveRemaining: number): MoveCells {
 
     const moveCells = new MoveCells();
@@ -348,8 +348,7 @@ export abstract class Piece extends EventTarget {
         }
         // You can move through yourself.
       }
-      if (cell.terrain == Terrain.CHASM) {
-        // Can't move through chasms.
+      if (cell.terrain == Terrain.CHASM && !this.canMoveThroughChasm_()) {
         continue;
       }
       // Can move to this cell.
@@ -359,8 +358,7 @@ export abstract class Piece extends EventTarget {
       } else {
         moveCells.addMoveable(cell);
       }
-      if (cell.terrain == Terrain.MARSH) {
-        // If you hit a marsh, you have to stop movement.
+      if (cell.terrain == Terrain.MARSH && this.mustStopMoveInMarsh_()) {
         continue;
       }
       // Explore paths at the new point, but with reduced movement.
@@ -368,6 +366,14 @@ export abstract class Piece extends EventTarget {
       moveCells.merge(this.getMoveCells_(cell.position, includeSprint, moveRemaining - 1));
     }
     return moveCells;
+  }
+
+  canMoveThroughChasm_(): boolean {
+    return false;
+  }
+
+  mustStopMoveInMarsh_(): boolean {
+    return true;
   }
 
   canAttack(): boolean {
@@ -445,11 +451,11 @@ export abstract class Piece extends EventTarget {
     return attackCells.toAttack.size == 1;
   }
 
-  attack(): void {
+  attack(): AttackCells {
     // Determine the piece and cell being attacked.
     const attackCells = this.getAttackCells();
     if (!this.hasConfirmableAttack_(attackCells)) {
-      return;
+      return attackCells;
     }
     if (attackCells.toAttack.size != 1) {
       // Base piece does not support attacking more than 1 piece at a time.
@@ -481,6 +487,7 @@ export abstract class Piece extends EventTarget {
     }
 
     this.activatePieceIfNotStaged_();
+    return attackCells;
   }
 
   getAttackPowerForAttack_(targetPiece: Piece): number {

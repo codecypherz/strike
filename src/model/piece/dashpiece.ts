@@ -58,10 +58,10 @@ export class DashPiece extends Piece {
       !attackCells.getFinishingCell()!.hasPiece();
   }
 
-  override attack(): void {
+  override attack(): AttackCells {
     const attackCells = this.getAttackCells();
     if (!this.hasConfirmableAttack_(attackCells)) {
-      return;
+      return attackCells;
     }
     if (attackCells.toAttack.size == 0) {
       throw new Error('Cannot perform attack without something to attack.');
@@ -103,5 +103,6 @@ export class DashPiece extends Piece {
     }
 
     this.activatePieceIfNotStaged_();
+    return attackCells;
   }
 }

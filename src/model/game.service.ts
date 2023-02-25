@@ -48,7 +48,7 @@ export class GameService {
     this.addPiece(7, 3, new Charger(board, player2));
     this.addPiece(7, 4, new Bristleback(board, player2));
     this.addPiece(6, 5, new Scrapper(board, player2));
-    this.addPiece(1, 3, new Burrower(board, player2));
+    this.addPiece(3, 0, new Burrower(board, player2));
     this.addPiece(7, 7, new Glinthawk(board, player2));
   }
 
