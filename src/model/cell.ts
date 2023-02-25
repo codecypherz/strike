@@ -14,10 +14,11 @@ export class Cell {
   terrain: Terrain = Terrain.GRASSLAND;
 
   // Temporary indicators
-  availableMove: boolean = false;
-  willBeAttacked: boolean = false;
-  inAttackRange: boolean = false;
-  whereAttackWillEnd: boolean = false;
+  availableMove = false;
+  availableSprint = false;
+  willBeAttacked = false;
+  inAttackRange = false;
+  whereAttackWillEnd = false;
 
   constructor(row: number, col: number) {
     this.position = new Position(row, col);
@@ -25,6 +26,7 @@ export class Cell {
 
   clearIndicators() {
     this.availableMove = false;
+    this.availableSprint = false;
     this.willBeAttacked = false;
     this.inAttackRange = false;
     this.whereAttackWillEnd = false;

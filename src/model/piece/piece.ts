@@ -5,6 +5,7 @@ import { Position } from "../position";
 import { Terrain } from "../terrain";
 import { AttackCells } from "./attackcells";
 import { Direction } from "./direction";
+import { MoveCells } from "./movecells";
 import { Strength } from "./strength";
 
 /**
@@ -30,12 +31,14 @@ export abstract class Piece extends EventTarget {
   // This data is only cleared when a turn ends.
   numMoves = 0;
   numAttacks = 0;
+  numSprints = 0;
 
   // Selected metadata
   // This data is cleared if selection changes and when a turn ends.
   selected = false;
   stagedPosition: Position | null = null;
   stagedDirection: number | null = null;
+  stagedSprint = false;
 
   // Attack metadata
   // This data is cleared if selection changes, when a turn ends,
@@ -73,6 +76,7 @@ export abstract class Piece extends EventTarget {
     }
     this.numMoves = 0;
     this.numAttacks = 0;
+    this.numSprints = 0;
     this.clearSelectionData();
     this.clearStagedAttackData();
   }
@@ -87,6 +91,7 @@ export abstract class Piece extends EventTarget {
     this.selected = false;
     this.stagedPosition = null;
     this.stagedDirection = null;
+    this.stagedSprint = false;
   }
 
   isStagedAttack(): boolean {
@@ -241,8 +246,20 @@ export abstract class Piece extends EventTarget {
     return this.player.isLastPiece(this);
   }
 
+  canSprint(): boolean {
+    if (!this.canMove()) {
+      // You can't sprint if you can't move.
+      return false;
+    }
+    if (this.isLastPiece()) {
+      // Special case for last piece where you can sprint twice.
+      return this.numAttacks <= 1 && this.numMoves <= 1 && this.numSprints <= 1;
+    }
+    // You can't sprint if you've moved or attacked.
+    return this.numAttacks == 0 && this.numMoves == 0 && this.numSprints == 0;
+  }
+
   canMove(): boolean {
-    // Can't move twice... for now.
     // TODO: Support overdrive.
     if (this.isLastPiece() && this.numMoves >= 2) {
       return false;
@@ -258,26 +275,21 @@ export abstract class Piece extends EventTarget {
     return true;
   }
 
-  canMoveTo(destCell: Cell): boolean {
+  canMoveOrSprintTo(destCell: Cell): boolean {
     // Can't move to a cell that already contains a piece.
     if (destCell.hasPiece()) {
       return false;
     }
     // The piece needs to be able to move in the first place.
-    if (!this.canMove()) {
+    if (!this.canMove() && !this.canSprint()) {
       return false;
     }
     // Make sure the destination cell is one of the valid move cells.
-    for (let moveCell of this.getMoveCells()) {
-      if (moveCell.position.equals(destCell.position)) {
-        return true;
-      }
-    }
-    return false;
+    return this.getMoveCells().hasMoveableOrSprintable(destCell);
   }
 
-  moveTo(destCell: Cell) {
-    if (!this.canMoveTo(destCell)) {
+  moveOrSprintTo(destCell: Cell) {
+    if (!this.canMoveOrSprintTo(destCell)) {
       throw new Error('Cannot move to this cell: ' + destCell.position.toString());
     }
 
@@ -285,6 +297,12 @@ export abstract class Piece extends EventTarget {
     srcCell.clearPiece();
     destCell.setPiece(this);
     this.setPosition(destCell.position);
+
+    // Stage as sprinted, if appropriate.
+    const moveCells = this.getMoveCells();
+    if (this.selected) {
+      this.stagedSprint = moveCells.hasSprintable(destCell);
+    }
   }
 
   isMoveStaged(): boolean {
@@ -295,20 +313,31 @@ export abstract class Piece extends EventTarget {
     if (!this.isMoveStaged()) {
       throw new Error('Cannot confirm move if no move is staged.');
     }
+    const cell = this.getCell();
+    const moveCells = this.getMoveCells();
     this.position = this.stagedPosition!;
     this.confirmDirection();
+    if (moveCells.hasSprintable(cell)) {
+      this.numSprints++;
+    }
     this.numMoves++;
     this.activate();
   }
 
-  getMoveCells(): Array<Cell> {
-    return Array.from(this.getMoveCells_(this.position, this.moveRange));
+  getMoveCells(): MoveCells {
+    return this.getMoveCells_(this.position, this.canSprint(), this.moveRange);
   }
 
-  private getMoveCells_(pos: Position, moveRemaining: number): Set<Cell> {
-    let cells = new Set<Cell>();
-    if (moveRemaining == 0) {
-      return cells;
+  private getMoveCells_(
+    pos: Position, includeSprint: boolean, moveRemaining: number): MoveCells {
+
+    const moveCells = new MoveCells();
+    if (!includeSprint && moveRemaining == 0) {
+      // Stop at the movement range if not sprinting.
+      return moveCells;
+    } else if (includeSprint && moveRemaining == -1) {
+      // Stop at one further than movement range if sprinting.
+      return moveCells;
     }
     for (let cell of this.board.getSurroundingCells(pos)) {
       if (cell.hasPiece()) {
@@ -324,26 +353,45 @@ export abstract class Piece extends EventTarget {
         continue;
       }
       // Can move to this cell.
-      cells.add(cell);
+      if (includeSprint && moveRemaining == 0) {
+        // We are at the end of the sprintable range, so this is sprintable.
+        moveCells.addSprintable(cell);
+      } else {
+        moveCells.addMoveable(cell);
+      }
       if (cell.terrain == Terrain.MARSH) {
         // If you hit a marsh, you have to stop movement.
         continue;
       }
       // Explore paths at the new point, but with reduced movement.
       // Recurse.
-      let subsequentCells = this.getMoveCells_(cell.position, moveRemaining - 1);
-      subsequentCells.forEach(cells.add, cells);
+      moveCells.merge(this.getMoveCells_(cell.position, includeSprint, moveRemaining - 1));
     }
-    return cells;
+    return moveCells;
   }
 
   canAttack(): boolean {
-    // Can't attack twice... for now.
     // TODO: Support overdrive.
-    if (this.isLastPiece() && this.numAttacks >= 2) {
-      return false;
-    } else if (!this.isLastPiece() && this.numAttacks >= 1) {
-      return false;
+    if (this.isLastPiece()) {
+      if (this.numAttacks >= 2) {
+        return false;
+      }
+      if (this.numSprints >= 2) {
+        return false;
+      }
+      if (this.numSprints >= 1 && this.stagedSprint) {
+        return false;
+      }
+    } else {
+      if (this.numAttacks >= 1) {
+        return false;
+      }
+      if (this.numSprints >= 1) {
+        return false;
+      }
+      if (this.numSprints >= 0 && this.stagedSprint) {
+        return false;
+      }
     }
     if (!this.player.isActive()) {
       return false;

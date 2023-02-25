@@ -76,9 +76,9 @@ export class BoardService {
     // We clicked a different cell with a selected piece.
     // Now we move the selected piece if it's valid based on its
     // original position.
-    if (piece.canMoveTo(cell)) {
+    if (piece.canMoveOrSprintTo(cell)) {
       // Move the piece.
-      piece.moveTo(cell);
+      piece.moveOrSprintTo(cell);
       // Move selection with the piece.
       this.selectCell(cell);
     } else {
@@ -193,8 +193,12 @@ export class BoardService {
 
     // Show available moves.
     if (this.selectedPiece.canMove()) {
-      for (let cell of this.selectedPiece.getMoveCells()) {
+      const moveCells = this.selectedPiece.getMoveCells();
+      for (let cell of moveCells.getMoveableCells()) {
         cell.availableMove = true;
+      }
+      for (let cell of moveCells.getSprintableCells()) {
+        cell.availableSprint = true;
       }
     }
 

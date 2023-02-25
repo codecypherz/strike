@@ -7,6 +7,9 @@
   <div *ngIf=cell.availableMove class="cell-available-move">
     <img src="/images/icon/move_icon.ico">
   </div>
+  <div *ngIf=cell.availableSprint class="cell-available-sprint">
+    <img src="/images/icon/move_icon.ico">
+  </div>
 
   <!-- Render the piece. -->
   <app-piece [piece]="cell.getPiece()!"></app-piece>

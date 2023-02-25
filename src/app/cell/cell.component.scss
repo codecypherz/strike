@@ -12,7 +12,8 @@
   background: var(--hover_color);
 }
 
-.cell:hover .cell-available-move {
+.cell:hover .cell-available-move,
+.cell:hover .cell-available-sprint {
   opacity: 70%;
   cursor: pointer;
 }
@@ -49,6 +50,7 @@
 }
 
 .cell-available-move,
+.cell-available-sprint,
 .cell-where-attack-will-end {
   border: solid black 2px;
   width: 80px;
@@ -63,12 +65,19 @@
 }
 
 .cell-available-move>img,
+.cell-available-sprint>img,
 .cell-where-attack-will-end>img {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
+}
+
+.cell-available-sprint {
+  width: 50px;
+  height: 50px;
+  border-style: dashed;
 }
 
 .cell-where-attack-will-end {
