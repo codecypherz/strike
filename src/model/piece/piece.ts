@@ -7,6 +7,7 @@ import { AttackCells } from "../attackcells";
 import { Direction } from "../direction";
 import { MoveCells } from "../movecells";
 import { Strength } from "../strength";
+import { getOnly } from "src/util/sets";
 
 /**
  * Represents the data common to all pieces.
@@ -46,6 +47,7 @@ export abstract class Piece extends EventTarget {
   stagedAttack = false;
   stagedHealth: number | null = null;
   stagedKnockbackDirection: Direction | null = null;
+  stagedPullDirection: Direction | null = null;
 
   constructor(
     readonly board: Board,
@@ -85,6 +87,7 @@ export abstract class Piece extends EventTarget {
     this.stagedAttack = false;
     this.stagedHealth = null;
     this.stagedKnockbackDirection = null;
+    this.stagedPullDirection = null;
   }
 
   private clearSelectionData(): void {
@@ -190,6 +193,17 @@ export abstract class Piece extends EventTarget {
 
   getKnockbackDirection(): Direction | null {
     return this.stagedKnockbackDirection;
+  }
+
+  wouldBePulled(): boolean {
+    if (!this.isStagedAttack()) {
+      return false;
+    }
+    return this.stagedPullDirection != null;
+  }
+
+  getPullDirection(): Direction | null {
+    return this.stagedPullDirection;
   }
 
   getAttackPower(cell: Cell): number {
@@ -461,7 +475,7 @@ export abstract class Piece extends EventTarget {
       // Base piece does not support attacking more than 1 piece at a time.
       throw new Error('This piece only supports attacking 1 piece at a time');
     }
-    const targetCell = Array.from(attackCells.toAttack)[0];
+    const targetCell = getOnly(attackCells.toAttack);
     if (!targetCell.hasPiece()) {
       throw new Error('This piece only attacks other pieces');
     }

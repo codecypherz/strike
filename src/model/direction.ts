@@ -19,4 +19,17 @@ export class Direction {
     }
     throw new Error('No Direction for ' + degrees);
   }
+
+  opposite(): Direction {
+    if (this == Direction.UP) {
+      return Direction.DOWN;
+    } else if (this == Direction.DOWN) {
+      return Direction.UP;
+    } else if (this == Direction.LEFT) {
+      return Direction.RIGHT;
+    } else if (this == Direction.RIGHT) {
+      return Direction.LEFT;
+    }
+    throw new Error('No opposite direction for ' + this);
+  }
 }

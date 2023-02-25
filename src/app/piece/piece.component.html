@@ -50,8 +50,16 @@
   </div>
 
   <div *ngIf="piece.wouldBeKnockedBack()"
-      class="knockback-indicator"
+      class="knockback-pull-indicator"
       [style.transform]="getKnockbackRotationTransform()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div *ngIf="piece.wouldBePulled()"
+      class="knockback-pull-indicator"
+      [style.transform]="getPullRotationTransform()">
     <span></span>
     <span></span>
     <span></span>

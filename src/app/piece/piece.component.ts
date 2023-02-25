@@ -13,16 +13,24 @@ export class PieceComponent {
 
   constructor(private boardService: BoardService) {}
 
-  getPieceRotationTransform() {
+  getPieceRotationTransform(): string {
     return 'rotate(' + this.piece.getDirection().degrees + 'deg)';
   }
 
-  getKnockbackRotationTransform() {
+  getKnockbackRotationTransform(): string {
     const kbDirection = this.piece.getKnockbackDirection();
     if (kbDirection == null) {
       return '';
     }
     return 'rotate(' + kbDirection.degrees + 'deg)';
+  }
+
+  getPullRotationTransform(): string {
+    const pullDirection = this.piece.getPullDirection();
+    if (pullDirection == null) {
+      return '';
+    }
+    return 'rotate(' + pullDirection.degrees + 'deg)';
   }
 
   getAttack(): number {

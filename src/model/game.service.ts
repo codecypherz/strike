@@ -9,6 +9,7 @@ import { Piece } from "./piece/piece";
 import { Scrapper } from "./machine/scrapper";
 import { Player } from "./player";
 import { TurnService } from "./turn.service";
+import { Widemaw } from "./machine/widemaw";
 
 /**
  * Provides the main game engine logic.
@@ -35,20 +36,20 @@ export class GameService {
     const board = this.board;
     // Player 1 pieces
     let player1 = this.turnService.player1;
-    this.addPiece(2, 2, new Lancehorn(board, player1));
+    this.addPiece(0, 2, new Lancehorn(board, player1));
     this.addPiece(0, 4, new Charger(board, player1));
     this.addPiece(0, 3, new Bristleback(board, player1));
-    this.addPiece(1, 2, new Scrapper(board, player1));
+    this.addPiece(1, 2, new Widemaw(board, player1));
     this.addPiece(1, 4, new Burrower(board, player1));
     this.addPiece(0, 0, new Glinthawk(board, player1));
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
-    this.addPiece(2, 4, new Lancehorn(board, player2));
+    this.addPiece(5, 4, new Lancehorn(board, player2));
     this.addPiece(7, 3, new Charger(board, player2));
     this.addPiece(7, 4, new Bristleback(board, player2));
-    this.addPiece(6, 5, new Scrapper(board, player2));
-    this.addPiece(3, 0, new Burrower(board, player2));
+    this.addPiece(2, 0, new Widemaw(board, player2));
+    this.addPiece(6, 2, new Burrower(board, player2));
     this.addPiece(7, 7, new Glinthawk(board, player2));
   }
 
