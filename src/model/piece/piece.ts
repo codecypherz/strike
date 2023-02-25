@@ -10,8 +10,9 @@ import { Strength } from "./strength";
 /**
  * Represents the data common to all pieces.
  */
-export abstract class Piece {
+export abstract class Piece extends EventTarget {
 
+  static PIECE_DIED_EVENT = 'piece_died_event';
   static IMAGE_PATH = '/images/machine/';
 
   // Semi-invalid default, but don't want nullability.
@@ -52,6 +53,8 @@ export abstract class Piece {
     readonly attackRange: number,
     readonly maxHealth: number,
     readonly player: Player) {
+    super();
+
     this.health = maxHealth;
     this.direction = player.defaultDirection;
   }
@@ -142,8 +145,23 @@ export abstract class Piece {
     this.isStagedAttack() ? this.stagedHealth = newValue : this.health = newValue;
   }
 
-  takeDamage_(damage: number): void {
+  /**
+   * @param damage The damage to take
+   * @returns True if the piece died
+   */
+  takeDamage_(damage: number, board: Board): boolean {
+    if (this.getHealth() == 0) {
+      return false; // no-op if already dead.
+    }
     this.setHealth(this.getHealth() - damage);
+    if (!this.isStagedAttack() && this.getHealth() <= 0) {
+      const cell = this.getCell(board);
+      cell.clearPiece();
+      // Notify if real health dropped to zero.
+      this.dispatchEvent(new Event(Piece.PIECE_DIED_EVENT));
+      return true;
+    }
+    return false;
   }
 
   getBaseAttack(): number {
@@ -394,13 +412,13 @@ export abstract class Piece {
     // Perform the attack.
     if (attack > defense) {
       // Deal damage to the target piece.
-      targetPiece.takeDamage_(attack - defense);
+      targetPiece.takeDamage_(attack - defense, board);
     } else {
       // If the attack is <= defense, then this piece takes a damage
       // and knocks back the other piece.
       // Knockback direction is always in the direction the attacking piece is facing.
-      this.takeDamage_(1);
-      targetPiece.knockback(this.getDirection(), board);
+      this.takeDamage_(1, board);
+      targetPiece.knockback_(this.getDirection(), board);
     }
 
     this.activatePieceIfNotStaged_();
@@ -442,31 +460,40 @@ export abstract class Piece {
     }
   }
 
-  private knockback(kbDir: Direction, board: Board): void {
+  /**
+   * Knocks the piece back in the direction indicated.
+   * @param kbDir The direction of the knockback.
+   * @param board The board reference.
+   * @returns True if the piece got knocked back (or would be).
+   */
+  knockback_(kbDir: Direction, board: Board): boolean {
     // Take 1 damage just for being knocked back.
-    this.takeDamage_(1);
+    this.takeDamage_(1, board);
     this.stagedKnockbackDirection = kbDir;
     // Preview the impact of the knockback as well.
     const kbCell = board.getCellInDirection(this.getPosition(), kbDir);
     if (kbCell) {
       if (kbCell.hasPiece()) {
         // This piece must take an extra damage because of the collision.
-        this.takeDamage_(1);
+        this.takeDamage_(1, board);
         // Collatoral damage to the piece that got knocked into.
-        kbCell.getPiece()!.takeDamage_(1);
+        kbCell.getPiece()!.takeDamage_(1, board);
       } else {
         // Move this knocked back piece to the empty cell.
         // Don't do this for a staged attack, because it's confusing.
-        if (!this.isStagedAttack()) {
+        // Don't do this if the piece died.
+        if (!this.isStagedAttack() && this.getHealth() > 0) {
           this.getCell(board).clearPiece();
           kbCell.setPiece(this);
           this.position = kbCell.position;
         }
+        return true;
       }
     } else {
       // Edge of board, so deal an extra damage to the target.
-      this.takeDamage_(1);
+      this.takeDamage_(1, board);
     }
+    return false;
   }
 
   getTargetSideStrength_(targetPiece: Piece): Strength {

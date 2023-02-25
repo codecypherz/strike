@@ -144,21 +144,6 @@ export class BoardService {
 
     // Perform the attack.
     piece.attack(this.board);
-
-    // Look for all pieces that might have died as a result.
-    for (let cell of this.board.getCells().flat()) {
-      if (cell.hasPiece()) {
-        const p = cell.getPiece()!;
-        if (p.getHealth() == 0) {
-          // If a piece dies, then award the other player those points.
-          this.turnService.getOtherPlayer(p.player).addPoints(p.points);
-          cell.clearPiece();
-        }
-      }
-    }
-
-    // See if anyone won, then exit staging.
-    this.gameService.checkWinCondition();
     this.exitStaging();
   }
 
