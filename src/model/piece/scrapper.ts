@@ -1,3 +1,4 @@
+import { Board } from "../board";
 import { Player } from "../player";
 import { GunnerPiece } from "./gunnerpiece";
 import { Piece } from "./piece";
@@ -12,8 +13,9 @@ export class Scrapper extends GunnerPiece {
   static ATTACK_RANGE = 2;
   static MAX_HEALTH = 4;
 
-  constructor(player: Player) {
+  constructor(board: Board, player: Player) {
     super(
+      board,
       Scrapper.NAME,
       Scrapper.IMAGE_URL,
       Scrapper.POINTS,

@@ -1,3 +1,4 @@
+import { Board } from "../board";
 import { Player } from "../player";
 import { MeleePiece } from "./meleepiece";
 import { Piece } from "./piece";
@@ -13,8 +14,9 @@ export class Scrounger extends MeleePiece {
   static ATTACK_RANGE = 1;
   static MAX_HEALTH = 5;
 
-  constructor(player: Player) {
+  constructor(board: Board, player: Player) {
     super(
+      board,
       Scrounger.NAME,
       Scrounger.IMAGE_URL,
       Scrounger.POINTS,

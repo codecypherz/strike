@@ -45,6 +45,7 @@ export abstract class Piece extends EventTarget {
   stagedKnockbackDirection: Direction | null = null;
 
   constructor(
+    readonly board: Board,
     readonly name: string,
     readonly imageUrl: string,
     readonly points: number,
@@ -102,16 +103,16 @@ export abstract class Piece extends EventTarget {
     this.stagedDirection = this.direction;
   }
 
-  deselect(board: Board): void {
+  deselect(): void {
     if (!this.selected) {
       throw new Error('Trying to deselect a non selected piece');
     }
 
     // Undo the selection by putting the piece back where it was.
     // Note: this is happening even after confirming a move, but it's a no-op.
-    const currentCell = board.getCell(this.stagedPosition!);
+    const currentCell = this.board.getCell(this.stagedPosition!);
     currentCell.clearPiece();
-    const originalCell = board.getCell(this.position);
+    const originalCell = this.board.getCell(this.position);
     originalCell.clearPiece();
     originalCell.setPiece(this);
     this.position = originalCell.position;
@@ -149,13 +150,13 @@ export abstract class Piece extends EventTarget {
    * @param damage The damage to take
    * @returns True if the piece died
    */
-  takeDamage_(damage: number, board: Board): boolean {
+  takeDamage_(damage: number): boolean {
     if (this.getHealth() == 0) {
       return false; // no-op if already dead.
     }
     this.setHealth(this.getHealth() - damage);
     if (!this.isStagedAttack() && this.getHealth() <= 0) {
-      const cell = this.getCell(board);
+      const cell = this.getCell();
       cell.clearPiece();
       // Notify if real health dropped to zero.
       this.dispatchEvent(new Event(Piece.PIECE_DIED_EVENT));
@@ -208,8 +209,8 @@ export abstract class Piece extends EventTarget {
     return this.sideStrengths.get(Direction.DOWN.degrees)!;
   }
 
-  getCell(board: Board): Cell {
-    return board.getCell(this.getPosition());
+  getCell(): Cell {
+    return this.board.getCell(this.getPosition());
   }
 
   hasBeenActivated(): boolean {
@@ -249,7 +250,7 @@ export abstract class Piece extends EventTarget {
     return true;
   }
 
-  canMoveTo(board: Board, destCell: Cell): boolean {
+  canMoveTo(destCell: Cell): boolean {
     // Can't move to a cell that already contains a piece.
     if (destCell.hasPiece()) {
       return false;
@@ -259,7 +260,7 @@ export abstract class Piece extends EventTarget {
       return false;
     }
     // Make sure the destination cell is one of the valid move cells.
-    for (let moveCell of this.getMoveCells(board)) {
+    for (let moveCell of this.getMoveCells()) {
       if (moveCell.position.equals(destCell.position)) {
         return true;
       }
@@ -267,12 +268,12 @@ export abstract class Piece extends EventTarget {
     return false;
   }
 
-  moveTo(board: Board, destCell: Cell) {
-    if (!this.canMoveTo(board, destCell)) {
+  moveTo(destCell: Cell) {
+    if (!this.canMoveTo(destCell)) {
       throw new Error('Cannot move to this cell: ' + destCell.position.toString());
     }
 
-    const srcCell = board.getCell(this.getPosition());
+    const srcCell = this.board.getCell(this.getPosition());
     srcCell.clearPiece();
     destCell.setPiece(this);
     this.setPosition(destCell.position);
@@ -292,16 +293,16 @@ export abstract class Piece extends EventTarget {
     this.activate();
   }
 
-  getMoveCells(board: Board): Array<Cell> {
-    return Array.from(this.getMoveCells_(board, this.position, this.moveRange));
+  getMoveCells(): Array<Cell> {
+    return Array.from(this.getMoveCells_(this.position, this.moveRange));
   }
 
-  private getMoveCells_(board: Board, pos: Position, moveRemaining: number): Set<Cell> {
+  private getMoveCells_(pos: Position, moveRemaining: number): Set<Cell> {
     let cells = new Set<Cell>();
     if (moveRemaining == 0) {
       return cells;
     }
-    for (let cell of board.getSurroundingCells(pos)) {
+    for (let cell of this.board.getSurroundingCells(pos)) {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
         if (piece != this) {
@@ -322,7 +323,7 @@ export abstract class Piece extends EventTarget {
       }
       // Explore paths at the new point, but with reduced movement.
       // Recurse.
-      let subsequentCells = this.getMoveCells_(board, cell.position, moveRemaining - 1);
+      let subsequentCells = this.getMoveCells_(cell.position, moveRemaining - 1);
       subsequentCells.forEach(cells.add, cells);
     }
     return cells;
@@ -343,19 +344,19 @@ export abstract class Piece extends EventTarget {
     return true;
   }
 
-  getAttackCells(board: Board): AttackCells {
+  getAttackCells(): AttackCells {
     return this.getAttackCells_(
-      board, this.getPosition(), this.getDirection(), this.attackRange);
+      this.getPosition(), this.getDirection(), this.attackRange);
   }
 
   // TODO: Make abstract once all piece types override.
-  getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+  getAttackCells_(pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
     const attackCells = new AttackCells();
     if (rangeRemaining == 0) {
       return attackCells;
     }
-    const cell = board.getCellInDirection(pos, dir);
-    // Can't run off the board.
+    const cell = this.board.getCellInDirection(pos, dir);
+    // Can't run off the this.board.
     if (!cell) {
       return attackCells;
     }
@@ -375,20 +376,20 @@ export abstract class Piece extends EventTarget {
     // Keep looking for something to attack at the new point, but with reduced range.
     // Recurse.
     return attackCells.merge(
-      this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1));
+      this.getAttackCells_(cell.position, dir, rangeRemaining - 1));
   }
 
-  hasConfirmableAttack(board: Board): boolean {
-    return this.hasConfirmableAttack_(this.getAttackCells(board));
+  hasConfirmableAttack(): boolean {
+    return this.hasConfirmableAttack_(this.getAttackCells());
   }
 
   hasConfirmableAttack_(attackCells: AttackCells) {
     return attackCells.toAttack.size == 1;
   }
 
-  attack(board: Board): void {
+  attack(): void {
     // Determine the piece and cell being attacked.
-    const attackCells = this.getAttackCells(board);
+    const attackCells = this.getAttackCells();
     if (!this.hasConfirmableAttack_(attackCells)) {
       return;
     }
@@ -406,26 +407,26 @@ export abstract class Piece extends EventTarget {
     this.confirmMovementIfNotStaged_();
 
     // Calculate attack and defense.
-    const attack = this.getAttackPowerForAttack_(board, targetPiece);
-    const defense = this.getDefenseForAttack_(board, targetPiece);
+    const attack = this.getAttackPowerForAttack_(targetPiece);
+    const defense = this.getDefenseForAttack_(targetPiece);
 
     // Perform the attack.
     if (attack > defense) {
       // Deal damage to the target piece.
-      targetPiece.takeDamage_(attack - defense, board);
+      targetPiece.takeDamage_(attack - defense);
     } else {
       // If the attack is <= defense, then this piece takes a damage
       // and knocks back the other piece.
       // Knockback direction is always in the direction the attacking piece is facing.
-      this.takeDamage_(1, board);
-      targetPiece.knockback_(this.getDirection(), board);
+      this.takeDamage_(1);
+      targetPiece.knockback_(this.getDirection());
     }
 
     this.activatePieceIfNotStaged_();
   }
 
-  getAttackPowerForAttack_(board: Board, targetPiece: Piece): number {
-    const cell = board.getCell(this.getPosition());
+  getAttackPowerForAttack_(targetPiece: Piece): number {
+    const cell = this.board.getCell(this.getPosition());
     let attack = this.getAttackPower(cell);
     const targetSideStrength = this.getTargetSideStrength_(targetPiece);
     if (targetSideStrength == Strength.WEAK) {
@@ -434,8 +435,8 @@ export abstract class Piece extends EventTarget {
     return attack;
   }
 
-  getDefenseForAttack_(board: Board, targetPiece: Piece): number {
-    const targetCell = board.getCell(targetPiece.getPosition());
+  getDefenseForAttack_(targetPiece: Piece): number {
+    const targetCell = this.board.getCell(targetPiece.getPosition());
     let defense = targetPiece.getDefense(targetCell);
     const targetSideStrength = this.getTargetSideStrength_(targetPiece);
     if (targetSideStrength == Strength.STRONG) {
@@ -463,27 +464,26 @@ export abstract class Piece extends EventTarget {
   /**
    * Knocks the piece back in the direction indicated.
    * @param kbDir The direction of the knockback.
-   * @param board The board reference.
    * @returns True if the piece got knocked back (or would be).
    */
-  knockback_(kbDir: Direction, board: Board): boolean {
+  knockback_(kbDir: Direction): boolean {
     // Take 1 damage just for being knocked back.
-    this.takeDamage_(1, board);
+    this.takeDamage_(1);
     this.stagedKnockbackDirection = kbDir;
     // Preview the impact of the knockback as well.
-    const kbCell = board.getCellInDirection(this.getPosition(), kbDir);
+    const kbCell = this.board.getCellInDirection(this.getPosition(), kbDir);
     if (kbCell) {
       if (kbCell.hasPiece()) {
         // This piece must take an extra damage because of the collision.
-        this.takeDamage_(1, board);
+        this.takeDamage_(1);
         // Collatoral damage to the piece that got knocked into.
-        kbCell.getPiece()!.takeDamage_(1, board);
+        kbCell.getPiece()!.takeDamage_(1);
       } else {
         // Move this knocked back piece to the empty cell.
         // Don't do this for a staged attack, because it's confusing.
         // Don't do this if the piece died.
         if (!this.isStagedAttack() && this.getHealth() > 0) {
-          this.getCell(board).clearPiece();
+          this.getCell().clearPiece();
           kbCell.setPiece(this);
           this.position = kbCell.position;
         }
@@ -491,7 +491,7 @@ export abstract class Piece extends EventTarget {
       }
     } else {
       // Edge of board, so deal an extra damage to the target.
-      this.takeDamage_(1, board);
+      this.takeDamage_(1);
     }
     return false;
   }

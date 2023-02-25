@@ -1,3 +1,4 @@
+import { Board } from "../board";
 import { Player } from "../player";
 import { Piece } from "./piece";
 import { RamPiece } from "./rampiece";
@@ -12,8 +13,9 @@ export class Bristleback extends RamPiece {
   static ATTACK_RANGE = 1;
   static MAX_HEALTH = 4;
 
-  constructor(player: Player) {
+  constructor(board: Board, player: Player) {
     super(
+      board,
       Bristleback.NAME,
       Bristleback.IMAGE_URL,
       Bristleback.POINTS,

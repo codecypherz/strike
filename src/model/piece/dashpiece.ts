@@ -1,9 +1,7 @@
-import { Board } from "../board";
 import { Position } from "../position";
 import { AttackCells } from "./attackcells";
 import { Direction } from "./direction";
 import { Piece } from "./piece";
-import { Strength } from "./strength";
 
 
 export class DashPiece extends Piece {
@@ -20,7 +18,7 @@ export class DashPiece extends Piece {
   }
 
   override getAttackCells_(
-    board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+    pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
 
     const attackCells = new AttackCells();
 
@@ -28,7 +26,7 @@ export class DashPiece extends Piece {
       // Base case.
       return attackCells;
     }
-    const cell = board.getCellInDirection(pos, dir);
+    const cell = this.board.getCellInDirection(pos, dir);
 
     if (!cell) {
       // Can't run off the board.
@@ -51,7 +49,7 @@ export class DashPiece extends Piece {
     // Keep looking for something to attack at the new point, but with reduced range.
     // Recurse.
     return attackCells.merge(
-      this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1));
+      this.getAttackCells_(cell.position, dir, rangeRemaining - 1));
   }
 
   override hasConfirmableAttack_(attackCells: AttackCells): boolean {
@@ -60,8 +58,8 @@ export class DashPiece extends Piece {
       !attackCells.getFinishingCell()!.hasPiece();
   }
 
-  override attack(board: Board): void {
-    const attackCells = this.getAttackCells(board);
+  override attack(): void {
+    const attackCells = this.getAttackCells();
     if (!this.hasConfirmableAttack_(attackCells)) {
       return;
     }
@@ -83,12 +81,12 @@ export class DashPiece extends Piece {
       const targetPiece = cellToAttack.getPiece()!;
 
       // Calculate attack and defense.
-      const attack = this.getAttackPowerForAttack_(board, targetPiece);
-      const defense = this.getDefenseForAttack_(board, targetPiece);
+      const attack = this.getAttackPowerForAttack_(targetPiece);
+      const defense = this.getDefenseForAttack_(targetPiece);
 
       // Deal damage, if you can.
       if (attack > defense) {
-        targetPiece.takeDamage_(attack - defense, board);
+        targetPiece.takeDamage_(attack - defense);
       }
       // Always 180 the target pieces if not staged.
       // TODO: Give rotation indicator?

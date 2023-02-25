@@ -1,3 +1,4 @@
+import { Board } from "../board";
 import { Player } from "../player";
 import { DashPiece } from "./dashpiece";
 import { Piece } from "./piece";
@@ -12,8 +13,9 @@ export class Charger extends DashPiece {
   static ATTACK_RANGE = 2;
   static MAX_HEALTH = 4;
 
-  constructor(player: Player) {
+  constructor(board: Board, player: Player) {
     super(
+      board,
       Charger.NAME,
       Charger.IMAGE_URL,
       Charger.POINTS,

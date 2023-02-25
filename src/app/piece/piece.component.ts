@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Board } from 'src/model/board';
 import { BoardService } from 'src/model/board.service';
-import { Direction } from 'src/model/piece/direction';
 import { Piece } from 'src/model/piece/piece';
 
 @Component({
@@ -13,7 +11,7 @@ export class PieceComponent {
 
   @Input() piece!: Piece;
 
-  constructor(private boardService: BoardService, private board: Board) {}
+  constructor(private boardService: BoardService) {}
 
   getPieceRotationTransform() {
     return 'rotate(' + this.piece.getDirection().degrees + 'deg)';
@@ -28,12 +26,12 @@ export class PieceComponent {
   }
 
   getAttack(): number {
-    const cell = this.piece.getCell(this.board);
+    const cell = this.piece.getCell();
     return this.piece.getAttackPower(cell);
   }
 
   getDefense(): number {
-    const cell = this.piece.getCell(this.board);
+    const cell = this.piece.getCell();
     return this.piece.getDefense(cell);
   }
 

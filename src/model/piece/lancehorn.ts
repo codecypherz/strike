@@ -1,3 +1,4 @@
+import { Board } from "../board";
 import { Player } from "../player";
 import { Direction } from "./direction";
 import { Piece } from "./piece";
@@ -14,8 +15,9 @@ export class Lancehorn extends RamPiece {
   static ATTACK_RANGE = 2;
   static MAX_HEALTH = 5;
 
-  constructor(player: Player) {
+  constructor(board: Board, player: Player) {
     super(
+      board,
       Lancehorn.NAME,
       Lancehorn.IMAGE_URL,
       Lancehorn.POINTS,

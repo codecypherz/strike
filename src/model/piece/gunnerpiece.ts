@@ -1,5 +1,3 @@
-import { Board } from "../board";
-import { Cell } from "../cell";
 import { Position } from "../position";
 import { AttackCells } from "./attackcells";
 import { Direction } from "./direction";
@@ -16,13 +14,13 @@ export class GunnerPiece extends Piece {
   }
 
   override getAttackCells_(
-    board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+    pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
 
     const attackCells = new AttackCells();
     if (rangeRemaining == 0) {
       return attackCells;
     }
-    const cell = board.getCellInDirection(pos, dir);
+    const cell = this.board.getCellInDirection(pos, dir);
     // Can't run off the board.
     if (!cell) {
       return attackCells;
@@ -47,6 +45,6 @@ export class GunnerPiece extends Piece {
     // Keep looking for something to attack at the new point, but with reduced range.
     // Recurse.
     return attackCells.merge(
-      this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1));
+      this.getAttackCells_(cell.position, dir, rangeRemaining - 1));
   }
 }

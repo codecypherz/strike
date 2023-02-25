@@ -76,9 +76,9 @@ export class BoardService {
     // We clicked a different cell with a selected piece.
     // Now we move the selected piece if it's valid based on its
     // original position.
-    if (piece.canMoveTo(this.board, cell)) {
+    if (piece.canMoveTo(cell)) {
       // Move the piece.
-      piece.moveTo(this.board, cell);
+      piece.moveTo(cell);
       // Move selection with the piece.
       this.selectCell(cell);
     } else {
@@ -104,7 +104,7 @@ export class BoardService {
     if (!this.selectedPiece) {
       return;
     }
-    this.selectedPiece.deselect(this.board);
+    this.selectedPiece.deselect();
     this.selectedPiece = null;
     this.selectCell(null);
   }
@@ -133,7 +133,7 @@ export class BoardService {
     const piece = this.selectedPiece;
     const stagedCell = this.board.getCell(piece.stagedPosition!);
 
-    if (!piece.hasConfirmableAttack(this.board)) {
+    if (!piece.hasConfirmableAttack()) {
       // There's nothing to attack, so just cancel.
       this.exitStaging();
       return;
@@ -143,7 +143,7 @@ export class BoardService {
     this.board.clearStagedAttackData();
 
     // Perform the attack.
-    piece.attack(this.board);
+    piece.attack();
     this.exitStaging();
   }
 
@@ -193,7 +193,7 @@ export class BoardService {
 
     // Show available moves.
     if (this.selectedPiece.canMove()) {
-      for (let cell of this.selectedPiece.getMoveCells(this.board)) {
+      for (let cell of this.selectedPiece.getMoveCells()) {
         cell.availableMove = true;
       }
     }
@@ -201,7 +201,7 @@ export class BoardService {
     // Show available attack, if any.
     if (this.selectedPiece.canAttack()) {
       // Highlight all the cells for which an attack could be made.
-      const attackCells = this.selectedPiece.getAttackCells(this.board);
+      const attackCells = this.selectedPiece.getAttackCells();
       // TODO: UI is using piece presence to distinguish targets.
       //       This needs to be explicit state set on the cell instead.
       for (let cell of attackCells.toAttack) {
@@ -216,7 +216,7 @@ export class BoardService {
       }
       // Since we are staged, this will show the impact of an attack made
       // with the selected piece.
-      this.selectedPiece.attack(this.board);
+      this.selectedPiece.attack();
     }
   }
 }

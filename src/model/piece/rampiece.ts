@@ -1,4 +1,3 @@
-import { Board } from "../board";
 import { Piece } from "./piece";
 
 export class RamPiece extends Piece {
@@ -13,9 +12,9 @@ export class RamPiece extends Piece {
       'terrain left behind by the opposing machine.';
   }
 
-  override attack(board: Board): void {
+  override attack(): void {
     // Determine the piece and cell being attacked.
-    const attackCells = this.getAttackCells(board);
+    const attackCells = this.getAttackCells();
     if (!this.hasConfirmableAttack_(attackCells)) {
       return;
     }
@@ -33,20 +32,20 @@ export class RamPiece extends Piece {
     this.confirmMovementIfNotStaged_();
 
     // Calculate attack and defense.
-    const attack = this.getAttackPowerForAttack_(board, targetPiece);
-    const defense = this.getDefenseForAttack_(board, targetPiece);
+    const attack = this.getAttackPowerForAttack_(targetPiece);
+    const defense = this.getDefenseForAttack_(targetPiece);
 
     // Perform the attack.
     if (attack > defense) {
       // Deal damage to the target piece.
-      targetPiece.takeDamage_(attack - defense, board);
+      targetPiece.takeDamage_(attack - defense);
     }
     // Always knockback the target.
-    const oldTargetPieceCell = targetPiece.getCell(board);
-    const knockedBack = targetPiece.knockback_(this.getDirection(), board);
+    const oldTargetPieceCell = targetPiece.getCell();
+    const knockedBack = targetPiece.knockback_(this.getDirection());
 
     if (knockedBack && !this.isStagedAttack()) {
-      this.getCell(board).clearPiece();
+      this.getCell().clearPiece();
       oldTargetPieceCell.setPiece(this);
       this.position = oldTargetPieceCell.position;
     }

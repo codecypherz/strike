@@ -31,21 +31,22 @@ export class GameService {
 
   reset(): void {
     this.winningPlayer = null;
+    const board = this.board;
     // Player 1 pieces
     let player1 = this.turnService.player1;
-    this.addPiece(2, 2, new Lancehorn(player1));
-    this.addPiece(0, 4, new Charger(player1));
-    this.addPiece(0, 3, new Bristleback(player1));
-    this.addPiece(1, 2, new Scrapper(player1));
-    this.addPiece(1, 4, new Burrower(player1));
+    this.addPiece(2, 2, new Lancehorn(board, player1));
+    this.addPiece(0, 4, new Charger(board, player1));
+    this.addPiece(0, 3, new Bristleback(board, player1));
+    this.addPiece(1, 2, new Scrapper(board, player1));
+    this.addPiece(1, 4, new Burrower(board, player1));
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
-    this.addPiece(2, 4, new Lancehorn(player2));
-    this.addPiece(7, 3, new Charger(player2));
-    this.addPiece(7, 4, new Bristleback(player2));
-    this.addPiece(6, 5, new Scrapper(player2));
-    this.addPiece(1, 3, new Burrower(player2));
+    this.addPiece(2, 4, new Lancehorn(board, player2));
+    this.addPiece(7, 3, new Charger(board, player2));
+    this.addPiece(7, 4, new Bristleback(board, player2));
+    this.addPiece(6, 5, new Scrapper(board, player2));
+    this.addPiece(1, 3, new Burrower(board, player2));
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {
