@@ -1,4 +1,4 @@
-import { Cell } from "../cell";
+import { Cell } from "./cell";
 
 /**
  * Encapsulates metadata about a possible attack.

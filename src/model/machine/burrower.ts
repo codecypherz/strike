@@ -1,7 +1,7 @@
 import { Board } from "../board";
 import { Player } from "../player";
-import { MeleePiece } from "./meleepiece";
-import { Piece } from "./piece";
+import { MeleePiece } from "../piece/meleepiece";
+import { Piece } from "../piece/piece";
 
 export class Burrower extends MeleePiece {
 

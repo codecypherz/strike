@@ -1,12 +1,12 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
-import { Bristleback } from "./piece/bristleback";
-import { Burrower } from "./piece/burrower";
-import { Charger } from "./piece/charger";
-import { Glinthawk } from "./piece/glinthawk";
-import { Lancehorn } from "./piece/lancehorn";
+import { Bristleback } from "./machine/bristleback";
+import { Burrower } from "./machine/burrower";
+import { Charger } from "./machine/charger";
+import { Glinthawk } from "./machine/glinthawk";
+import { Lancehorn } from "./machine/lancehorn";
 import { Piece } from "./piece/piece";
-import { Scrapper } from "./piece/scrapper";
+import { Scrapper } from "./machine/scrapper";
 import { Player } from "./player";
 import { TurnService } from "./turn.service";
 

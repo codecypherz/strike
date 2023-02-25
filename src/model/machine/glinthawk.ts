@@ -1,9 +1,9 @@
 import { Board } from "../board";
 import { Player } from "../player";
-import { Direction } from "./direction";
-import { Piece } from "./piece";
-import { Strength } from "./strength";
-import { SwoopPiece } from "./swooppiece";
+import { Direction } from "../direction";
+import { Piece } from "../piece/piece";
+import { Strength } from "../strength";
+import { SwoopPiece } from "../piece/swooppiece";
 
 export class Glinthawk extends SwoopPiece {
 

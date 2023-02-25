@@ -1,6 +1,6 @@
 import { Position } from "../position";
-import { AttackCells } from "./attackcells";
-import { Direction } from "./direction";
+import { AttackCells } from "../attackcells";
+import { Direction } from "../direction";
 import { Piece } from "./piece";
 
 export class MeleePiece extends Piece {

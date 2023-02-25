@@ -1,7 +1,7 @@
 import { Board } from "../board";
 import { Player } from "../player";
-import { DashPiece } from "./dashpiece";
-import { Piece } from "./piece";
+import { DashPiece } from "../piece/dashpiece";
+import { Piece } from "../piece/piece";
 
 export class Charger extends DashPiece {
 

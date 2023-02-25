@@ -1,7 +1,7 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Cell } from "./cell";
-import { Burrower } from "./piece/burrower";
-import { Direction } from "./piece/direction";
+import { Burrower } from "./machine/burrower";
+import { Direction } from "./direction";
 import { Position } from "./position";
 import { Terrain } from "./terrain";
 

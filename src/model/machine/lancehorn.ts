@@ -1,9 +1,9 @@
 import { Board } from "../board";
 import { Player } from "../player";
-import { Direction } from "./direction";
-import { Piece } from "./piece";
-import { RamPiece } from "./rampiece";
-import { Strength } from "./strength";
+import { Direction } from "../direction";
+import { Piece } from "../piece/piece";
+import { RamPiece } from "../piece/rampiece";
+import { Strength } from "../strength";
 
 export class Lancehorn extends RamPiece {
 

@@ -3,10 +3,10 @@ import { Cell } from "../cell";
 import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
-import { AttackCells } from "./attackcells";
-import { Direction } from "./direction";
-import { MoveCells } from "./movecells";
-import { Strength } from "./strength";
+import { AttackCells } from "../attackcells";
+import { Direction } from "../direction";
+import { MoveCells } from "../movecells";
+import { Strength } from "../strength";
 
 /**
  * Represents the data common to all pieces.

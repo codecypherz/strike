@@ -1,7 +1,7 @@
 import { Board } from "../board";
 import { Player } from "../player";
-import { Piece } from "./piece";
-import { RamPiece } from "./rampiece";
+import { Piece } from "../piece/piece";
+import { RamPiece } from "../piece/rampiece";
 
 export class Bristleback extends RamPiece {
 

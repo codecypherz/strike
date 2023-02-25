@@ -1,7 +1,7 @@
 import { Board } from "../board";
 import { Player } from "../player";
-import { GunnerPiece } from "./gunnerpiece";
-import { Piece } from "./piece";
+import { GunnerPiece } from "../piece/gunnerpiece";
+import { Piece } from "../piece/piece";
 
 export class Scrapper extends GunnerPiece {
 
