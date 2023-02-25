@@ -28,8 +28,8 @@ export abstract class Piece extends EventTarget {
 
   // Per-turn data
   // This data is only cleared when a turn ends.
-  moved = false;
-  attacked = false;
+  numMoves = 0;
+  numAttacks = 0;
 
   // Selected metadata
   // This data is cleared if selection changes and when a turn ends.
@@ -58,6 +58,8 @@ export abstract class Piece extends EventTarget {
 
     this.health = maxHealth;
     this.direction = player.defaultDirection;
+
+    player.addPiece(this);
   }
 
   /**
@@ -69,8 +71,8 @@ export abstract class Piece extends EventTarget {
       // staged piece is properly reset.
       throw new Error('The piece needs to be deselected before turn end.');
     }
-    this.moved = false;
-    this.attacked = false;
+    this.numMoves = 0;
+    this.numAttacks = 0;
     this.clearSelectionData();
     this.clearStagedAttackData();
   }
@@ -214,7 +216,7 @@ export abstract class Piece extends EventTarget {
   }
 
   hasBeenActivated(): boolean {
-    return this.moved || this.attacked;
+    return this.numMoves > 0 || this.numAttacks > 0;
   }
 
   canBeActivated(): boolean {
@@ -235,10 +237,16 @@ export abstract class Piece extends EventTarget {
     this.player.addActivatedPiece(this);
   }
 
+  private isLastPiece(): boolean {
+    return this.player.isLastPiece(this);
+  }
+
   canMove(): boolean {
     // Can't move twice... for now.
     // TODO: Support overdrive.
-    if (this.moved) {
+    if (this.isLastPiece() && this.numMoves >= 2) {
+      return false;
+    } else if (!this.isLastPiece() && this.numMoves >= 1) {
       return false;
     }
     if (!this.player.isActive()) {
@@ -289,7 +297,7 @@ export abstract class Piece extends EventTarget {
     }
     this.position = this.stagedPosition!;
     this.confirmDirection();
-    this.moved = true;
+    this.numMoves++;
     this.activate();
   }
 
@@ -332,7 +340,9 @@ export abstract class Piece extends EventTarget {
   canAttack(): boolean {
     // Can't attack twice... for now.
     // TODO: Support overdrive.
-    if (this.attacked) {
+    if (this.isLastPiece() && this.numAttacks >= 2) {
+      return false;
+    } else if (!this.isLastPiece() && this.numAttacks >= 1) {
       return false;
     }
     if (!this.player.isActive()) {
@@ -456,7 +466,7 @@ export abstract class Piece extends EventTarget {
 
   activatePieceIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
-      this.attacked = true;
+      this.numAttacks++;
       this.activate();
     }
   }
@@ -534,6 +544,10 @@ export abstract class Piece extends EventTarget {
 
   getDirection(): Direction {
     return Direction.for(this.getDirectionDegrees());
+  }
+
+  canRotate(): boolean {
+    return this.canMove() || this.canAttack();
   }
 
   rotateClockwise(): void {

@@ -1,3 +1,4 @@
+import { getOnly } from "src/util/sets";
 import { Piece } from "./piece/piece";
 
 /**
@@ -9,8 +10,10 @@ export class Player {
   private active: boolean = false;
   private points: number = 0;
 
+  private pieces = new Set<Piece>();
+
   // Turn metadata
-  private piecesActivated: Set<Piece> = new Set<Piece>();
+  private piecesActivated = new Set<Piece>();
 
   constructor(
     readonly id: string,
@@ -29,21 +32,38 @@ export class Player {
   }
 
   canEndTurn(): boolean {
+    // Special rule if you have 1 piece left.
+    if (this.pieces.size == 1) {
+      const piece = getOnly(this.pieces);
+      return piece.numMoves == 2;
+    }
+    // Normally, the number of pieces moved must equal two.
     return this.getNumMoved() == 2;
-  }
-
-  canMove(): boolean {
-    return this.getNumMoved() < 2;
   }
 
   getNumMoved() {
     let numMoved = 0;
     for (let piece of this.piecesActivated) {
-      if (piece.moved) {
+      if (piece.numMoves > 0) {
         numMoved++;
       }
     }
     return numMoved;
+  }
+
+  addPiece(piece: Piece): void {
+    if (this.pieces.has(piece)) {
+      throw new Error('Attempting to add the same piece to the same player.');
+    }
+    this.pieces.add(piece);
+  }
+
+  getPieces(): Set<Piece> {
+    return this.pieces;
+  }
+
+  isLastPiece(piece: Piece): boolean {
+    return this.pieces.size == 1 && this.pieces.has(piece);
   }
 
   addActivatedPiece(piece: Piece): void {
@@ -51,6 +71,11 @@ export class Player {
   }
 
   canActivatePiece(): boolean {
+    // If the player has 2 or less pieces, they can always activate.
+    if (this.pieces.size <= 2) {
+      return true;
+    }
+    // A player can not activate more than 2 pieces.
     return this.piecesActivated.size < 2;
   }
 

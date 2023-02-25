@@ -50,10 +50,12 @@ export class GameService {
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {
+    // Add the piece to the board.
     const cell = this.board.getByRowCol(row, col);
     cell.setPiece(piece);
     piece.position = cell.position;
 
+    // Listen for when it dies.
     piece.addEventListener(Piece.PIECE_DIED_EVENT, this.onPieceDied.bind(this, piece));
   }
 
