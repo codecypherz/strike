@@ -84,7 +84,6 @@ export class BoardService {
     } else {
       // The piece cannot move here, so select this cell instead.
       // Also cancel any staged action.
-      console.info('cannot move here, exiting staging');
       this.exitStaging();
       this.selectCellAndMaybePiece(cell);
     }
