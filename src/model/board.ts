@@ -150,4 +150,12 @@ export class Board {
     }
     return null;
   }
+
+  clearStagedAttackData(): void {
+    for (let cell of this.getCells().flat()) {
+      if (cell.hasPiece()) {
+        cell.getPiece()!.clearStagedAttackData();
+      }
+    }
+  }
 }

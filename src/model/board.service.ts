@@ -84,6 +84,7 @@ export class BoardService {
     } else {
       // The piece cannot move here, so select this cell instead.
       // Also cancel any staged action.
+      console.info('cannot move here, exiting staging');
       this.exitStaging();
       this.selectCellAndMaybePiece(cell);
     }
@@ -133,43 +134,18 @@ export class BoardService {
     const piece = this.selectedPiece;
     const stagedCell = this.board.getCell(piece.stagedPosition!);
 
-    // This is an action that can combine with movement, but checking attack first.
-    let cellToAttack = null;
-    for (let targetCell of piece.getAttackCells(this.board)) {
-      if (targetCell.hasPiece()) {
-        cellToAttack = targetCell;
-        break;
-      }
-    }
-    // There's nothing to attack, so just cancel.
-    // Can disable the button later if this is deemed confusing.
-    if (!cellToAttack) {
+    if (!piece.hasAttackTarget(this.board)) {
+      // There's nothing to attack, so just cancel.
       this.exitStaging();
       return;
     }
-    // TODO: This is a bug and will break for other piece types.
-    if (!cellToAttack.hasPiece()) {
-      throw new Error('Cell to attack does not have a piece.');
-    }
-    const targetPiece = cellToAttack!.getPiece()!;
 
     // Clear staging for all pieces.
-    for (let cell of this.board.getCells().flat()) {
-      if (cell.hasPiece()) {
-        cell.getPiece()!.clearStagedAttackData();
-      }
-    }
-
-    // Always confirm direction.
-    piece.confirmDirection();
-    // Determine if there is movement.
-    if (!piece.position.equals(piece.stagedPosition)) {
-      piece.position = stagedCell.position;
-      piece.moved = true;
-    }
+    this.board.clearStagedAttackData();
 
     // Perform the attack.
     piece.attack(this.board);
+
     // Look for all pieces that might have died as a result.
     for (let cell of this.board.getCells().flat()) {
       if (cell.hasPiece()) {
@@ -181,6 +157,8 @@ export class BoardService {
         }
       }
     }
+
+    // See if anyone won, then exit staging.
     this.gameService.checkWinCondition();
     this.exitStaging();
   }
@@ -215,6 +193,7 @@ export class BoardService {
   }
 
   showSelectedActions() {
+    // Reset the state of the board before showing new actions.
     for (let cell of this.board.getCells().flat()) {
       // Reset state for all cells.
       cell.availableMove = false;
@@ -225,21 +204,34 @@ export class BoardService {
         cell.getPiece()!.stageAttack();
       }
     }
-    if (this.selectedPiece) {
-      if (this.selectedPiece.canMove()) {
-        for (let cell of this.selectedPiece.getMoveCells(this.board)) {
-          cell.availableMove = true;
-        }
+
+    // No piece selected, means no actions need to be shown.
+    if (!this.selectedPiece) {
+      return;
+    }
+
+    // Show available moves.
+    if (this.selectedPiece.canMove()) {
+      for (let cell of this.selectedPiece.getMoveCells(this.board)) {
+        cell.availableMove = true;
       }
-      if (this.selectedPiece.canAttack()) {
-        // Highlight all the cells for which an attack could be made.
-        for (let targetCell of this.selectedPiece.getAttackCells(this.board)) {
-          targetCell.availableAttack = true;
-        }
-        // Since we are staged, this will show the impact of an attack made
-        // with the selected piece.
-        this.selectedPiece.attack(this.board);
+    }
+
+    // Show available attack, if any.
+    if (this.selectedPiece.canAttack()) {
+      // Highlight all the cells for which an attack could be made.
+      const attackCells = this.selectedPiece.getAttackCells(this.board);
+      // TODO: UI is using piece presence to distinguish targets.
+      //       This needs to be explicit state set on the cell instead.
+      for (let cell of attackCells.toAttack) {
+        cell.availableAttack = true;
       }
+      for (let cell of attackCells.inRange) {
+        cell.availableAttack = true;
+      }
+      // Since we are staged, this will show the impact of an attack made
+      // with the selected piece.
+      this.selectedPiece.attack(this.board);
     }
   }
 }

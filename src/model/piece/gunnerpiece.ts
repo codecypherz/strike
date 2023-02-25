@@ -1,6 +1,7 @@
 import { Board } from "../board";
 import { Cell } from "../cell";
 import { Position } from "../position";
+import { AttackCells } from "./attackcells";
 import { Direction } from "./direction";
 import { Piece } from "./piece";
 
@@ -14,15 +15,15 @@ export class GunnerPiece extends Piece {
     return 'Attacks at the maximum of its Attack Range at all times.'
   }
 
-  override getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): Set<Cell> {
-    let cells = new Set<Cell>();
+  override getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+    const attackCells = new AttackCells();
     if (rangeRemaining == 0) {
-      return cells;
+      return attackCells;
     }
     const cell = board.getCellInDirection(pos, dir);
     // Can't run off the board.
     if (!cell) {
-      return cells;
+      return attackCells;
     }
     if (cell.hasPiece()) {
       const piece = cell.getPiece()!;
@@ -31,21 +32,19 @@ export class GunnerPiece extends Piece {
         // Found a piece to attack, but it needs to be at max range to count.
         if (rangeRemaining == 1) {
           // We are at the end of our range, so add it.
-          cells.add(cell);
+          attackCells.toAttack.add(cell);
           // No need to search further.
-          return cells;
+          return attackCells;
         }
       }
     } else if (rangeRemaining == 1) {
       // This cell is attackable, but there's nothing there.
-      cells.add(cell);
-      // No need to search further.
-      return cells;
+      attackCells.inRange.add(cell);
+      return attackCells;
     }
     // Keep looking for something to attack at the new point, but with reduced range.
     // Recurse.
-    let subsequentCells = this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1);
-    subsequentCells.forEach(cells.add, cells);
-    return cells;
+    return attackCells.merge(
+      this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1));
   }
 }

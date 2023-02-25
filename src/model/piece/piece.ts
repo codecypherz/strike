@@ -3,6 +3,7 @@ import { Cell } from "../cell";
 import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
+import { AttackCells } from "./attackcells";
 import { Direction } from "./direction";
 import { Strength } from "./strength";
 
@@ -89,6 +90,7 @@ export abstract class Piece {
   stageAttack(): void {
     this.stagedAttack = true;
     this.stagedHealth = this.health;
+    this.stagedKnockbackDirection = null;
   }
 
   select(): void {
@@ -323,59 +325,68 @@ export abstract class Piece {
     return true;
   }
 
-  getAttackCells(board: Board): Array<Cell> {
-    return Array.from(
-      this.getAttackCells_(
-        board, this.getPosition(), this.getDirection(), this.attackRange));
+  getAttackCells(board: Board): AttackCells {
+    return this.getAttackCells_(
+      board, this.getPosition(), this.getDirection(), this.attackRange);
   }
 
   // TODO: Make abstract once all piece types override.
-  getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): Set<Cell> {
-    let cells = new Set<Cell>();
+  getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+    const attackCells = new AttackCells();
     if (rangeRemaining == 0) {
-      return cells;
+      return attackCells;
     }
     const cell = board.getCellInDirection(pos, dir);
     // Can't run off the board.
     if (!cell) {
-      return cells;
+      return attackCells;
     }
     if (cell.hasPiece()) {
       const piece = cell.getPiece()!;
       // Can't attack your own pieces nor can you attack through them.
       if (this.player.equals(piece.player)) {
-        return cells;
+        return attackCells;
       } else {
-        // Found a piece to attack, no need to search further.
-        cells.add(cell);
-        return cells;
+        // Found a piece to attack.
+        attackCells.toAttack.add(cell);
+        return attackCells;
       }
     }
     // This cell is attackable, but there's nothing there.
-    cells.add(cell);
+    attackCells.inRange.add(cell);
     // Keep looking for something to attack at the new point, but with reduced range.
     // Recurse.
-    let subsequentCells = this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1);
-    subsequentCells.forEach(cells.add, cells);
-    return cells;
+    return attackCells.merge(
+      this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1));
+  }
+
+  hasAttackTarget(board: Board): boolean {
+    const attackCells = this.getAttackCells(board);
+    return attackCells.toAttack.size == 1;
   }
 
   attack(board: Board): void {
-    // TODO: Refine this part to be more elegant.
-    // TODO: This breaks for other piece types.
-    // Grab the target being attacked.
-    let targetCell = null;
-    let targetPiece = null;
-    for (let attackCell of this.getAttackCells(board)) {
-      if (attackCell.hasPiece()) {
-        targetCell = attackCell;
-        targetPiece = attackCell.getPiece()!;
-        break;
-      }
-    }
-    if (!targetCell || !targetPiece) {
+    // Determine the piece and cell being attacked.
+    const attackCells = this.getAttackCells(board);
+    if (attackCells.toAttack.size == 0) {
       // No attack to be made.
       return;
+    } else if (attackCells.toAttack.size != 1) {
+      // Base piece does not support attacking more than 1 piece at a time.
+      throw new Error('This piece only supports attacking 1 piece at a time');
+    }
+    const targetCell = Array.from(attackCells.toAttack)[0];
+    if (!targetCell.hasPiece()) {
+      throw new Error('This piece only attacks other pieces');
+    }
+    const targetPiece = targetCell.getPiece()!;
+
+    // Maybe update some movement since that can be combined with the attack.
+    if (!this.isStagedAttack()) {
+      this.confirmDirection();
+      if (this.isMoveStaged()) {
+        this.confirmMove();
+      }
     }
 
     // Perform the attack.
