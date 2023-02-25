@@ -12,10 +12,12 @@ export class GunnerPiece extends Piece {
   }
 
   getPieceTypeDescription(): string {
-    return 'Attacks at the maximum of its Attack Range at all times.'
+    return 'Always attacks at the maximum of its Attack Range.';
   }
 
-  override getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+  override getAttackCells_(
+    board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
+
     const attackCells = new AttackCells();
     if (rangeRemaining == 0) {
       return attackCells;

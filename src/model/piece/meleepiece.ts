@@ -12,7 +12,7 @@ export class MeleePiece extends Piece {
   }
 
   getPieceTypeDescription(): string {
-    return 'Strikes the first piece in its Attack Range.';
+    return 'Always attacks the first machine in its Attack Range.';
   }
 
   override getAttackCells_(board: Board, pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
