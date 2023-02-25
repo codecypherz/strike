@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Bristleback } from "./piece/bristleback";
 import { Burrower } from "./piece/burrower";
 import { Charger } from "./piece/charger";
+import { Glinthawk } from "./piece/glinthawk";
 import { Lancehorn } from "./piece/lancehorn";
 import { Piece } from "./piece/piece";
 import { Scrapper } from "./piece/scrapper";
@@ -39,6 +40,7 @@ export class GameService {
     this.addPiece(0, 3, new Bristleback(board, player1));
     this.addPiece(1, 2, new Scrapper(board, player1));
     this.addPiece(1, 4, new Burrower(board, player1));
+    this.addPiece(0, 0, new Glinthawk(board, player1));
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
@@ -47,6 +49,7 @@ export class GameService {
     this.addPiece(7, 4, new Bristleback(board, player2));
     this.addPiece(6, 5, new Scrapper(board, player2));
     this.addPiece(1, 3, new Burrower(board, player2));
+    this.addPiece(7, 7, new Glinthawk(board, player2));
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {
