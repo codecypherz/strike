@@ -10,13 +10,24 @@ export class Cell {
 
   piece: Piece | null = null;
   selected: boolean = false;
-  availableMove: boolean = false;
-  availableAttack: boolean = false;
   readonly position: Position;
   terrain: Terrain = Terrain.GRASSLAND;
 
+  // Temporary indicators
+  availableMove: boolean = false;
+  willBeAttacked: boolean = false;
+  inAttackRange: boolean = false;
+  whereAttackWillEnd: boolean = false;
+
   constructor(row: number, col: number) {
     this.position = new Position(row, col);
+  }
+
+  clearIndicators() {
+    this.availableMove = false;
+    this.willBeAttacked = false;
+    this.inAttackRange = false;
+    this.whereAttackWillEnd = false;
   }
 
   equals(other: Cell): boolean {

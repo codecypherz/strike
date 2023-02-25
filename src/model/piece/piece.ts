@@ -142,7 +142,7 @@ export abstract class Piece {
     this.isStagedAttack() ? this.stagedHealth = newValue : this.health = newValue;
   }
 
-  private takeDamage(damage: number): void {
+  takeDamage_(damage: number): void {
     this.setHealth(this.getHealth() - damage);
   }
 
@@ -360,18 +360,21 @@ export abstract class Piece {
       this.getAttackCells_(board, cell.position, dir, rangeRemaining - 1));
   }
 
-  hasAttackTarget(board: Board): boolean {
-    const attackCells = this.getAttackCells(board);
+  hasConfirmableAttack(board: Board): boolean {
+    return this.hasConfirmableAttack_(this.getAttackCells(board));
+  }
+
+  hasConfirmableAttack_(attackCells: AttackCells) {
     return attackCells.toAttack.size == 1;
   }
 
   attack(board: Board): void {
     // Determine the piece and cell being attacked.
     const attackCells = this.getAttackCells(board);
-    if (attackCells.toAttack.size == 0) {
-      // No attack to be made.
+    if (!this.hasConfirmableAttack_(attackCells)) {
       return;
-    } else if (attackCells.toAttack.size != 1) {
+    }
+    if (attackCells.toAttack.size != 1) {
       // Base piece does not support attacking more than 1 piece at a time.
       throw new Error('This piece only supports attacking 1 piece at a time');
     }
@@ -382,63 +385,91 @@ export abstract class Piece {
     const targetPiece = targetCell.getPiece()!;
 
     // Maybe update some movement since that can be combined with the attack.
+    this.confirmMovementIfNotStaged_();
+
+    // Calculate attack and defense.
+    const attack = this.getAttackPowerForAttack_(board, targetPiece);
+    const defense = this.getDefenseForAttack_(board, targetPiece);
+
+    // Perform the attack.
+    if (attack > defense) {
+      // Deal damage to the target piece.
+      targetPiece.takeDamage_(attack - defense);
+    } else {
+      // If the attack is <= defense, then this piece takes a damage
+      // and knocks back the other piece.
+      // Knockback direction is always in the direction the attacking piece is facing.
+      this.takeDamage_(1);
+      targetPiece.knockback(this.getDirection(), board);
+    }
+
+    this.activatePieceIfNotStaged_();
+  }
+
+  getAttackPowerForAttack_(board: Board, targetPiece: Piece): number {
+    const cell = board.getCell(this.getPosition());
+    let attack = this.getAttackPower(cell);
+    const targetSideStrength = this.getTargetSideStrength_(targetPiece);
+    if (targetSideStrength == Strength.WEAK) {
+      attack++;
+    }
+    return attack;
+  }
+
+  getDefenseForAttack_(board: Board, targetPiece: Piece): number {
+    const targetCell = board.getCell(targetPiece.getPosition());
+    let defense = targetPiece.getDefense(targetCell);
+    const targetSideStrength = this.getTargetSideStrength_(targetPiece);
+    if (targetSideStrength == Strength.STRONG) {
+      defense++;
+    }
+    return defense;
+  }
+
+  confirmMovementIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
       this.confirmDirection();
       if (this.isMoveStaged()) {
         this.confirmMove();
       }
     }
+  }
 
-    // Perform the attack.
-    const cell = board.getCell(this.getPosition());
-    let attack = this.getAttackPower(cell);
-    let defense = targetPiece.getDefense(targetCell);
-    const targetSideStrength = this.getTargetSideStrength(targetPiece);
-    if (targetSideStrength == Strength.STRONG) {
-      defense++;
-    } else if (targetSideStrength == Strength.WEAK) {
-      attack++;
-    }
-
-    if (attack > defense) {
-      // Deal damage to the target piece.
-      targetPiece.takeDamage(attack - defense);
-    } else {
-      // If the attack is <= defense, then each piece takes 1 damage and the
-      // target piece gets knocked back.
-      this.takeDamage(1);
-      targetPiece.takeDamage(1);
-      // Knockback direction is always in the direction the attacking piece is facing.
-      const kbDir = this.getDirection();
-      targetPiece.stagedKnockbackDirection = kbDir;
-      // Preview the impact of the knockback as well.
-      const kbCell = board.getCellInDirection(targetPiece.getPosition(), kbDir);
-      if (kbCell) {
-        if (kbCell.hasPiece()) {
-          // Make both the target piece and this piece take 1 damage.
-          kbCell.getPiece()!.takeDamage(1);
-          targetPiece.takeDamage(1);
-        } else {
-          // Move target piece to the empty cell.
-          // Don't do this for a staged attack, because it's confusing.
-          if (!this.isStagedAttack()) {
-            targetCell.clearPiece();
-            kbCell.setPiece(targetPiece);
-            targetPiece.position = kbCell.position;
-          }
-        }
-      } else {
-        // Edge of board, so deal an extra damage to the target.
-        targetPiece.takeDamage(1);
-      }
-    }
+  activatePieceIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
       this.attacked = true;
       this.activate();
     }
   }
 
-  private getTargetSideStrength(targetPiece: Piece): Strength {
+  private knockback(kbDir: Direction, board: Board): void {
+    // Take 1 damage just for being knocked back.
+    this.takeDamage_(1);
+    this.stagedKnockbackDirection = kbDir;
+    // Preview the impact of the knockback as well.
+    const kbCell = board.getCellInDirection(this.getPosition(), kbDir);
+    if (kbCell) {
+      if (kbCell.hasPiece()) {
+        // This piece must take an extra damage because of the collision.
+        this.takeDamage_(1);
+        // Collatoral damage to the piece that got knocked into.
+        kbCell.getPiece()!.takeDamage_(1);
+      } else {
+        // Move this knocked back piece to the empty cell.
+        // Don't do this for a staged attack, because it's confusing.
+        if (!this.isStagedAttack()) {
+          this.getCell(board).clearPiece();
+          kbCell.setPiece(this);
+          this.position = kbCell.position;
+        }
+      }
+    } else {
+      // Edge of board, so deal an extra damage to the target.
+      this.takeDamage_(1);
+    }
+  }
+
+  getTargetSideStrength_(targetPiece: Piece): Strength {
     const pos = this.getPosition();
     const targetPos = targetPiece.getPosition();
     const direction = this.getDirection();
@@ -478,27 +509,23 @@ export abstract class Piece {
     return Direction.for(this.getDirectionDegrees());
   }
 
+  rotateClockwise(): void {
+    this.setDirectionDegrees((this.getDirectionDegrees() + 90) % 360);
+  }
+
+  rotateCounterClockwise(): void {
+    this.setDirectionDegrees((this.getDirectionDegrees() + 270) % 360);
+  }
+
+  rotate180() {
+    this.setDirectionDegrees((this.getDirectionDegrees() + 180) % 360);
+  }
+
   private getDirectionDegrees(): number {
     return this.selected ? this.stagedDirection! : this.direction;
   }
 
-  rotateClockwise(): void {
-    this.setDirection(this.clockwise(this.getDirectionDegrees()));
-  }
-
-  rotateCounterClockwise(): void {
-    this.setDirection(this.counterClockwise(this.getDirectionDegrees()));
-  }
-
-  private clockwise(degrees: number): number {
-    return (degrees + 90) % 360;
-  }
-
-  private counterClockwise(degrees: number): number {
-    return (degrees + 270) % 360;
-  }
-
-  private setDirection(degrees: number): void {
+  private setDirectionDegrees(degrees: number): void {
     if (this.selected) {
       this.stagedDirection = degrees;
     } else {

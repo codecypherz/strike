@@ -16,7 +16,7 @@ export class BoardService {
 
   constructor(
     private board: Board,
-    turnService: TurnService,
+    private turnService: TurnService,
     private gameService: GameService,
     @Optional() @SkipSelf() service?: BoardService) {
 
@@ -133,7 +133,7 @@ export class BoardService {
     const piece = this.selectedPiece;
     const stagedCell = this.board.getCell(piece.stagedPosition!);
 
-    if (!piece.hasAttackTarget(this.board)) {
+    if (!piece.hasConfirmableAttack(this.board)) {
       // There's nothing to attack, so just cancel.
       this.exitStaging();
       return;
@@ -150,8 +150,8 @@ export class BoardService {
       if (cell.hasPiece()) {
         const p = cell.getPiece()!;
         if (p.getHealth() == 0) {
-          // Award points to the attacking piece's player (active player).
-          piece.player.addPoints(p.points);
+          // If a piece dies, then award the other player those points.
+          this.turnService.getOtherPlayer(p.player).addPoints(p.points);
           cell.clearPiece();
         }
       }
@@ -194,11 +194,8 @@ export class BoardService {
   showSelectedActions() {
     // Reset the state of the board before showing new actions.
     for (let cell of this.board.getCells().flat()) {
-      // Reset state for all cells.
-      cell.availableMove = false;
-      cell.availableAttack = false;
+      cell.clearIndicators();
       if (cell.hasPiece()) {
-        // Reset staged attack for all pieces.
         cell.getPiece()!.clearStagedAttackData();
         cell.getPiece()!.stageAttack();
       }
@@ -223,10 +220,14 @@ export class BoardService {
       // TODO: UI is using piece presence to distinguish targets.
       //       This needs to be explicit state set on the cell instead.
       for (let cell of attackCells.toAttack) {
-        cell.availableAttack = true;
+        cell.willBeAttacked = true;
       }
       for (let cell of attackCells.inRange) {
-        cell.availableAttack = true;
+        cell.inAttackRange = true;
+      }
+      const finishingCell = attackCells.getFinishingCell();
+      if (finishingCell) {
+        finishingCell.whereAttackWillEnd = true;
       }
       // Since we are staged, this will show the impact of an attack made
       // with the selected piece.

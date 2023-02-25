@@ -45,4 +45,11 @@ export class TurnService extends EventTarget {
     }
     return this.player2;
   }
+
+  getOtherPlayer(player: Player): Player {
+    if (this.player1.equals(player)) {
+      return this.player2;
+    }
+    return this.player1;
+  }
 }

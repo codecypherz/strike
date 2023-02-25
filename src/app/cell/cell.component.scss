@@ -21,6 +21,10 @@
   cursor: pointer;
 }
 
+.cell:hover .cell-where-attack-will-end {
+  cursor: default;
+}
+
 .cell-selected {
   border: solid var(--foreground_color) 6px;
   width: 108px;
@@ -44,7 +48,8 @@
   width: 100%;
 }
 
-.cell-available-move {
+.cell-available-move,
+.cell-where-attack-will-end {
   border: solid black 2px;
   width: 80px;
   height: 80px;
@@ -57,7 +62,8 @@
   transform: translate(-50%, -50%);
 }
 
-.cell-available-move>img {
+.cell-available-move>img,
+.cell-where-attack-will-end>img {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -65,7 +71,12 @@
   width: 50%;
 }
 
-.cell-available-attack {
+.cell-where-attack-will-end {
+  background: var(--attack_color);
+}
+
+.cell-will-be-attacked,
+.cell-in-attack-range {
   border: solid black 2px;
   width: 50px;
   height: 50px;
@@ -77,7 +88,8 @@
   transform: translate(-50%, -50%);
 }
 
-.cell-available-attack>img {
+.cell-will-be-attacked>img,
+.cell-in-attack-range>img {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -85,6 +97,6 @@
   width: 50%;
 }
 
-.cell-available-attack.empty-attack-cell {
+.cell-in-attack-range {
   border-style: dashed;
 }
