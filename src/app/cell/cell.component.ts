@@ -16,4 +16,8 @@ export class CellComponent {
   onCellClicked(): void {
     this.boardService.onCellClicked(this.cell);
   }
+
+  showAttackInRange(): boolean {
+    return this.cell.inAttackRange && !this.cell.whereAttackWillEnd;
+  }
 }

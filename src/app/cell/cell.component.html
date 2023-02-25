@@ -18,7 +18,7 @@
   <div *ngIf=cell.willBeAttacked class="cell-will-be-attacked">
     <img src="/images/icon/attack_icon_2.webp">
   </div>
-  <div *ngIf=cell.inAttackRange class="cell-in-attack-range">
+  <div *ngIf=showAttackInRange() class="cell-in-attack-range">
     <img src="/images/icon/attack_icon_2.webp">
   </div>
   <div *ngIf=cell.whereAttackWillEnd class="cell-where-attack-will-end">
