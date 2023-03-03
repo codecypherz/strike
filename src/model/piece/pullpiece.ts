@@ -28,6 +28,13 @@ export class PullPiece extends Piece {
     return this.attackPower + cell.terrain.elevation;
   }
 
+  override getDefense(cell: Cell): number {
+    if (cell.terrain == Terrain.MARSH) {
+      return 1;
+    }
+    return cell.terrain.elevation;
+  }
+
   override attack(): AttackCells {
     const attackCells = super.attack();
     if (!this.hasConfirmableAttack_(attackCells)) {
