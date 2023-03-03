@@ -493,10 +493,11 @@ export abstract class Piece extends EventTarget {
       // Deal damage to the target piece.
       targetPiece.takeDamage_(attack - defense);
     } else {
-      // If the attack is <= defense, then this piece takes a damage
+      // If the attack is <= defense, then each piece takes a damage
       // and knocks back the other piece.
       // Knockback direction is always in the direction the attacking piece is facing.
       this.takeDamage_(1);
+      targetPiece.takeDamage_(1);
       targetPiece.knockback_(this.getDirection());
     }
 
@@ -546,8 +547,6 @@ export abstract class Piece extends EventTarget {
    * @returns True if the piece got knocked back (or would be).
    */
   knockback_(kbDir: Direction): boolean {
-    // Take 1 damage just for being knocked back.
-    this.takeDamage_(1);
     this.stagedKnockbackDirection = kbDir;
     // Preview the impact of the knockback as well.
     const kbCell = this.board.getCellInDirection(this.getPosition(), kbDir);
