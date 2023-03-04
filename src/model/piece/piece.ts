@@ -427,7 +427,6 @@ export abstract class Piece extends EventTarget {
       this.getPosition(), this.getDirection(), this.attackRange);
   }
 
-  // TODO: Make abstract once all piece types override.
   getAttackCells_(pos: Position, dir: Direction, rangeRemaining: number): AttackCells {
     const attackCells = new AttackCells();
     if (rangeRemaining == 0) {
@@ -448,6 +447,10 @@ export abstract class Piece extends EventTarget {
         attackCells.toAttack.add(cell);
         return attackCells;
       }
+    }
+    // You have to be able to move through this terrain in order to attack.
+    if (cell.terrain == Terrain.CHASM && !this.canMoveThroughChasm_()) {
+      return attackCells;
     }
     // This cell is attackable, but there's nothing there.
     attackCells.inRange.add(cell);
