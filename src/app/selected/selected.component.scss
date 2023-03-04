@@ -17,12 +17,18 @@
   margin-top: 5px;
 }
 
+.nothing-selected-title,
 .selected-piece-name {
   text-transform: uppercase;
   text-align: left;
-  padding: 10px 20px 2px 20px;
+  padding: 10px 20px 10px 20px;
 }
 
+.nothing-selected-title {
+  border-bottom: 1px solid var(--foreground_color);
+}
+
+.nothing-selected-instructions,
 .selected-piece-type-description,
 .selected-piece-type {
   color: #aaa;
@@ -36,9 +42,14 @@
   padding: 10px 20px 5px 20px;
 }
 
+.nothing-selected-instructions,
 .selected-piece-type-description {
   font-size: 15px;
   padding: 0px 20px 10px 20px;
+}
+
+.nothing-selected-instructions {
+  padding: 8px 20px 10px 20px;
 }
 
 .selected-piece-image-container,

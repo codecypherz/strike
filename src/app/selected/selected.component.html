@@ -2,10 +2,12 @@
 
   <!-- Nothing Selected -->
   <div *ngIf="!getSelected()" class="selected-content nothing-selected">
-    <div class="selected-piece-name">
+    <div class="nothing-selected-title">
       Nothing selected
     </div>
-    <img class="nothing-selected-image" src="/images/strike_pieces.webp">
+    <div class="nothing-selected-instructions">
+      Select a piece to move or attack.
+    </div>
   </div>
 
   <div *ngIf="getSelected()" class="selected-content">
