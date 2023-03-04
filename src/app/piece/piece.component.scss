@@ -37,15 +37,15 @@
 
 .piece-top-triangle-outline {
   top: 10px;
-  border-left: 29px solid transparent;
-  border-right: 29px solid transparent;
-  border-bottom: 30px solid var(--neutral_color); // color placeholder
+  border-left: 29.1px solid transparent;
+  border-right: 29.1px solid transparent;
+  border-bottom: 29.8px solid var(--neutral_color); // color placeholder
 }
 
 .piece-top-triangle-background {
-  border-left: 27px solid transparent;
-  border-right: 27px solid transparent;
-  border-bottom: 30px solid var(--neutral_color); // color placeholder
+  border-left: 25.5px solid transparent;
+  border-right: 25.5px solid transparent;
+  border-bottom: 28px solid var(--neutral_color); // color placeholder
 }
 
 .strength-strong .piece-top-triangle-outline {
