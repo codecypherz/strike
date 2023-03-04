@@ -36,6 +36,25 @@ export class Board {
     this.setBoard2();
   }
 
+  private setBoard3(): void {
+    this.getByRowCol(1, 0).terrain = Terrain.MOUNTAIN;
+    this.getByRowCol(1, 1).terrain = Terrain.HILL;
+    this.getByRowCol(1, 2).terrain = Terrain.FOREST;
+    this.getByRowCol(1, 3).terrain = Terrain.GRASSLAND;
+    this.getByRowCol(1, 4).terrain = Terrain.MARSH;
+    this.getByRowCol(1, 5).terrain = Terrain.CHASM;
+
+    this.getByRowCol(2, 2).terrain = Terrain.CHASM;
+    this.getByRowCol(2, 3).terrain = Terrain.MARSH;
+    this.getByRowCol(2, 4).terrain = Terrain.GRASSLAND;
+    this.getByRowCol(2, 5).terrain = Terrain.FOREST;
+    this.getByRowCol(2, 6).terrain = Terrain.HILL;
+    this.getByRowCol(2, 7).terrain = Terrain.MOUNTAIN;
+
+    this.getByRowCol(5, 3).terrain = Terrain.MARSH;
+    this.getByRowCol(4, 2).terrain = Terrain.FOREST;
+  }
+
   private setBoard1(): void {
     this.getByRowCol(0, 3).terrain = Terrain.FOREST;
     this.getByRowCol(0, 5).terrain = Terrain.FOREST;
