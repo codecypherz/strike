@@ -4,6 +4,7 @@ import { BoardService } from 'src/model/board.service';
 import { Cell } from 'src/model/cell';
 import { Piece } from 'src/model/piece/piece';
 import { Terrain } from 'src/model/terrain';
+import { decorate } from '../textdecorator';
 
 @Component({
   selector: 'app-selected',
@@ -30,11 +31,11 @@ export class SelectedComponent implements OnInit {
     return this.getSelected()!.terrain;
   }
 
-  getCombatPower(): string {
-    const power = this.getTerrain().elevation;
-    if (power > 0) {
-      return '+' + power;
-    }
-    return power.toString();
+  getPieceTypeDescription(): string {
+    return decorate(this.getPiece().getPieceTypeDescription());
+  }
+
+  getTerrainDescription(): string {
+    return decorate(this.getSelected()!.terrain.description);
   }
 }

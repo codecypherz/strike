@@ -12,7 +12,7 @@ export class PullPiece extends Piece {
 
   getPieceTypeDescription(): string {
     return 'Always attacks the first machine in its Attack Range ' +
-        'and pulls the enemy one terrain closer to it. Gains +1 Combat ' +
+        'and pulls the enemy one terrain closer to it. Gains <buff>+1</buff> Combat ' +
         'Power while on Marsh terrain and can traverse through it ' +
         'without hindering its movement.';
   }

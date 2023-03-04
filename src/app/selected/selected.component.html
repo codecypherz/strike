@@ -20,8 +20,7 @@
       <div class="selected-piece-type">
         <b>TYPE: </b>{{getPiece().getPieceType()}}
       </div>
-      <div class="selected-piece-type-description">
-        {{getPiece().getPieceTypeDescription()}}
+      <div class="selected-piece-type-description" [innerHTML]="getPieceTypeDescription()">
       </div>
       <div class="selected-piece-image-container">
         <img class="selected-piece-image" src="{{getPiece().imageUrl}}">
@@ -60,13 +59,8 @@
         <img class="selected-terrain-image" src="/images/terrain/{{getTerrain().type}}.png">
       </div>
       <div class="additional-details">
-        Gives
-        <span [ngClass]="{
-          'stat-buffed': getTerrain().elevation > 0,
-          'stat-debuffed': getTerrain().elevation < 0}">
-          <b>{{getCombatPower()}}</b>
+        <span [innerHTML]="getTerrainDescription()">
         </span>
-        to combat power.
         <span *ngIf="getTerrain().note"><br><br><b>NOTE: </b>{{getTerrain().note}}</span>
       </div>
     </div>
