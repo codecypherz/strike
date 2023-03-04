@@ -175,11 +175,11 @@
 }
 
 .piece-attack-background {
-  bottom: 5px;
+  bottom: 7px;
   position: absolute;
-  left: 6px;
-  width: 20px;
-  height: 20px;
+  left: 7.6px;
+  width: 16px;
+  height: 16px;
   background: black;
   border-radius: 40px;
 }
@@ -192,12 +192,9 @@
 }
 
 .piece-attack-number {
-  position: absolute;
-  bottom: 6px;
-  left: 16px;
   font-size: 14px;
   color: white;
-  transform: translateX(-50%);
+  margin-top: -1.8px;
 }
 
 // =============================================

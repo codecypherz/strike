@@ -18,12 +18,13 @@
 
   <!-- Show attack if active. -->
   <div *ngIf="piece.player.isActive()" class="piece-attack">
-    <div class="piece-attack-background"></div>
-    <img src="/images/icon/attack_icon_2.webp">
-    <div class="piece-attack-number" [ngClass]="{
+    <img src="/images/icon/attack_icon_black.png">
+    <div class="piece-attack-background">
+      <div class="piece-attack-number" [ngClass]="{
         'stat-buffed': getAttack() > piece.getBaseAttack(),
         'stat-debuffed': getAttack() < piece.getBaseAttack()}">
-      {{getAttack()}}
+        {{getAttack()}}
+      </div>
     </div>
   </div>
 
