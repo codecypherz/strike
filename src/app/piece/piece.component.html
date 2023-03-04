@@ -20,8 +20,7 @@
   <div *ngIf="piece.player.isActive()" class="piece-attack">
     <div class="piece-attack-background"></div>
     <img src="/images/icon/attack_icon_2.webp">
-    <div class="piece-attack-number"
-      [ngClass]="{
+    <div class="piece-attack-number" [ngClass]="{
         'stat-buffed': getAttack() > piece.getBaseAttack(),
         'stat-debuffed': getAttack() < piece.getBaseAttack()}">
       {{getAttack()}}
@@ -31,8 +30,7 @@
   <!-- Show defense if not active. -->
   <div *ngIf="!piece.player.isActive()" class="piece-defense">
     <img src="/images/icon/shield_icon.png">
-    <div class="piece-defense-number"
-      [ngClass]="{
+    <div class="piece-defense-number" [ngClass]="{
         'stat-buffed': getDefense() > piece.getBaseDefense(),
         'stat-debuffed': getDefense() < piece.getBaseDefense()}">
       {{getDefense()}}
@@ -41,60 +39,52 @@
 
   <div class="piece-health">
     <img src="/images/icon/black_heart.png">
-    <div class="piece-health-number"
-      [ngClass]="{
+    <div class="piece-health-number" [ngClass]="{
         'stat-buffed': piece.getHealth() > piece.getUnstagedHealth(),
         'stat-debuffed': piece.getHealth() < piece.getUnstagedHealth()}">
       {{piece.getHealth()}}
     </div>
   </div>
-
-  <div *ngIf="piece.wouldBeKnockedBack()"
-      class="knockback-pull-indicator"
-      [style.transform]="getKnockbackRotationTransform()">
+</div>
+<!-- These are the buttons that show up once the piece is selected. -->
+<div *ngIf="isPieceSelected()" class="piece-buttons">
+  <button class="piece-button cancel-selection" (click)="cancel($event)">
+    <div class="piece-button-img-container">
+      <img class="cancel-selection-image" src="/images/icon/cancel_black.png">
+    </div>
+  </button>
+  <button class="piece-button confirm-move" (click)="confirmMove($event)" [disabled]="!piece.canMove()">
+    <div class="piece-button-img-container">
+      <img class="confirm-move-image" src="/images/icon/move_icon_black.png">
+    </div>
+  </button>
+  <button class="piece-button confirm-attack" (click)="confirmAttack($event)" [disabled]="!piece.canAttack()">
+    <div class="piece-button-img-container">
+      <img class="confirm-attack-image" src="/images/icon/attack_icon_black.png">
+    </div>
+  </button>
+  <button class="piece-button rotate-cw" (click)="rotateClockwise($event)" [disabled]="!piece.canRotate()">
+    <div class="piece-button-img-container">
+      <img class="rotate-cw-image" src="/images/icon/rotate_black.png">
+    </div>
+  </button>
+  <button class="piece-button rotate-ccw" (click)="rotateCounterClockwise($event)" [disabled]="!piece.canRotate()">
+    <div class="piece-button-img-container">
+      <img class="rotate-ccw-image" src="/images/icon/rotate_black.png">
+    </div>
+  </button>
+</div>
+<div *ngIf="piece" class="knockback-pull-indicator-container">
+  <div *ngIf="piece.wouldBeKnockedBack()" class="knockback-pull-indicator"
+    [style.transform]="getKnockbackRotationTransform()">
     <span></span>
     <span></span>
     <span></span>
   </div>
 
-  <div *ngIf="piece.wouldBePulled()"
-      class="knockback-pull-indicator"
-      [style.transform]="getPullRotationTransform()">
+  <div *ngIf="piece.wouldBePulled()" class="knockback-pull-indicator" [style.transform]="getPullRotationTransform()">
     <span></span>
     <span></span>
     <span></span>
-  </div>
-
-  <!-- These are the buttons that show up once the piece is selected. -->
-  <div *ngIf="piece.selected" class="piece-buttons">
-    <button class="piece-button cancel-selection" (click)="cancel($event)">
-      <div class="piece-button-img-container">
-        <img class="cancel-selection-image" src="/images/icon/cancel_icon_2.png">
-      </div>
-    </button>
-    <button class="piece-button confirm-move" (click)="confirmMove($event)"
-        [disabled]="!piece.canMove()">
-      <div class="piece-button-img-container">
-        <img class="confirm-move-image" src="/images/icon/move_icon.ico">
-      </div>
-    </button>
-    <button class="piece-button confirm-attack" (click)="confirmAttack($event)"
-        [disabled]="!piece.canAttack()">
-      <div class="piece-button-img-container">
-        <img class="confirm-attack-image" src="/images/icon/attack_icon_2.webp">
-      </div>
-    </button>
-    <button class="piece-button rotate-cw" (click)="rotateClockwise($event)"
-      [disabled]="!piece.canRotate()">
-      <div class="piece-button-img-container">
-        <img class="rotate-cw-image" src="/images/icon/rotate_icon.ico">
-      </div>
-    </button>
-    <button class="piece-button rotate-ccw" (click)="rotateCounterClockwise($event)"
-        [disabled]="!piece.canRotate()">
-      <div class="piece-button-img-container">
-        <img class="rotate-ccw-image" src="/images/icon/rotate_icon.ico">
-      </div>
-    </button>
   </div>
 </div>

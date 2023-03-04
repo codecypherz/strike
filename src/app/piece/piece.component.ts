@@ -13,6 +13,10 @@ export class PieceComponent {
 
   constructor(private boardService: BoardService) {}
 
+  isPieceSelected() {
+    return this.piece && this.piece.selected;
+  }
+
   getPieceRotationTransform(): string {
     return 'rotate(' + this.piece.getDirection().degrees + 'deg)';
   }

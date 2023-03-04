@@ -17,6 +17,14 @@ export class CellComponent {
     this.boardService.onCellClicked(this.cell);
   }
 
+  showAvailableMove(): boolean {
+    return this.cell.availableMove && !this.cell.whereAttackWillEnd;
+  }
+
+  showAvailableSprint(): boolean {
+    return this.cell.availableSprint && !this.cell.whereAttackWillEnd;
+  }
+
   showAttackInRange(): boolean {
     return this.cell.inAttackRange && !this.cell.whereAttackWillEnd;
   }

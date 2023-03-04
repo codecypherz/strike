@@ -1,12 +1,9 @@
 .board {
-  /* Unsure about this display value. */
-  display: inline-grid;
-  border: solid var(--foreground_color) 1px;
-  vertical-align: top;
   background: black;
+  border: 1px solid black;
 }
 
-app-cell{
+app-cell {
   display: inline-flex;
   vertical-align: top;
 }

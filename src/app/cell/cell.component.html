@@ -4,11 +4,11 @@
   </div>
   <div *ngIf=cell.selected class="cell-selected" [ngClass]="{'cell-has-piece': cell.hasPiece()}"></div>
 
-  <div *ngIf=cell.availableMove class="cell-available-move">
-    <img src="/images/icon/move_icon.ico">
+  <div *ngIf=showAvailableMove() class="cell-available-move">
+    <img src="/images/icon/move_icon_white.png">
   </div>
-  <div *ngIf=cell.availableSprint class="cell-available-sprint">
-    <img src="/images/icon/move_icon.ico">
+  <div *ngIf=showAvailableSprint() class="cell-available-sprint">
+    <img src="/images/icon/move_icon_white.png">
   </div>
 
   <!-- Render the piece. -->
@@ -16,12 +16,12 @@
 
   <!-- Render this as an overlay on the piece. -->
   <div *ngIf=cell.willBeAttacked class="cell-will-be-attacked">
-    <img src="/images/icon/attack_icon_2.webp">
+    <img src="/images/icon/attack_icon_black.png">
   </div>
   <div *ngIf=showAttackInRange() class="cell-in-attack-range">
-    <img src="/images/icon/attack_icon_2.webp">
+    <img src="/images/icon/attack_icon_black.png">
   </div>
   <div *ngIf=cell.whereAttackWillEnd class="cell-where-attack-will-end">
-    <img src="/images/icon/move_icon.ico">
+    <img src="/images/icon/attack_icon_black.png">
   </div>
 </div>

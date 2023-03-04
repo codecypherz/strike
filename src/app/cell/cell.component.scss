@@ -1,20 +1,13 @@
 .cell {
-  border: solid var(--foreground_color) 1px;
-  padding: 2px;
   width: 100px;
   height: 100px;
-  display: inline-block;
   position: relative;
   cursor: default;
-}
-
-.cell:hover {
-  background: var(--hover_color);
+  background: black;
 }
 
 .cell:hover .cell-available-move,
 .cell:hover .cell-available-sprint {
-  opacity: 70%;
   cursor: pointer;
 }
 
@@ -28,12 +21,12 @@
 
 .cell-selected {
   border: solid var(--foreground_color) 6px;
-  width: 108px;
-  height: 108px;
-  margin-left: -10px;
-  margin-top: -10px;
+  width: 100px;
+  height: 100px;
+  margin-left: -6px;
+  margin-top: -6px;
   position: absolute;
-  z-index: 1;
+  z-index: var(--z_cell_selected);
 }
 
 .cell-terrain {
@@ -42,7 +35,31 @@
   right: 0;
   left: 0;
   bottom: 0;
-  padding: 3px;
+  padding: 2px;
+}
+
+.cell-terrain.mountain {
+  z-index: var(--z_mountain);
+  box-shadow: 0 16px 10px black;
+}
+.cell-terrain.hill {
+  z-index: var(--z_hill);
+  box-shadow: 0 13px 10px black;
+}
+.cell-terrain.forest {
+  z-index: var(--z_forest);
+  box-shadow: 0 10px 10px black;
+}
+.cell-terrain.grassland {
+  z-index: var(--z_grassland);
+  box-shadow: 0 10px 10px black;
+}
+.cell-terrain.marsh {
+  z-index: var(--z_marsh);
+  box-shadow: 0 10px 10px black;
+}
+.cell-terrain.chasm {
+  z-index: var(--z_chasm);
 }
 
 .cell-terrain-image {
@@ -52,16 +69,21 @@
 .cell-available-move,
 .cell-available-sprint,
 .cell-where-attack-will-end {
-  border: solid black 2px;
+  border: solid white 3px;
   width: 80px;
   height: 80px;
   border-radius: 80px;
   position: absolute;
-  background: #aaa;
-  opacity: 50%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: var(--z_available_indicator);
+}
+
+.cell-where-attack-will-end {
+  background-color: var(--attack_color);
+  border-color: black;
+  opacity: 50%;
 }
 
 .cell-available-move>img,
@@ -71,7 +93,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 30px;
 }
 
 .cell-available-sprint {
@@ -80,21 +102,22 @@
   border-style: dashed;
 }
 
-.cell-where-attack-will-end {
-  background: var(--attack_color);
-}
-
 .cell-will-be-attacked,
 .cell-in-attack-range {
-  border: solid black 2px;
+  border: solid black 3px;
   width: 50px;
   height: 50px;
   border-radius: 80px;
-  position: absolute;
   background: var(--attack_color);
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: var(--z_available_indicator);
+}
+
+.cell-in-attack-range {
+  border-style: dashed;
 }
 
 .cell-will-be-attacked>img,
@@ -104,8 +127,4 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 50%;
-}
-
-.cell-in-attack-range {
-  border-style: dashed;
 }
