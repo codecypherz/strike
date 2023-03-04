@@ -34,7 +34,7 @@
   overflow: hidden;
 }
 
-.app-background > img {
+.app-background>img {
   width: 143%;
   margin-left: -265px;
   opacity: 30%;
@@ -63,4 +63,22 @@
   position: absolute;
   left: 0;
   top: -96px;
+}
+
+.footer {
+  position: absolute;
+  bottom: -51px;
+  height: 50px;
+  left: 0;
+  right: 0;
+  border-top: 1px solid black;
+}
+
+.horizon-attribution {
+  width: 500px;
+  margin: auto;
+  font-weight: 100;
+  font-size: 12px;
+  margin-top: 9px;
+  color: #aaa;
 }
