@@ -41,26 +41,30 @@ export class PullPiece extends Piece {
       return attackCells;
     }
 
-    // Pull the target one closer, if possible.
+    // Check if the target is still alive. If not, we are done here.
     const targetCell = getOnly(attackCells.toAttack);
+    if (!targetCell.hasPiece()) {
+      return attackCells;
+    }
     const targetPiece = targetCell.getPiece()!;
+    if (targetPiece.getHealth() <= 0) {
+      return attackCells;
+    }
+
+    // Pull the target one closer, if possible.
     const pullDir = this.getDirection().opposite();
     const pullCell = this.board.getCellInDirection(targetCell.position, pullDir);
     if (pullCell == null) {
       throw new Error('Pull cell should not be null.');
     }
 
+    targetPiece.stagedPullDirection = pullDir;
     if (pullCell.hasPiece()) {
-      // Cell has a piece, so deal 1 damage to each piece if it's still alive.
-      // Don't stage the pull direction if the piece is dead.
-      if (targetPiece.getHealth() > 0) {
-        targetPiece.stagedPullDirection = pullDir;
-        this.takeDamage_(1);
-        targetPiece.takeDamage_(1);
-      }
+      // Cell has a piece, so deal 1 damage to each piece.
+      pullCell.getPiece()!.takeDamage_(1);
+      targetPiece.takeDamage_(1);
     } else {
       // Empty cell, so just pull the target into the cell.
-      targetPiece.stagedPullDirection = pullDir;
       if (!this.isStagedAttack()) {
         targetCell.clearPiece();
         pullCell.setPiece(targetPiece);
