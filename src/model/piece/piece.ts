@@ -495,7 +495,7 @@ export abstract class Piece extends EventTarget {
     if (attack > defense) {
       // Deal damage to the target piece.
       targetPiece.takeDamage_(attack - defense);
-    } else {
+    } else if (this.performsArmorBreak_()) {
       // If the attack is <= defense, then each piece takes a damage
       // and knocks back the other piece.
       // Knockback direction is always in the direction the attacking piece is facing.
@@ -526,6 +526,10 @@ export abstract class Piece extends EventTarget {
       defense++;
     }
     return defense;
+  }
+
+  performsArmorBreak_(): boolean {
+    return true;
   }
 
   confirmMovementIfNotStaged_(): void {

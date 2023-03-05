@@ -33,7 +33,7 @@ export class Board {
       this.cells.push(rowArr);
     }
 
-    this.setBoard2();
+    this.setBoard3();
   }
 
   private setBoard3(): void {
@@ -50,6 +50,8 @@ export class Board {
     this.getByRowCol(2, 5).terrain = Terrain.FOREST;
     this.getByRowCol(2, 6).terrain = Terrain.HILL;
     this.getByRowCol(2, 7).terrain = Terrain.MOUNTAIN;
+
+    this.getByRowCol(5, 0).terrain = Terrain.MOUNTAIN;
 
     this.getByRowCol(5, 3).terrain = Terrain.MARSH;
     this.getByRowCol(4, 2).terrain = Terrain.FOREST;

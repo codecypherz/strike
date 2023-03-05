@@ -49,7 +49,17 @@ export class PullPiece extends Piece {
     if (pullCell == null) {
       throw new Error('Pull cell should not be null.');
     }
-    if (!pullCell.hasPiece()) {
+
+    if (pullCell.hasPiece()) {
+      // Cell has a piece, so deal 1 damage to each piece if it's still alive.
+      // Don't stage the pull direction if the piece is dead.
+      if (targetPiece.getHealth() > 0) {
+        targetPiece.stagedPullDirection = pullDir;
+        this.takeDamage_(1);
+        targetPiece.takeDamage_(1);
+      }
+    } else {
+      // Empty cell, so just pull the target into the cell.
       targetPiece.stagedPullDirection = pullDir;
       if (!this.isStagedAttack()) {
         targetCell.clearPiece();
@@ -59,5 +69,10 @@ export class PullPiece extends Piece {
     }
 
     return attackCells;
+  }
+
+  override performsArmorBreak_(): boolean {
+    // Pull pieces never knockback. Pull always overrides.
+    return false;
   }
 }
