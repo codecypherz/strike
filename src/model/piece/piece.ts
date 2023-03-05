@@ -257,6 +257,10 @@ export abstract class Piece {
   }
 
   canOvercharge(): boolean {
+    // You can't overcharge if you don't have enough health.
+    if (this.getHealth() <= 1) {
+      return false;
+    }
     if (this.isLastPiece()) {
       // You can't overcharge more than twice with the last piece.
       if (this.numOvercharges >= 2) {
