@@ -36,27 +36,23 @@
   left: 0;
   bottom: 0;
   padding: 2px;
+  box-shadow: 10px 10px 10px black;
 }
 
 .cell-terrain.mountain {
   z-index: var(--z_mountain);
-  box-shadow: 0 16px 10px black;
 }
 .cell-terrain.hill {
   z-index: var(--z_hill);
-  box-shadow: 0 13px 10px black;
 }
 .cell-terrain.forest {
   z-index: var(--z_forest);
-  box-shadow: 0 10px 10px black;
 }
 .cell-terrain.grassland {
   z-index: var(--z_grassland);
-  box-shadow: 0 10px 10px black;
 }
 .cell-terrain.marsh {
   z-index: var(--z_marsh);
-  box-shadow: 0 10px 10px black;
 }
 .cell-terrain.chasm {
   z-index: var(--z_chasm);
