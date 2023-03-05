@@ -74,6 +74,11 @@
       <img class="rotate-ccw-image" src="/images/icon/rotate_black.png">
     </div>
   </button>
+  <button class="piece-button overcharge" (click)="overcharge($event)" [disabled]="!piece.canOvercharge()">
+    <div class="piece-button-img-container">
+      <img class="overcharge-image" src="/images/icon/lightning_black.png">
+    </div>
+  </button>
 </div>
 <div *ngIf="piece" class="knockback-pull-indicator-container">
   <div *ngIf="piece.wouldBeKnockedBack()" class="knockback-pull-indicator"

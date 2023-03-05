@@ -86,4 +86,10 @@ export class PieceComponent {
     this.piece.rotateCounterClockwise();
     this.boardService.showSelectedActions();
   }
+
+  overcharge(event: Event): void {
+    event.stopPropagation();
+    this.piece.overcharge();
+    this.boardService.showSelectedActions();
+  }
 }

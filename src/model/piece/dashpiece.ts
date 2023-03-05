@@ -102,7 +102,7 @@ export class DashPiece extends Piece {
       this.position = finishingCell.position;
     }
 
-    this.activatePieceIfNotStaged_();
+    this.confirmAttackIfNotStaged_();
     return attackCells;
   }
 }

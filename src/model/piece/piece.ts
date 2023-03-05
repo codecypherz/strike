@@ -33,6 +33,7 @@ export abstract class Piece extends EventTarget {
   numMoves = 0;
   numAttacks = 0;
   numSprints = 0;
+  numOvercharges = 0;
 
   // Selected metadata
   // This data is cleared if selection changes and when a turn ends.
@@ -48,6 +49,7 @@ export abstract class Piece extends EventTarget {
   stagedHealth: number | null = null;
   stagedKnockbackDirection: Direction | null = null;
   stagedPullDirection: Direction | null = null;
+  stagedOvercharge = false;
 
   constructor(
     readonly board: Board,
@@ -79,6 +81,7 @@ export abstract class Piece extends EventTarget {
     this.numMoves = 0;
     this.numAttacks = 0;
     this.numSprints = 0;
+    this.numOvercharges = 0;
     this.clearSelectionData();
     this.clearStagedAttackData();
   }
@@ -95,16 +98,22 @@ export abstract class Piece extends EventTarget {
     this.stagedPosition = null;
     this.stagedDirection = null;
     this.stagedSprint = false;
+    this.stagedOvercharge = false;
   }
 
   isStagedAttack(): boolean {
     return this.stagedAttack;
   }
 
-  stageAttack(): void {
+  stageAction(): void {
     this.stagedAttack = true;
     this.stagedHealth = this.health;
     this.stagedKnockbackDirection = null;
+
+    // No matter what action you are taking, stage taking 2 damage in overcharge.
+    if (this.stagedOvercharge) {
+      this.takeDamage_(2);
+    }
   }
 
   select(): void {
@@ -260,6 +269,34 @@ export abstract class Piece extends EventTarget {
     return this.player.isLastPiece(this);
   }
 
+  canOvercharge(): boolean {
+    if (this.isLastPiece()) {
+      // You can't overcharge more than twice with the last piece.
+      if (this.numOvercharges >= 2) {
+        return false;
+      }
+      // Special case for last piece where you can overcharge twice.
+      // You still have to be spent in some dimension.
+      return this.numAttacks >= 2 || this.numMoves >= 2 || this.numSprints >= 2;
+    }
+    // You can't overcharge if you've overcharged already.
+    if (this.numOvercharges >= 1) {
+      return false;
+    }
+    // You can't overcharge unless you are spent in some way.
+    return this.numAttacks >= 1 || this.numMoves >= 1 || this.numSprints >= 1;
+  }
+
+  overcharge(): void {
+    if (!this.selected) {
+      throw new Error('Tried to overcharge without being selected');
+    }
+    if (!this.canOvercharge()) {
+      throw new Error('Tried to overcharge when unable to do so');
+    }
+    this.stagedOvercharge = true;
+  }
+
   canSprint(): boolean {
     if (!this.canMove()) {
       // You can't sprint if you can't move.
@@ -267,19 +304,20 @@ export abstract class Piece extends EventTarget {
     }
     if (this.isLastPiece()) {
       // Special case for last piece where you can sprint twice.
-      return this.numAttacks <= 1 && this.numMoves <= 1 && this.numSprints <= 1;
+      return this.numAttacks <= 1 && this.numMoves <= 1 && this.numSprints <= 1 && !this.stagedOvercharge;
     }
     // You can't sprint if you've moved or attacked.
-    return this.numAttacks == 0 && this.numMoves == 0 && this.numSprints == 0;
+    return this.numAttacks == 0 && this.numMoves == 0 && this.numSprints == 0 && !this.stagedOvercharge;
   }
 
   canMove(): boolean {
-    // TODO: Support overdrive.
-    if (this.isLastPiece() && this.numMoves >= 2) {
+    if (this.isLastPiece() && this.numMoves >= 2 && !this.stagedOvercharge) {
       return false;
-    } else if (!this.isLastPiece() && this.numMoves >= 1) {
+    } else if (!this.isLastPiece() && this.numMoves >= 1 && !this.stagedOvercharge) {
       return false;
     }
+    // We don't return false here for move and attack with overcharge.
+    // This is handled in the canAttack method which prevents the combination.
     if (!this.player.isActive()) {
       return false;
     }
@@ -319,12 +357,12 @@ export abstract class Piece extends EventTarget {
     }
   }
 
-  isMoveStaged(): boolean {
+  hasConfirmableMove(): boolean {
     return this.stagedPosition != null && !this.position.equals(this.stagedPosition);
   }
 
   confirmMove(): void {
-    if (!this.isMoveStaged()) {
+    if (!this.hasConfirmableMove()) {
       throw new Error('Cannot confirm move if no move is staged.');
     }
     const cell = this.getCell();
@@ -335,6 +373,10 @@ export abstract class Piece extends EventTarget {
       this.numSprints++;
     }
     this.numMoves++;
+    if (this.stagedOvercharge) {
+      this.numOvercharges++;
+      this.takeDamage_(2);
+    }
     this.activate();
   }
 
@@ -391,27 +433,30 @@ export abstract class Piece extends EventTarget {
   }
 
   canAttack(): boolean {
-    // TODO: Support overdrive.
     if (this.isLastPiece()) {
-      if (this.numAttacks >= 2) {
+      if (this.numAttacks >= 2 && !this.stagedOvercharge) {
         return false;
       }
-      if (this.numSprints >= 2) {
+      if (this.numSprints >= 2 && !this.stagedOvercharge) {
         return false;
       }
       if (this.numSprints >= 1 && this.stagedSprint) {
         return false;
       }
     } else {
-      if (this.numAttacks >= 1) {
+      if (this.numAttacks >= 1 && !this.stagedOvercharge) {
         return false;
       }
-      if (this.numSprints >= 1) {
+      if (this.numSprints >= 1 && !this.stagedOvercharge) {
         return false;
       }
       if (this.numSprints >= 0 && this.stagedSprint) {
         return false;
       }
+    }
+    if (this.stagedOvercharge && this.hasConfirmableMove()) {
+      // Can't move and attack with overcharge.
+      return false;
     }
     if (!this.player.isActive()) {
       return false;
@@ -504,7 +549,7 @@ export abstract class Piece extends EventTarget {
       targetPiece.knockback_(this.getDirection());
     }
 
-    this.activatePieceIfNotStaged_();
+    this.confirmAttackIfNotStaged_();
     return attackCells;
   }
 
@@ -535,15 +580,19 @@ export abstract class Piece extends EventTarget {
   confirmMovementIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
       this.confirmDirection();
-      if (this.isMoveStaged()) {
+      if (this.hasConfirmableMove()) {
         this.confirmMove();
       }
     }
   }
 
-  activatePieceIfNotStaged_(): void {
+  confirmAttackIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
       this.numAttacks++;
+      if (this.stagedOvercharge) {
+        this.numOvercharges++;
+        this.takeDamage_(2);
+      }
       this.activate();
     }
   }

@@ -116,10 +116,13 @@ export class BoardService {
     const piece = this.selectedPiece;
 
     // Cancel staging if the piece didn't actually move.
-    if (!piece.isMoveStaged()) {
+    if (!piece.hasConfirmableMove()) {
       this.exitStaging();
       return;
     }
+
+    // Clear staging for all pieces.
+    this.board.clearStagedAttackData();
 
     // Confirm the move, then exit staging for the next action.
     piece.confirmMove();
@@ -182,7 +185,7 @@ export class BoardService {
       cell.clearIndicators();
       if (cell.hasPiece()) {
         cell.getPiece()!.clearStagedAttackData();
-        cell.getPiece()!.stageAttack();
+        cell.getPiece()!.stageAction();
       }
     }
 

@@ -340,6 +340,16 @@
   width: 50%;
 }
 
+.overcharge {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -45px;
+}
+
+.overcharge-image {
+  width: 65%;
+}
+
 .rotate-cw {
   left: -45px;
   bottom: -45px;

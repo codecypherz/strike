@@ -55,7 +55,7 @@ export class RamPiece extends Piece {
       this.position = oldTargetPieceCell.position;
     }
 
-    this.activatePieceIfNotStaged_();
+    this.confirmAttackIfNotStaged_();
     return attackCells;
   }
 }
