@@ -1,20 +1,19 @@
+import { getOnly } from "src/util/sets";
+import { AttackCells } from "../attackcells";
 import { Board } from "../board";
 import { Cell } from "../cell";
-import { Player } from "../player";
-import { Position } from "../position";
-import { Terrain } from "../terrain";
-import { AttackCells } from "../attackcells";
 import { Direction } from "../direction";
 import { MoveCells } from "../movecells";
+import { Player } from "../player";
+import { Position } from "../position";
 import { Strength } from "../strength";
-import { getOnly } from "src/util/sets";
+import { Terrain } from "../terrain";
 
 /**
  * Represents the data common to all pieces.
  */
-export abstract class Piece extends EventTarget {
+export abstract class Piece {
 
-  static PIECE_DIED_EVENT = 'piece_died_event';
   static IMAGE_PATH = '/images/machine/';
 
   // Semi-invalid default, but don't want nullability.
@@ -61,7 +60,6 @@ export abstract class Piece extends EventTarget {
     readonly attackRange: number,
     readonly maxHealth: number,
     readonly player: Player) {
-    super();
 
     this.health = maxHealth;
     this.direction = player.defaultDirection;
@@ -169,19 +167,8 @@ export abstract class Piece extends EventTarget {
    * @param damage The damage to take
    * @returns True if the piece died
    */
-  takeDamage_(damage: number): boolean {
-    if (this.getHealth() == 0) {
-      return false; // no-op if already dead.
-    }
+  takeDamage_(damage: number): void {
     this.setHealth(this.getHealth() - damage);
-    if (!this.isStagedAttack() && this.getHealth() <= 0) {
-      const cell = this.getCell();
-      cell.clearPiece();
-      // Notify if real health dropped to zero.
-      this.dispatchEvent(new Event(Piece.PIECE_DIED_EVENT));
-      return true;
-    }
-    return false;
   }
 
   getBaseAttack(): number {
@@ -540,13 +527,14 @@ export abstract class Piece extends EventTarget {
     if (attack > defense) {
       // Deal damage to the target piece.
       targetPiece.takeDamage_(attack - defense);
-    } else if (this.performsArmorBreak_()) {
+    } else {
       // If the attack is <= defense, then each piece takes a damage
       // and knocks back the other piece.
-      // Knockback direction is always in the direction the attacking piece is facing.
       this.takeDamage_(1);
       targetPiece.takeDamage_(1);
-      targetPiece.knockback_(this.getDirection());
+      if (this.armorBreakKnocksBack_()) {
+        targetPiece.knockback_(this.getDirection());
+      }
     }
 
     this.confirmAttackIfNotStaged_();
@@ -573,7 +561,7 @@ export abstract class Piece extends EventTarget {
     return defense;
   }
 
-  performsArmorBreak_(): boolean {
+  armorBreakKnocksBack_(): boolean {
     return true;
   }
 

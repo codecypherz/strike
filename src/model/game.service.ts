@@ -5,11 +5,11 @@ import { Burrower } from "./machine/burrower";
 import { Charger } from "./machine/charger";
 import { Glinthawk } from "./machine/glinthawk";
 import { Lancehorn } from "./machine/lancehorn";
-import { Piece } from "./piece/piece";
 import { Scrapper } from "./machine/scrapper";
+import { Widemaw } from "./machine/widemaw";
+import { Piece } from "./piece/piece";
 import { Player } from "./player";
 import { TurnService } from "./turn.service";
-import { Widemaw } from "./machine/widemaw";
 
 /**
  * Provides the main game engine logic.
@@ -60,18 +60,6 @@ export class GameService {
     const cell = this.board.getByRowCol(row, col);
     cell.setPiece(piece);
     piece.position = cell.position;
-
-    // Listen for when it dies.
-    piece.addEventListener(Piece.PIECE_DIED_EVENT, this.onPieceDied.bind(this, piece));
-  }
-
-  onPieceDied(piece: Piece): void {
-    // Remove the listener to not consume memory.
-    piece.removeEventListener(Piece.PIECE_DIED_EVENT, this.onPieceDied.bind(this, piece));
-    // If a piece dies, then award the other player those points.
-    this.turnService.getOtherPlayer(piece.player).addPoints(piece.points);
-    // Now that points have been awarded, check the win condition.
-    this.checkWinCondition();
   }
 
   checkWinCondition(): void {

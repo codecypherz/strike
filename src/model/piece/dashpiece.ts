@@ -87,6 +87,10 @@ export class DashPiece extends Piece {
       // Deal damage, if you can.
       if (attack > defense) {
         targetPiece.takeDamage_(attack - defense);
+      } else {
+        // If the attack is <= defense, then each piece takes 1 extra damage.
+        this.takeDamage_(1);
+        targetPiece.takeDamage_(1);
       }
       // Always 180 the target pieces if not staged.
       // TODO: Give rotation indicator?

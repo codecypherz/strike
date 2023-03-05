@@ -41,15 +41,11 @@ export class PullPiece extends Piece {
       return attackCells;
     }
 
-    // Check if the target is still alive. If not, we are done here.
     const targetCell = getOnly(attackCells.toAttack);
     if (!targetCell.hasPiece()) {
       return attackCells;
     }
     const targetPiece = targetCell.getPiece()!;
-    if (targetPiece.getHealth() <= 0) {
-      return attackCells;
-    }
 
     // Pull the target one closer, if possible.
     const pullDir = this.getDirection().opposite();
@@ -75,7 +71,7 @@ export class PullPiece extends Piece {
     return attackCells;
   }
 
-  override performsArmorBreak_(): boolean {
+  override armorBreakKnocksBack_(): boolean {
     // Pull pieces never knockback. Pull always overrides.
     return false;
   }

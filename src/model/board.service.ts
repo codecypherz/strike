@@ -127,6 +127,10 @@ export class BoardService {
     // Confirm the move, then exit staging for the next action.
     piece.confirmMove();
     this.exitStaging();
+
+    // Check win condition.
+    this.removeAndAwardForDeadPieces();
+    this.gameService.checkWinCondition();
   }
 
   confirmAttack(): void {
@@ -148,6 +152,10 @@ export class BoardService {
     // Perform the attack.
     piece.attack();
     this.exitStaging();
+
+    // Check win condition.
+    this.removeAndAwardForDeadPieces();
+    this.gameService.checkWinCondition();
   }
 
   /**
@@ -224,6 +232,18 @@ export class BoardService {
       // Since we are staged, this will show the impact of an attack made
       // with the selected piece.
       this.selectedPiece.attack();
+    }
+  }
+
+  private removeAndAwardForDeadPieces(): void {
+    for (let cell of this.board.getCells().flat()) {
+      if (cell.hasPiece()) {
+        const piece = cell.getPiece()!;
+        if (piece.getHealth() <= 0) {
+          this.turnService.getOtherPlayer(piece.player).addPoints(piece.points);
+          cell.clearPiece();
+        }
+      }
     }
   }
 }
