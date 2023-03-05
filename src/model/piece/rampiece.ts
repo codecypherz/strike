@@ -40,6 +40,10 @@ export class RamPiece extends Piece {
     if (attack > defense) {
       // Deal damage to the target piece.
       targetPiece.takeDamage_(attack - defense);
+    } else {
+      // If the attack is <= defense, then each piece takes 1 extra damage.
+      this.takeDamage_(1);
+      targetPiece.takeDamage_(1);
     }
     // Always knockback the target.
     const oldTargetPieceCell = targetPiece.getCell();
