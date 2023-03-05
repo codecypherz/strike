@@ -36,23 +36,23 @@ export class GameService {
     const board = this.board;
     // Player 1 pieces
     let player1 = this.turnService.player1;
-    this.addPiece(3, 2, new Lancehorn(board, player1));
-    this.addPiece(0, 2, new Charger(board, player1));
-    this.addPiece(0, 3, new Bristleback(board, player1));
-    this.addPiece(4, 0, new Widemaw(board, player1));
-    this.addPiece(4, 1, new Burrower(board, player1));
-    this.addPiece(0, 6, new Glinthawk(board, player1));
-    this.addPiece(1, 3, new Scrapper(board, player1));
+    this.addPiece(0, 1, new Scrapper(board, player1));
+    this.addPiece(0, 2, new Glinthawk(board, player1));
+    this.addPiece(0, 3, new Burrower(board, player1));
+    this.addPiece(0, 4, new Widemaw(board, player1));
+    this.addPiece(0, 5, new Bristleback(board, player1));
+    this.addPiece(0, 6, new Charger(board, player1));
+    this.addPiece(0, 7, new Lancehorn(board, player1));
 
     // Player 2 pieces
     let player2 = this.turnService.player2;
-    this.addPiece(7, 6, new Lancehorn(board, player2));
-    this.addPiece(7, 5, new Charger(board, player2));
-    this.addPiece(3, 3, new Bristleback(board, player2));
-    this.addPiece(5, 0, new Widemaw(board, player2));
-    this.addPiece(3, 4, new Burrower(board, player2));
-    this.addPiece(2, 4, new Glinthawk(board, player2));
-    this.addPiece(7, 3, new Scrapper(board, player2));
+    this.addPiece(7, 0, new Lancehorn(board, player2));
+    this.addPiece(7, 1, new Charger(board, player2));
+    this.addPiece(7, 2, new Bristleback(board, player2));
+    this.addPiece(7, 3, new Widemaw(board, player2));
+    this.addPiece(7, 4, new Burrower(board, player2));
+    this.addPiece(7, 5, new Glinthawk(board, player2));
+    this.addPiece(7, 6, new Scrapper(board, player2));
   }
 
   private addPiece(row: number, col: number, piece: Piece): void {

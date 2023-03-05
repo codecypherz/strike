@@ -33,7 +33,7 @@ export class Board {
       this.cells.push(rowArr);
     }
 
-    this.setBoard3();
+    this.setBoard1();
   }
 
   private setBoard3(): void {
