@@ -1,4 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Board } from 'src/model/board';
+import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
+import { TurnService } from 'src/model/turn.service';
 
 import { PieceComponent } from './piece.component';
 
@@ -8,9 +12,15 @@ describe('PieceComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PieceComponent ]
+      declarations: [PieceComponent],
+      providers: [
+        Board,
+        GameService,
+        TurnService,
+        BoardService
+      ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PieceComponent);
     component = fixture.componentInstance;
