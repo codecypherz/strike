@@ -20,8 +20,11 @@ Run Angular locally (main development flow):
 1. `ng serve`
 2. Visit `localhost:4200`
 
+Run tests:
+1. `ng test` which will open a browser with the results.
+2. Open `coverage/strike/index.html` to see code coverage.
 
-Run App Engine locally (test deployment):
+Run App Engine locally (test the deployment):
 1. `ng build`
 2. From strike directory, run `dev_appserver.py .`
 3. Visit `localhost:8080`

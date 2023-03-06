@@ -4,5 +4,7 @@
 
 /.angular/cache/
 
+/coverage
+
 # Don't add package-lock.json here.
 # It is used to make sure all installs have the exact same dependencies.

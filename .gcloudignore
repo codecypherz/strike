@@ -24,3 +24,6 @@ __pycache__/
 
 # Ignore other development specifics
 /.vscode
+
+# Ignore code coverage reports
+/coverage
