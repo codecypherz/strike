@@ -34,4 +34,15 @@ export class Bristleback extends RamPiece {
     return 'All machines in attack range <debuff>lose 1 HP</debuff>, ' +
         'friend or foe, during the start of every turn.';
   }
+
+  override takeStartOfTurnAction(): void {
+    if (this.player.isActive()) {
+      for (let cell of this.board.getSurroundingCells(this.getPosition())) {
+        if (cell.hasPiece()) {
+          const piece = cell.getPiece()!;
+          piece.takeDamage_(1);
+        }
+      }
+    }
+  }
 }

@@ -8,7 +8,7 @@ import { Player } from "./player";
 @Injectable()
 export class TurnService extends EventTarget {
 
-  static END_TURN_EVENT = 'end_turn';
+  static START_TURN_EVENT = 'start_turn';
 
   readonly player1: Player;
   readonly player2: Player;
@@ -33,10 +33,15 @@ export class TurnService extends EventTarget {
     this.player1.setActive(true);
   }
 
+  startGame(): void {
+    this.reset();
+    this.dispatchEvent(new Event(TurnService.START_TURN_EVENT));
+  }
+
   endTurn(): void {
     this.player1.toggleActive();
     this.player2.toggleActive();
-    this.dispatchEvent(new Event(TurnService.END_TURN_EVENT));
+    this.dispatchEvent(new Event(TurnService.START_TURN_EVENT));
   }
 
   getActivePlayer(): Player {

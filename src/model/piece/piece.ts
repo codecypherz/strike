@@ -142,6 +142,10 @@ export abstract class Piece {
   abstract getPieceType(): string;
   abstract getPieceTypeDescription(): string;
 
+  takeStartOfTurnAction(): void {
+    // Do nothing by default.
+  }
+
   hasAbility(): boolean {
     return false;
   }

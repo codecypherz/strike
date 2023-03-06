@@ -24,9 +24,12 @@ export class BoardService {
       throw new Error('Singleton violation: BoardService');
     }
 
-    turnService.addEventListener(TurnService.END_TURN_EVENT, this.onEndTurn.bind(this));
+    turnService.addEventListener(TurnService.START_TURN_EVENT, this.onStartTurn.bind(this));
 
     (window as any).boardService = this;
+
+    // TODO: Move this to the UI.
+    this.turnService.startGame();
   }
 
   reset(): void {
@@ -34,7 +37,7 @@ export class BoardService {
     this.board.reset();
   }
 
-  onEndTurn(): void {
+  onStartTurn(): void {
     this.exitStaging();
     this.selectedCell = null;
     this.selectedPiece = null;
@@ -44,6 +47,13 @@ export class BoardService {
       cell.selected = false;
       if (cell.hasPiece()) {
         cell.getPiece()!.clearTurnData();
+      }
+    }
+    // TODO: Animate or indicate what happened at the start of the turn.
+    // Allow pieces with start of turn actions to take action.
+    for (let cell of this.board.getCells().flat()) {
+      if (cell.hasPiece()) {
+        cell.getPiece()!.takeStartOfTurnAction();
       }
     }
     this.showSelectedActions();

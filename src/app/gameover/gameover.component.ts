@@ -32,7 +32,7 @@ export class GameoverComponent implements OnInit {
 
   newGame(): void {
     this.boardService.reset();
-    this.turnService.reset();
     this.gameService.reset();
+    this.turnService.startGame();
   }
 }
