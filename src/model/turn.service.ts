@@ -1,5 +1,4 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
-import { Board } from "./board";
 import { Player } from "./player";
 
 /**
@@ -13,7 +12,7 @@ export class TurnService extends EventTarget {
   readonly player1: Player;
   readonly player2: Player;
 
-  constructor(private board: Board, @Optional() @SkipSelf() service?: TurnService) {
+  constructor(@Optional() @SkipSelf() service?: TurnService) {
     super();
 
     if (service) {
