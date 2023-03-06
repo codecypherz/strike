@@ -4,6 +4,8 @@ import { Direction } from "../direction";
 import { Piece } from "../piece/piece";
 import { RamPiece } from "../piece/rampiece";
 import { Strength } from "../strength";
+import { Cell } from "../cell";
+import { Terrain } from "../terrain";
 
 export class Lancehorn extends RamPiece {
 
@@ -40,6 +42,14 @@ export class Lancehorn extends RamPiece {
   }
 
   override getAbilityDescription(): string {
-    return 'Attack increased by 1 when attacking from a Hill tile.';
+    return 'Attack increased by <buff>+1</buff> when attacking from a Hill tile.';
+  }
+
+  override getAttackPower(cell: Cell): number {
+    const attackPower = super.getAttackPower(cell);
+    if (cell.terrain == Terrain.HILL) {
+      return attackPower + 1;
+    }
+    return attackPower;
   }
 }

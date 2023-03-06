@@ -35,6 +35,10 @@ export class SelectedComponent implements OnInit {
     return decorate(this.getPiece().getPieceTypeDescription());
   }
 
+  getAbilityDescription(): string {
+    return '<b>Ability: </b>' + decorate(this.getPiece().getAbilityDescription());
+  }
+
   getTerrainDescription(): string {
     return decorate(this.getSelected()!.terrain.description);
   }
