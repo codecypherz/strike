@@ -667,7 +667,23 @@ export abstract class Piece {
   }
 
   canRotate(): boolean {
-    return this.canMove() || this.canAttack();
+    // You can't rotate at all if you don't have an attack or move available.
+    if (!this.canMove() && !this.canAttack()) {
+      return false;
+    }
+    // Effectively, attacking locks in the rotation.
+    if (this.isLastPiece() && this.numAttacks >= 2 && !this.stagedOvercharge) {
+      return false;
+    } else if (!this.isLastPiece() && this.numAttacks >= 1 && !this.stagedOvercharge) {
+      return false;
+    }
+    if (!this.player.isActive()) {
+      return false;
+    }
+    if (!this.hasBeenActivated() && !this.player.canActivatePiece()) {
+      return false;
+    }
+    return true;
   }
 
   rotateClockwise(): void {

@@ -22,7 +22,8 @@ Run Angular locally (main development flow):
 
 Run tests:
 1. `ng test` which will open a browser with the results.
-2. Open `coverage/strike/index.html` to see code coverage.
+2. `ng test --code-coverage` to generate the code coverage report.
+3. Open `coverage/strike/index.html` to see the code coverage report.
 
 Run App Engine locally (test the deployment):
 1. `ng build`

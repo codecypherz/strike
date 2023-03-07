@@ -148,7 +148,6 @@ export class BoardService {
       throw new Error('Confirming attack without a staged piece.');
     }
     const piece = this.selectedPiece;
-    const stagedCell = this.board.getCell(piece.stagedPosition!);
 
     if (!piece.hasConfirmableAttack()) {
       // There's nothing to attack, so just cancel.
