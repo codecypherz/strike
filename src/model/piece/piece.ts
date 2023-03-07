@@ -353,6 +353,9 @@ export abstract class Piece {
   }
 
   hasConfirmableMove(): boolean {
+    if (!this.canMove()) {
+      return false;
+    }
     return this.stagedPosition != null && !this.position.equals(this.stagedPosition);
   }
 
@@ -428,6 +431,10 @@ export abstract class Piece {
   }
 
   canAttack(): boolean {
+    // You can never sprint and attack simultaneously.
+    if (this.stagedSprint) {
+      return false;
+    }
     if (this.isLastPiece()) {
       if (this.numAttacks >= 2 && !this.stagedOvercharge) {
         return false;
@@ -435,17 +442,11 @@ export abstract class Piece {
       if (this.numSprints >= 2 && !this.stagedOvercharge) {
         return false;
       }
-      if (this.numSprints >= 1 && this.stagedSprint) {
-        return false;
-      }
     } else {
       if (this.numAttacks >= 1 && !this.stagedOvercharge) {
         return false;
       }
       if (this.numSprints >= 1 && !this.stagedOvercharge) {
-        return false;
-      }
-      if (this.numSprints >= 0 && this.stagedSprint) {
         return false;
       }
     }
@@ -501,6 +502,9 @@ export abstract class Piece {
   }
 
   hasConfirmableAttack(): boolean {
+    if (!this.canAttack()) {
+      return false;
+    }
     return this.hasConfirmableAttack_(this.getAttackCells());
   }
 

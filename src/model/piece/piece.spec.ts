@@ -47,6 +47,23 @@ describe('Piece', () => {
     expect(piece21.canAttack()).toBe(false);
   });
 
+  it('#canAttack with staged sprint', () => {
+    movePieceTo(piece11, 0, 0);
+    movePieceTo(piece21, 5, 0); // Move just outside of sprint range
+    
+    expect(piece11.canMove()).withContext('canMove').toBe(true);
+    expect(piece11.canAttack()).withContext('canAttack').toBe(true);
+    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(false);
+    expect(piece11.stagedSprint).toBe(false);
+
+    piece11.select();
+    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(false);
+
+    piece11.moveOrSprintTo(board.getByRowCol(4, 0));
+    expect(piece11.stagedSprint).toBe(true);
+    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(false);
+  });
+
   it('#canRotate no action taken', () => {
     expect(piece11.canRotate()).toBe(true);
   });
