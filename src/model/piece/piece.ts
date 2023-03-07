@@ -269,17 +269,18 @@ export abstract class Piece {
       // You can't overcharge more than twice with the last piece.
       if (this.numOvercharges >= 2) {
         return false;
+      } else if (this.numOvercharges == 1) {
+        return this.numMoves >= 2 || this.numSprints >= 2;
       }
-      // Special case for last piece where you can overcharge twice.
-      // You still have to be spent in some dimension.
-      return this.numAttacks >= 2 || this.numMoves >= 2 || this.numSprints >= 2;
+      // this.numOvercharges == 0
+      return this.numMoves >= 1 || this.numSprints >= 1;
     }
     // You can't overcharge if you've overcharged already.
     if (this.numOvercharges >= 1) {
       return false;
     }
-    // You can't overcharge unless you are spent in some way.
-    return this.numAttacks >= 1 || this.numMoves >= 1 || this.numSprints >= 1;
+    // You can't overcharge unless you have moved.
+    return this.numMoves >= 1 || this.numSprints >= 1;
   }
 
   overcharge(): void {

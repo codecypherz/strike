@@ -27,6 +27,11 @@ describe('Piece', () => {
     initializePiece(piece11, 0, 0);
     initializePiece(piece12, 0, 1);
     initializePiece(piece21, 7, 7);
+
+    // Important assumptions for all tests.
+    expect(player1.isLastPiece(piece11)).toBe(false);
+    expect(player1.isLastPiece(piece12)).toBe(false);
+    expect(player2.isLastPiece(piece21)).toBe(true);
   });
 
   it('#canMove no action taken', () => {
@@ -93,6 +98,158 @@ describe('Piece', () => {
     expect(piece11.canRotate()).withContext('canRotate').toBe(false);
   });
 
+  it('#canOvercharge no action taken', () => {
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
+  it('#canOvercharge after move', () => {
+    movePieceTo(piece11, 0, 0);
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece11.select();
+    piece11.moveOrSprintTo(board.getByRowCol(1, 0));
+    piece11.confirmMove();
+
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(true);
+  });
+
+  it('#canOvercharge attack but no move', () => {
+    movePieceTo(piece11, 0, 0);
+    movePieceTo(piece21, 1, 0);
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece11.select();
+    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece11.attack();
+    piece11.deselect();
+
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
+  it('#canOvercharge after move and attack', () => {
+    movePieceTo(piece11, 0, 0);
+    movePieceTo(piece21, 2, 0);
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece11.select();
+    piece11.moveOrSprintTo(board.getByRowCol(1, 0));
+    piece11.confirmMove();
+    piece11.deselect();
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece11.select();
+    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece11.attack();
+    piece11.deselect();
+    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(true);
+  });
+
+  it('#canOvercharge last piece no action taken', () => {
+    setActive(player2);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
+  it('#canOvercharge last piece after 1 move', () => {
+    setActive(player2);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+  });
+
+  it('#canOvercharge last piece 1 attack but no move', () => {
+    setActive(player2);
+    movePieceTo(piece11, 6, 0);
+    movePieceTo(piece21, 7, 0);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece21.attack();
+    piece21.deselect();
+
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
+  it('#canOvercharge last piece after 1 attack and 1 move', () => {
+    setActive(player2);
+    movePieceTo(piece11, 6, 0);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece21.attack();
+    piece21.deselect();
+
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+  });
+
+  it('#canOvercharge last piece after 1 move and 1 overcharge', () => {
+    setActive(player2);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    piece21.overcharge();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    piece21.confirmMove();
+    piece21.deselect();
+
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+  });
+
+  it('#canOvercharge last piece after 1 move and 2 attacks', () => {
+    setActive(player2);
+    movePieceTo(piece11, 6, 0);
+    movePieceTo(piece12, 6, 1);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece21.attack();
+    piece21.deselect();
+    // Can overcharge at this point.
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece21.attack();
+    piece21.deselect();
+    // Cannot here until after you move a second time.
+    // TODO: Fix this bug - the test shows the problem.
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
   function initializePiece(piece: Piece, row: number, col: number) {
     board.getByRowCol(row, col).setPiece(piece);
     piece.position = new Position(row, col);
@@ -103,5 +260,11 @@ describe('Piece', () => {
     board.getCell(piece.position).clearPiece();
     board.getByRowCol(row, col).setPiece(piece);
     piece.position = new Position(row, col);
+  }
+
+  function setActive(player: Player) {
+    player1.setActive(false);
+    player2.setActive(false);
+    player.setActive(true);
   }
 });
