@@ -62,7 +62,7 @@ export abstract class Piece {
     readonly player: Player) {
 
     this.health = maxHealth;
-    this.direction = player.defaultDirection;
+    this.direction = player.defaultDirection.degrees;
 
     player.addPiece(this);
   }

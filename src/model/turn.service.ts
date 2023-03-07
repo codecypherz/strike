@@ -1,4 +1,5 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
+import { Direction } from "./direction";
 import { Player } from "./player";
 
 /**
@@ -19,8 +20,8 @@ export class TurnService extends EventTarget {
       throw new Error('Singleton violation: TurnService');
     }
 
-    this.player1 = new Player('player1', 'Player 1', 180);
-    this.player2 = new Player('player2', 'Player 2', 0);
+    this.player1 = new Player('player1', 'Player 1', Direction.DOWN);
+    this.player2 = new Player('player2', 'Player 2', Direction.UP);
 
     this.reset();
   }

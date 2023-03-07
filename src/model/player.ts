@@ -1,4 +1,5 @@
 import { getOnly } from "src/util/sets";
+import { Direction } from "./direction";
 import { Piece } from "./piece/piece";
 
 /**
@@ -18,7 +19,7 @@ export class Player {
   constructor(
     readonly id: string,
     readonly name: string,
-    readonly defaultDirection: number) {
+    readonly defaultDirection: Direction) {
   }
 
   equals(other: Player): boolean {
