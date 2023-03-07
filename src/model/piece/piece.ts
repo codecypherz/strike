@@ -273,7 +273,7 @@ export abstract class Piece {
         return this.numMoves >= 2 || this.numSprints >= 2;
       }
       // this.numOvercharges == 0
-      return this.numMoves >= 1 || this.numSprints >= 1;
+      return (this.numMoves >= 1 || this.numSprints >= 1) && this.numAttacks < 2;
     }
     // You can't overcharge if you've overcharged already.
     if (this.numOvercharges >= 1) {
