@@ -246,7 +246,59 @@ describe('Piece', () => {
     piece21.attack();
     piece21.deselect();
     // Cannot here until after you move a second time.
-    // TODO: Fix this bug - the test shows the problem.
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
+  it('#canOvercharge last piece after 2 moves and 0 attacks', () => {
+    setActive(player2);
+    movePieceTo(piece11, 6, 0);
+    movePieceTo(piece12, 6, 1);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+  });
+
+  it('#canOvercharge last piece after 2 moves and 1 overcharge move at end', () => {
+    setActive(player2);
+    movePieceTo(piece11, 6, 0);
+    movePieceTo(piece12, 6, 1);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    piece21.overcharge();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    piece21.confirmMove();
+    piece21.deselect();
+    // You can't overcharge here because you opted not to overcharge after
+    // the first move.
+    // TODO: Fix this bug - it really needs to return false here.
+    // TODO: Might want a different way to track overcharge as a whole.
+    // TODO: Introduce concept of "pieceExhausted" and allow overcharge to override.
+    // TODO: When a piece becomes exhausted decrement allowed overcharges?
     expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
   });
 
