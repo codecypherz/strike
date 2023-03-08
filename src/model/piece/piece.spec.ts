@@ -249,6 +249,55 @@ describe('Piece', () => {
     expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
   });
 
+  it('#canOvercharge last piece after 2 move and 2 attacks and 1 overcharge', () => {
+    setActive(player2);
+    movePieceTo(piece11, 6, 0);
+    movePieceTo(piece12, 6, 1);
+    movePieceTo(piece21, 7, 1);
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).withContext('hasConfirmableMove').toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece21.attack();
+    piece21.deselect();
+    // Can overcharge at this point.
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    // Player chooses not to and just moves and attacks again.
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    expect(piece21.hasConfirmableMove()).withContext('hasConfirmableMove').toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    piece21.select();
+    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    board.clearStagedAttackData();
+    piece21.attack();
+    piece21.deselect();
+    // Can overcharge, but only the once.
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+
+    // Overcharge and move.
+    piece21.select();
+    piece21.overcharge();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).withContext('hasConfirmableMove').toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+    // No more overcharge to be had.
+    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+  });
+
   it('#canOvercharge last piece after 2 moves and 0 attacks', () => {
     setActive(player2);
     movePieceTo(piece11, 6, 0);
@@ -295,10 +344,6 @@ describe('Piece', () => {
     piece21.deselect();
     // You can't overcharge here because you opted not to overcharge after
     // the first move.
-    // TODO: Fix this bug - it really needs to return false here.
-    // TODO: Might want a different way to track overcharge as a whole.
-    // TODO: Introduce concept of "pieceExhausted" and allow overcharge to override.
-    // TODO: When a piece becomes exhausted decrement allowed overcharges?
     expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
   });
 

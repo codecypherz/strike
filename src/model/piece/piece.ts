@@ -375,6 +375,10 @@ export abstract class Piece {
     if (this.stagedOvercharge) {
       this.numOvercharges++;
       this.takeDamage_(2);
+    } else if (this.isLastPiece() && this.numMoves == 2) {
+      // This is the second move of the last piece without overcharge.
+      // The player chose not to use overcharge, but increment to account for that.
+      this.numOvercharges++;
     }
     this.activate();
   }
