@@ -36,16 +36,33 @@ export class Player {
     // Special rule if you have 1 piece left.
     if (this.pieces.size == 1) {
       const piece = getOnly(this.pieces);
-      return piece.numMoves == 2;
+      if (!piece.canMove()) {
+        return true;
+      }
+      // Can end your turn if the piece is stuck.
+      return piece.isStuck();
     }
     // Normally, the number of pieces moved must equal two.
-    return this.getNumMoved() == 2;
+    if (this.getNumMoved() == 2) {
+      return true;
+    }
+    // If none of the pieces can move, then you can end your turn.
+    return this.areAllPiecesStuck();
+  }
+
+  private areAllPiecesStuck(): boolean {
+    for (let piece of this.pieces) {
+      if (piece.canMove() && !piece.isStuck()) {
+        return false;
+      }
+    }
+    return true;
   }
 
   getNumMoved() {
     let numMoved = 0;
     for (let piece of this.piecesActivated) {
-      if (piece.numMoves > 0) {
+      if (piece.hasMoved()) {
         numMoved++;
       }
     }

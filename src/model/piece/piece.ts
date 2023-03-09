@@ -8,6 +8,7 @@ import { Player } from "../player";
 import { Position } from "../position";
 import { Strength } from "../strength";
 import { Terrain } from "../terrain";
+import { Actions } from "./actions";
 
 /**
  * Represents the data common to all pieces.
@@ -29,10 +30,7 @@ export abstract class Piece {
 
   // Per-turn data
   // This data is only cleared when a turn ends.
-  numMoves = 0;
-  numAttacks = 0;
-  numSprints = 0;
-  numOvercharges = 0;
+  private actions = new Actions();
 
   // Selected metadata
   // This data is cleared if selection changes and when a turn ends.
@@ -76,10 +74,7 @@ export abstract class Piece {
       // staged piece is properly reset.
       throw new Error('The piece needs to be deselected before turn end.');
     }
-    this.numMoves = 0;
-    this.numAttacks = 0;
-    this.numSprints = 0;
-    this.numOvercharges = 0;
+    this.actions.clear();
     this.clearSelectionData();
     this.clearStagedAttackData();
   }
@@ -235,7 +230,7 @@ export abstract class Piece {
   }
 
   hasBeenActivated(): boolean {
-    return this.numMoves > 0 || this.numAttacks > 0;
+    return this.actions.hasAction();
   }
 
   canBeActivated(): boolean {
@@ -265,22 +260,21 @@ export abstract class Piece {
     if (this.getHealth() <= 1) {
       return false;
     }
-    if (this.isLastPiece()) {
-      // You can't overcharge more than twice with the last piece.
-      if (this.numOvercharges >= 2) {
-        return false;
-      } else if (this.numOvercharges == 1) {
-        return this.numMoves >= 2 || this.numSprints >= 2;
-      }
-      // this.numOvercharges == 0
-      return (this.numMoves >= 1 || this.numSprints >= 1) && this.numAttacks < 2;
-    }
-    // You can't overcharge if you've overcharged already.
-    if (this.numOvercharges >= 1) {
+    // Can't overcharge if out of overcharges.
+    const numOvercharges = this.actions.getNumOvercharges();
+    if (this.isLastPiece() && numOvercharges == 2) {
+      return false;
+    } else if (!this.isLastPiece() && numOvercharges == 1) {
       return false;
     }
-    // You can't overcharge unless you have moved.
-    return this.numMoves >= 1 || this.numSprints >= 1;
+    const filteredActions = this.actions.getActionsSinceResetPoint();
+    const lastMove = filteredActions.getLastMove();
+    // Can't overcharge if no last move.
+    if (lastMove == null) {
+      return false;
+    }
+    // As long as the last move was not overcharged, should be good.
+    return !lastMove.overcharged;
   }
 
   overcharge(): void {
@@ -298,19 +292,20 @@ export abstract class Piece {
       // You can't sprint if you can't move.
       return false;
     }
-    if (this.isLastPiece()) {
-      // Special case for last piece where you can sprint twice.
-      return this.numAttacks <= 1 && this.numMoves <= 1 && this.numSprints <= 1 && !this.stagedOvercharge;
-    }
     // You can't sprint if you've moved or attacked.
-    return this.numAttacks == 0 && this.numMoves == 0 && this.numSprints == 0 && !this.stagedOvercharge;
+    return !this.actions.hasActionSinceLastOvercharge()
+      && !this.stagedOvercharge;
   }
 
   canMove(): boolean {
-    if (this.isLastPiece() && this.numMoves >= 2 && !this.stagedOvercharge) {
-      return false;
-    } else if (!this.isLastPiece() && this.numMoves >= 1 && !this.stagedOvercharge) {
-      return false;
+    if (this.isLastPiece()) {
+      if (this.actions.getNumMovesWithoutOvercharge() == 2 && !this.stagedOvercharge) {
+        return false;
+      }
+    } else {
+      if (this.actions.getNumMovesWithoutOvercharge() == 1 && !this.stagedOvercharge) {
+        return false;
+      }
     }
     // We don't return false here for move and attack with overcharge.
     // This is handled in the canAttack method which prevents the combination.
@@ -321,6 +316,14 @@ export abstract class Piece {
       return false;
     }
     return true;
+  }
+
+  hasMoved(): boolean {
+    return this.actions.hasMoved();
+  }
+
+  isStuck(): boolean {
+    return !this.getMoveCells().hasAnyCells();
   }
 
   canMoveOrSprintTo(destCell: Cell): boolean {
@@ -368,18 +371,14 @@ export abstract class Piece {
     const moveCells = this.getMoveCells();
     this.position = this.stagedPosition!;
     this.confirmDirection();
-    if (moveCells.hasSprintable(cell)) {
-      this.numSprints++;
-    }
-    this.numMoves++;
+
+    let sprinted = moveCells.hasSprintable(cell);
+    let overcharged = false;
     if (this.stagedOvercharge) {
-      this.numOvercharges++;
+      overcharged = true;
       this.takeDamage_(2);
-    } else if (this.isLastPiece() && this.numMoves == 2) {
-      // This is the second move of the last piece without overcharge.
-      // The player chose not to use overcharge, but increment to account for that.
-      this.numOvercharges++;
     }
+    this.actions.addMove(overcharged, sprinted);
     this.activate();
   }
 
@@ -440,20 +439,10 @@ export abstract class Piece {
     if (this.stagedSprint) {
       return false;
     }
-    if (this.isLastPiece()) {
-      if (this.numAttacks >= 2 && !this.stagedOvercharge) {
-        return false;
-      }
-      if (this.numSprints >= 2 && !this.stagedOvercharge) {
-        return false;
-      }
-    } else {
-      if (this.numAttacks >= 1 && !this.stagedOvercharge) {
-        return false;
-      }
-      if (this.numSprints >= 1 && !this.stagedOvercharge) {
-        return false;
-      }
+    const filteredActions = this.actions.getActionsSinceResetPoint();
+    if (filteredActions.hasAttackedOrSprinted()
+      && !this.stagedOvercharge) {
+      return false;
     }
     if (this.stagedOvercharge && this.hasConfirmableMove()) {
       // Can't move and attack with overcharge.
@@ -593,11 +582,12 @@ export abstract class Piece {
 
   confirmAttackIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
-      this.numAttacks++;
+      let overcharged = false;
       if (this.stagedOvercharge) {
-        this.numOvercharges++;
+        overcharged = true;
         this.takeDamage_(2);
       }
+      this.actions.addAttack(overcharged);
       this.activate();
     }
   }
@@ -681,9 +671,7 @@ export abstract class Piece {
       return false;
     }
     // Effectively, attacking locks in the rotation.
-    if (this.isLastPiece() && this.numAttacks >= 2 && !this.stagedOvercharge) {
-      return false;
-    } else if (!this.isLastPiece() && this.numAttacks >= 1 && !this.stagedOvercharge) {
+    if (this.actions.hasAttackedSinceLastOvercharge() && !this.stagedOvercharge) {
       return false;
     }
     if (!this.player.isActive()) {

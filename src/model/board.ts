@@ -179,4 +179,13 @@ export class Board {
       }
     }
   }
+
+  clearTurnData(): void {
+    for (let cell of this.getCells().flat()) {
+      cell.selected = false;
+      if (cell.hasPiece()) {
+        cell.getPiece()!.clearTurnData();
+      }
+    }
+  }
 }

@@ -27,6 +27,7 @@ describe('Piece', () => {
     initializePiece(piece11, 0, 0);
     initializePiece(piece12, 0, 1);
     initializePiece(piece21, 7, 7);
+    board.clearTurnData();
 
     // Important assumptions for all tests.
     expect(player1.isLastPiece(piece11)).toBe(false);
@@ -43,6 +44,65 @@ describe('Piece', () => {
     expect(piece21.canMove()).toBe(false);
   });
 
+  it('#canMove last piece', () => {
+    setActive(player2);
+    expect(piece21.canMove()).toBe(true);
+  });
+
+  it('#canMove last piece 1 move', () => {
+    setActive(player2);
+    expect(piece21.canMove()).toBe(true);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 6));
+    expect(piece21.hasConfirmableMove()).toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+    // Can move a second time with last piece.
+    expect(piece21.canMove()).toBe(true);
+  });
+
+  it('#canMove last piece 2 moves', () => {
+    setActive(player2);
+    expect(piece21.canMove()).toBe(true);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 6));
+    expect(piece21.hasConfirmableMove()).toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+    expect(piece21.canMove()).toBe(true);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 5));
+    expect(piece21.hasConfirmableMove()).toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+
+    expect(piece21.canMove()).toBe(false);
+  });
+
+  it('#canMove last piece 1 move 1 overcharge move', () => {
+    setActive(player2);
+    expect(piece21.canMove()).toBe(true);
+
+    piece21.select();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 6));
+    expect(piece21.hasConfirmableMove()).toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+
+    piece21.select();
+    piece21.overcharge();
+    piece21.moveOrSprintTo(board.getByRowCol(7, 5));
+    expect(piece21.hasConfirmableMove()).toBe(true);
+    piece21.confirmMove();
+    piece21.deselect();
+
+    // Can still do a second, regular move.
+    expect(piece21.canMove()).toBe(true);
+  });
+
   it('#canAttack no action taken', () => {
     expect(piece11.canAttack()).toBe(true);
   });
@@ -56,17 +116,17 @@ describe('Piece', () => {
     movePieceTo(piece11, 0, 0);
     movePieceTo(piece21, 5, 0); // Move just outside of sprint range
     
-    expect(piece11.canMove()).withContext('canMove').toBe(true);
-    expect(piece11.canAttack()).withContext('canAttack').toBe(true);
-    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(false);
+    expect(piece11.canMove()).toBe(true);
+    expect(piece11.canAttack()).toBe(true);
+    expect(piece11.hasConfirmableAttack()).toBe(false);
     expect(piece11.stagedSprint).toBe(false);
 
     piece11.select();
-    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(false);
+    expect(piece11.hasConfirmableAttack()).toBe(false);
 
     piece11.moveOrSprintTo(board.getByRowCol(4, 0));
     expect(piece11.stagedSprint).toBe(true);
-    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(false);
+    expect(piece11.hasConfirmableAttack()).toBe(false);
   });
 
   it('#canRotate no action taken', () => {
@@ -82,9 +142,9 @@ describe('Piece', () => {
     movePieceTo(piece11, 0, 0);
     movePieceTo(piece21, 1, 0);
     
-    expect(piece11.canMove()).withContext('canMove').toBe(true);
-    expect(piece11.canAttack()).withContext('canAttack').toBe(true);
-    expect(piece11.canRotate()).withContext('canRotate').toBe(true);
+    expect(piece11.canMove()).toBe(true);
+    expect(piece11.canAttack()).toBe(true);
+    expect(piece11.canRotate()).toBe(true);
 
     piece11.select();
     expect(piece11.hasConfirmableAttack()).toBe(true);
@@ -93,130 +153,138 @@ describe('Piece', () => {
     piece11.attack();
     piece11.deselect();
 
-    expect(piece11.canMove()).withContext('canMove').toBe(true);
-    expect(piece11.canAttack()).withContext('canAttack').toBe(false);
-    expect(piece11.canRotate()).withContext('canRotate').toBe(false);
+    expect(piece11.canMove()).toBe(true);
+    expect(piece11.canAttack()).toBe(false);
+    expect(piece11.canRotate()).toBe(false);
   });
 
   it('#canOvercharge no action taken', () => {
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece11.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge after move', () => {
     movePieceTo(piece11, 0, 0);
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece11.canOvercharge()).toBe(false);
 
     piece11.select();
     piece11.moveOrSprintTo(board.getByRowCol(1, 0));
+    expect(piece11.hasConfirmableMove()).toBe(true);
     piece11.confirmMove();
+    piece11.deselect();
 
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece11.canOvercharge()).toBe(true);
   });
 
   it('#canOvercharge attack but no move', () => {
     movePieceTo(piece11, 0, 0);
     movePieceTo(piece21, 1, 0);
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece11.canOvercharge()).toBe(false);
 
     piece11.select();
-    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece11.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece11.attack();
     piece11.deselect();
 
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece11.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge after move and attack', () => {
     movePieceTo(piece11, 0, 0);
     movePieceTo(piece21, 2, 0);
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece11.canOvercharge()).toBe(false);
 
     piece11.select();
     piece11.moveOrSprintTo(board.getByRowCol(1, 0));
+    expect(piece11.hasConfirmableMove()).toBe(true);
     piece11.confirmMove();
     piece11.deselect();
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece11.canOvercharge()).toBe(true);
 
     piece11.select();
-    expect(piece11.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece11.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece11.attack();
     piece11.deselect();
-    expect(piece11.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece11.canOvercharge()).toBe(true);
   });
 
   it('#canOvercharge last piece no action taken', () => {
     setActive(player2);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge last piece after 1 move', () => {
     setActive(player2);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
   });
 
   it('#canOvercharge last piece 1 attack but no move', () => {
     setActive(player2);
     movePieceTo(piece11, 6, 0);
     movePieceTo(piece21, 7, 0);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
-    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece21.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece21.attack();
     piece21.deselect();
 
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge last piece after 1 attack and 1 move', () => {
     setActive(player2);
     movePieceTo(piece11, 6, 0);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
-    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece21.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece21.attack();
     piece21.deselect();
 
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
   });
 
   it('#canOvercharge last piece after 1 move and 1 overcharge', () => {
     setActive(player2);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
     piece21.overcharge();
     piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
 
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    // Can't overcharge until another move takes place.
+    expect(piece21.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge last piece after 1 move and 2 attacks', () => {
@@ -224,29 +292,31 @@ describe('Piece', () => {
     movePieceTo(piece11, 6, 0);
     movePieceTo(piece12, 6, 1);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
-    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece21.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece21.attack();
     piece21.deselect();
     // Can overcharge at this point.
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
-    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    piece21.overcharge();
+    expect(piece21.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece21.attack();
     piece21.deselect();
-    // Cannot here until after you move a second time.
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    // Can not overcharge anymore.
+    expect(piece21.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge last piece after 2 move and 2 attacks and 1 overcharge', () => {
@@ -254,48 +324,48 @@ describe('Piece', () => {
     movePieceTo(piece11, 6, 0);
     movePieceTo(piece12, 6, 1);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).withContext('hasConfirmableMove').toBe(true);
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
-    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece21.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece21.attack();
     piece21.deselect();
     // Can overcharge at this point.
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     // Player chooses not to and just moves and attacks again.
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 1));
-    expect(piece21.hasConfirmableMove()).withContext('hasConfirmableMove').toBe(true);
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
-    expect(piece21.hasConfirmableAttack()).withContext('hasConfirmableAttack').toBe(true);
+    expect(piece21.hasConfirmableAttack()).toBe(true);
     board.clearStagedAttackData();
     piece21.attack();
     piece21.deselect();
     // Can overcharge, but only the once.
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     // Overcharge and move.
     piece21.select();
     piece21.overcharge();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).withContext('hasConfirmableMove').toBe(true);
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
     // No more overcharge to be had.
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
   });
 
   it('#canOvercharge last piece after 2 moves and 0 attacks', () => {
@@ -303,19 +373,21 @@ describe('Piece', () => {
     movePieceTo(piece11, 6, 0);
     movePieceTo(piece12, 6, 1);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
   });
 
   it('#canOvercharge last piece after 2 moves and 1 overcharge move at end', () => {
@@ -323,28 +395,31 @@ describe('Piece', () => {
     movePieceTo(piece11, 6, 0);
     movePieceTo(piece12, 6, 1);
     movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
     piece21.moveOrSprintTo(board.getByRowCol(7, 1));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(true);
+    expect(piece21.canOvercharge()).toBe(true);
 
     piece21.select();
     piece21.overcharge();
     piece21.moveOrSprintTo(board.getByRowCol(7, 0));
+    expect(piece21.hasConfirmableMove()).toBe(true);
     piece21.confirmMove();
     piece21.deselect();
     // You can't overcharge here because you opted not to overcharge after
     // the first move.
-    expect(piece21.canOvercharge()).withContext('canOvercharge').toBe(false);
+    expect(piece21.canOvercharge()).toBe(false);
   });
 
   function initializePiece(piece: Piece, row: number, col: number) {

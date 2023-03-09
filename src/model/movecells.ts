@@ -50,4 +50,8 @@ export class MoveCells {
   hasMoveableOrSprintable(cell: Cell): boolean {
     return this.moveable.has(cell) || this.sprintable.has(cell);
   }
+
+  hasAnyCells(): boolean {
+    return this.moveable.size > 0 || this.sprintable.size > 0;
+  }
 }

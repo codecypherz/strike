@@ -41,14 +41,11 @@ export class BoardService {
     this.exitStaging();
     this.selectedCell = null;
     this.selectedPiece = null;
+    
     // This part needs to happen after exiting staging in order for
     // a staged piece to be properly reset.
-    for (let cell of this.board.getCells().flat()) {
-      cell.selected = false;
-      if (cell.hasPiece()) {
-        cell.getPiece()!.clearTurnData();
-      }
-    }
+    this.board.clearTurnData();
+    
     // TODO: Animate or indicate what happened at the start of the turn.
     // Allow pieces with start of turn actions to take action.
     for (let cell of this.board.getCells().flat()) {
@@ -56,6 +53,14 @@ export class BoardService {
         cell.getPiece()!.takeStartOfTurnAction();
       }
     }
+
+    // Clear turn data again in case a piece died.
+    // This is because clearTurnData is based on assigning values
+    // for isLastPiece
+    this.board.clearTurnData();
+
+    // Now show selected actions to effectively clear things,
+    // but nothing should be shown since nothing is selected.
     this.showSelectedActions();
   }
 
