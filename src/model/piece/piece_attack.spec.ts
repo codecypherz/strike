@@ -5,7 +5,7 @@ import { Player } from "../player";
 import { Position } from "../position";
 import { Piece } from "./piece";
 
-describe('Piece', () => {
+describe('Piece Attack', () => {
   let player1: Player;
   let player2: Player;
   let board: Board;
@@ -35,33 +35,30 @@ describe('Piece', () => {
     expect(player2.isLastPiece(piece21)).toBe(true);
   });
 
-  it('#canRotate no action taken', () => {
-    expect(piece11.canRotate()).toBe(true);
+  it('#canAttack no action taken', () => {
+    expect(piece11.canAttack()).toBe(true);
   });
 
-  it('#canRotate not active player turn', () => {
-    expect(piece11.canRotate()).toBe(true);
-    expect(piece21.canRotate()).toBe(false);
+  it('#canAttack not active player turn', () => {
+    expect(piece11.canAttack()).toBe(true);
+    expect(piece21.canAttack()).toBe(false);
   });
 
-  it('#canRotate before move but after attack', () => {
+  it('#canAttack with staged sprint', () => {
     movePieceTo(piece11, 0, 0);
-    movePieceTo(piece21, 1, 0);
+    movePieceTo(piece21, 5, 0); // Move just outside of sprint range
     
     expect(piece11.canMove()).toBe(true);
     expect(piece11.canAttack()).toBe(true);
-    expect(piece11.canRotate()).toBe(true);
+    expect(piece11.hasConfirmableAttack()).toBe(false);
+    expect(piece11.stagedSprint).toBe(false);
 
     piece11.select();
-    expect(piece11.hasConfirmableAttack()).toBe(true);
+    expect(piece11.hasConfirmableAttack()).toBe(false);
 
-    board.clearStagedAttackData();
-    piece11.attack();
-    piece11.deselect();
-
-    expect(piece11.canMove()).toBe(true);
-    expect(piece11.canAttack()).toBe(false);
-    expect(piece11.canRotate()).toBe(false);
+    piece11.moveOrSprintTo(board.getByRowCol(4, 0));
+    expect(piece11.stagedSprint).toBe(true);
+    expect(piece11.hasConfirmableAttack()).toBe(false);
   });
 
   function initializePiece(piece: Piece, row: number, col: number) {
