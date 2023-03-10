@@ -17,4 +17,8 @@ export class Position {
   toString(): string {
     return '(' + this.row + ',' + this.col + ')';
   }
+
+  static from(row: number, col: number): Position {
+    return new Position(row, col);
+  }
 }
