@@ -22,7 +22,8 @@ module.exports = function (config) {
       clearContext: false // leave Jasmine Spec Runner output visible in browser
     },
     jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
+      suppressAll: true, // removes the duplicated traces
+      suppressFailed: true // suppress failed messages
     },
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/strike'),
