@@ -57,8 +57,8 @@ describe('Ram Piece', () => {
   it('ram kills piece', () => {
     let piece11 = new TestRamPiece(board, player1);
     let piece21 = new Scrounger(board, player2);
-    initializePiece(piece11, 6, 0);
-    initializePiece(piece21, 7, 0);
+    initializePiece(piece11, 0, 0);
+    initializePiece(piece21, 1, 0);
     setHealth(piece21, 1);
 
     performAttack(board, piece11);
@@ -68,7 +68,7 @@ describe('Ram Piece', () => {
 
     // TODO: Fix this bug.
     // The attacking piece takes over the defender location.
-    expect(piece11.getPosition()).toEqual(Position.from(7, 0));
+    expect(piece11.getPosition()).toEqual(Position.from(1, 0));
     // The attacking piece is not hurt.
     expect(piece11.getHealth()).toBe(piece21.maxHealth);
   });
@@ -77,12 +77,6 @@ describe('Ram Piece', () => {
     board.getByRowCol(row, col).setPiece(piece);
     piece.position = new Position(row, col);
     piece.stageAction();
-  }
-
-  function movePieceTo(piece: Piece, row: number, col: number) {
-    board.getCell(piece.position).clearPiece();
-    board.getByRowCol(row, col).setPiece(piece);
-    piece.position = new Position(row, col);
   }
 
   function performAttack(board: Board, piece: Piece): void {

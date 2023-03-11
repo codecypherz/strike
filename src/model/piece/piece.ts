@@ -525,6 +525,15 @@ export abstract class Piece {
     // Maybe update some movement since that can be combined with the attack.
     this.confirmMovementIfNotStaged_();
 
+
+
+    // TODO
+    // Deal damage
+    // Check for dead pieces
+    // Perform follow-up movement
+
+
+
     // Calculate attack and defense.
     const attack = this.getAttackPowerForAttack_(targetPiece);
     const defense = this.getDefenseForAttack_(targetPiece);
