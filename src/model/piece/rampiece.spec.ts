@@ -3,6 +3,7 @@ import { Direction } from "../direction";
 import { Scrounger } from "../machine/scrounger";
 import { Player } from "../player";
 import { Position } from "../position";
+import { Terrain } from "../terrain";
 import { Piece } from "./piece";
 import { RamPiece } from "./rampiece";
 
@@ -13,6 +14,7 @@ describe('Ram Piece', () => {
 
   beforeEach(() => {
     board = new Board();
+    board.setAllTerrain(Terrain.GRASSLAND);
     player1 = new Player('player-1', 'Player 1', Direction.DOWN);
     player2 = new Player('player-2', 'Player 2', Direction.RIGHT);
     player1.setActive(true);
@@ -51,7 +53,7 @@ describe('Ram Piece', () => {
     // The attacking piece stays where it was.
     expect(piece11.getPosition()).toEqual(Position.from(6, 0));
     // The attacking piece is not hurt.
-    expect(piece11.getHealth()).toBe(piece21.maxHealth);
+    expect(piece11.getHealth()).toBe(piece11.maxHealth);
   });
 
   it('ram kills piece', () => {
@@ -64,13 +66,12 @@ describe('Ram Piece', () => {
     performAttack(board, piece11);
   
     // The defender dies.
-    expect(piece21.getUnstagedHealth()).toBe(0);
+    expect(piece21.isDead()).toBe(true);
 
-    // TODO: Fix this bug.
     // The attacking piece takes over the defender location.
     expect(piece11.getPosition()).toEqual(Position.from(1, 0));
     // The attacking piece is not hurt.
-    expect(piece11.getHealth()).toBe(piece21.maxHealth);
+    expect(piece11.getHealth()).toBe(piece11.maxHealth);
   });
 
   function initializePiece(piece: Piece, row: number, col: number) {

@@ -45,10 +45,12 @@ export class RamPiece extends Piece {
       this.takeDamage_(1);
       targetPiece.takeDamage_(1);
     }
+
     // Always knockback the target.
     const oldTargetPieceCell = targetPiece.getCell();
     const knockedBack = targetPiece.knockback_(this.getDirection());
 
+    // If the piece got knocked back, move into that cell.
     if (knockedBack && !this.isStagedAttack()) {
       this.getCell().clearPiece();
       oldTargetPieceCell.setPiece(this);

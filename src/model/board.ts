@@ -188,4 +188,10 @@ export class Board {
       }
     }
   }
+
+  setAllTerrain(terrain: Terrain) {
+    for (let cell of this.getCells().flat()) {
+      cell.terrain = terrain;
+    }
+  }
 }

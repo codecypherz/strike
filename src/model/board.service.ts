@@ -253,7 +253,7 @@ export class BoardService {
     for (let cell of this.board.getCells().flat()) {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
-        if (piece.getHealth() <= 0) {
+        if (piece.isDead()) {
           this.turnService.getOtherPlayer(piece.player).addPoints(piece.points);
           cell.clearPiece();
         }

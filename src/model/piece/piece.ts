@@ -157,6 +157,10 @@ export abstract class Piece {
     return this.health;
   }
 
+  isDead(): boolean {
+    return this.health <= 0;
+  }
+  
   setHealth(health: number): void {
     let newValue = Math.max(0, health); // no negative health allowed.
     this.isStagedAttack() ? this.stagedHealth = newValue : this.health = newValue;
@@ -525,15 +529,6 @@ export abstract class Piece {
     // Maybe update some movement since that can be combined with the attack.
     this.confirmMovementIfNotStaged_();
 
-
-
-    // TODO
-    // Deal damage
-    // Check for dead pieces
-    // Perform follow-up movement
-
-
-
     // Calculate attack and defense.
     const attack = this.getAttackPowerForAttack_(targetPiece);
     const defense = this.getDefenseForAttack_(targetPiece);
@@ -619,8 +614,7 @@ export abstract class Piece {
       } else {
         // Move this knocked back piece to the empty cell.
         // Don't do this for a staged attack, because it's confusing.
-        // Don't do this if the piece died.
-        if (!this.isStagedAttack() && this.getHealth() > 0) {
+        if (!this.isStagedAttack()) {
           this.getCell().clearPiece();
           kbCell.setPiece(this);
           this.position = kbCell.position;
