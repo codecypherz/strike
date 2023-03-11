@@ -1,10 +1,7 @@
 import { Board } from "../board";
-import { Direction } from "../direction";
 import { Scrounger } from "../machine/scrounger";
 import { Player } from "../player";
 import { Position } from "../position";
-import { Terrain } from "../terrain";
-import { Piece } from "./piece";
 import { PieceTest } from "./piecetest";
 import { RamPiece } from "./rampiece";
 
