@@ -19,21 +19,25 @@ export class PieceTest {
     this.player2 = new Player('player-2', 'Player 2', Direction.UP);
   }
 
-  initializePiece(piece: Piece, row: number, col: number) {
+  initializePiece(piece: Piece, row: number, col: number): void {
     this.board.getByRowCol(row, col).setPiece(piece);
     piece.position = new Position(row, col);
     piece.stageAction();
   }
 
-  performMove(piece: Piece, row: number, col: number) {
+  setTerrain(row: number, col: number, terrain: Terrain): void {
+    this.board.getByRowCol(row, col).terrain = terrain;
+  }
+
+  performMove(piece: Piece, row: number, col: number): void {
     this.performMove_(piece, row, col, false);
   }
   
-  performMoveWithOvercharge(piece: Piece, row: number, col: number) {
+  performMoveWithOvercharge(piece: Piece, row: number, col: number): void {
     this.performMove_(piece, row, col, true);
   }
 
-  private performMove_(piece: Piece, row: number, col: number, overcharge: boolean) {
+  private performMove_(piece: Piece, row: number, col: number, overcharge: boolean): void {
     piece.select();
     if (overcharge) {
       expect(piece.canOvercharge()).toBe(true);
@@ -54,18 +58,18 @@ export class PieceTest {
     piece.deselect();
   }
   
-  setHealth(piece: Piece, health: number) {
+  setHealth(piece: Piece, health: number): void {
     piece.clearStagedAttackData();
     piece.setHealth(1);
     expect(piece.getUnstagedHealth()).toBe(health);
   }
 
-  setActivePlayer1() {
+  setActivePlayer1(): void {
     this.player1.setActive(true);
     this.player2.setActive(false);
   }
 
-  setActivePlayer2() {
+  setActivePlayer2(): void {
     this.player1.setActive(false);
     this.player2.setActive(true);
   }

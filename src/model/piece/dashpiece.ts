@@ -81,6 +81,7 @@ export class DashPiece extends Piece {
       const targetPiece = cellToAttack.getPiece()!;
 
       // Calculate attack and defense.
+      // This calculation needs to happen before rotating the target piece.
       const attack = this.getAttackPowerForAttack_(targetPiece);
       const defense = this.getDefenseForAttack_(targetPiece);
 
@@ -88,22 +89,22 @@ export class DashPiece extends Piece {
       if (attack > defense) {
         targetPiece.takeDamage_(attack - defense);
       } else {
-        // If the attack is <= defense, then each piece takes 1 extra damage.
-        this.takeDamage_(1);
-        targetPiece.takeDamage_(1);
+        // This is armor break. In the case of dash + armor break, it is always 2 damage.
+        // This is because the dash through happens before the knockback.
+        // The knockback is in the direction of the dash therefore hitting into the final spot.
+        this.takeDamage_(2);
+        targetPiece.takeDamage_(2);
+        targetPiece.stagedKnockbackDirection = this.getDirection();
       }
-      // Always 180 the target pieces if not staged.
-      // TODO: Give rotation indicator?
-      if (!this.isStagedAttack()) {
-        targetPiece.rotate180();
-      }
-    }
 
-    // Place the dashing piece in the finishing cell.
-    if (!this.isStagedAttack()) {
-      const finishingCell = attackCells.getFinishingCell()!;
-      finishingCell.setPiece(this);
-      this.position = finishingCell.position;
+      // If not staged, finalize rotation of target and move to finishing cell.
+      if (!this.isStagedAttack()) {
+        // TODO: Give rotation indicator?
+        targetPiece.rotate180();
+        const finishingCell = attackCells.getFinishingCell()!;
+        finishingCell.setPiece(this);
+        this.position = finishingCell.position;
+      }
     }
 
     this.confirmAttackIfNotStaged_();
