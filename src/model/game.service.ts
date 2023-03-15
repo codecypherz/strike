@@ -61,15 +61,19 @@ export class GameService {
   }
 
   checkWinCondition(): void {
-    if (this.hasWon(this.turnService.player1)) {
+    const p1 = this.hasWinningPoints(this.turnService.player1);
+    const p2 = this.hasWinningPoints(this.turnService.player2);
+    if (p1 && p2) {
+      // Tie break goes to active player.
+      this.winningPlayer = this.turnService.getActivePlayer();
+    } else if (p1) {
       this.winningPlayer = this.turnService.player1;
-    }
-    if (this.hasWon(this.turnService.player2)) {
+    } else if (p2) {
       this.winningPlayer = this.turnService.player2;
     }
   }
 
-  private hasWon(player: Player): boolean {
+  private hasWinningPoints(player: Player): boolean {
     return player.getPoints() >= 7;
   }
 
