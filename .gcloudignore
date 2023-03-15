@@ -13,6 +13,17 @@
 .git 
 .gitignore
 
+# Other top level files to ignore
+angular.json
+karma.config.js
+package-lock.json
+package.json
+README.md
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
+.editorconfig
+
 # Python pycache:
 __pycache__/
 
@@ -27,3 +38,6 @@ __pycache__/
 
 # Ignore code coverage reports
 /coverage
+
+# Ignore everything in src, dist is what matters
+/src
