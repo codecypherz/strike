@@ -76,8 +76,11 @@ export class Player {
     this.pieces.add(piece);
   }
 
-  getPieces(): Set<Piece> {
-    return this.pieces;
+  removePiece(piece: Piece): void {
+    if (!this.pieces.has(piece)) {
+      throw new Error(this.name + ' does not have ' + piece.name + ' to remove.');
+    }
+    this.pieces.delete(piece);
   }
 
   isLastPiece(piece: Piece): boolean {

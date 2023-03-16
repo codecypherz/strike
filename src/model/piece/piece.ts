@@ -31,6 +31,7 @@ export abstract class Piece {
   // Per-turn data
   // This data is only cleared when a turn ends.
   private actions = new Actions();
+  private lastPiece = false;
 
   // Selected metadata
   // This data is cleared if selection changes and when a turn ends.
@@ -74,6 +75,7 @@ export abstract class Piece {
       // staged piece is properly reset.
       throw new Error('The piece needs to be deselected before turn end.');
     }
+    this.lastPiece = this.player.isLastPiece(this);
     this.actions.clear();
     this.clearSelectionData();
     this.clearStagedAttackData();
@@ -136,6 +138,10 @@ export abstract class Piece {
 
   abstract getPieceType(): string;
   abstract getPieceTypeDescription(): string;
+
+  isLastPiece(): boolean {
+    return this.lastPiece;
+  }
 
   takeStartOfTurnAction(): void {
     // Do nothing by default.
@@ -255,10 +261,6 @@ export abstract class Piece {
     this.player.addActivatedPiece(this);
   }
 
-  private isLastPiece(): boolean {
-    return this.player.isLastPiece(this);
-  }
-
   canOvercharge(): boolean {
     // You can't overcharge if you don't have enough health.
     if (this.getHealth() <= 1) {
@@ -266,9 +268,9 @@ export abstract class Piece {
     }
     // Can't overcharge if out of overcharges.
     const numOvercharges = this.actions.getNumOvercharges();
-    if (this.isLastPiece() && numOvercharges == 2) {
+    if (this.lastPiece && numOvercharges == 2) {
       return false;
-    } else if (!this.isLastPiece() && numOvercharges == 1) {
+    } else if (!this.lastPiece && numOvercharges == 1) {
       return false;
     }
     const filteredActions = this.actions.getActionsSinceResetPoint();
@@ -302,7 +304,7 @@ export abstract class Piece {
   }
 
   canMove(): boolean {
-    if (this.isLastPiece()) {
+    if (this.lastPiece) {
       if (this.actions.getNumMovesWithoutOvercharge() == 2 && !this.stagedOvercharge) {
         return false;
       }

@@ -54,6 +54,10 @@ export class BoardService {
       }
     }
 
+    // It's possible for a piece to have died with the start of turn action.
+    // If it did, we need to check for it and award points.
+    this.removeAndAwardForDeadPieces();
+
     // Clear turn data again in case a piece died.
     // This is because clearTurnData is based on assigning values
     // for isLastPiece
@@ -143,9 +147,8 @@ export class BoardService {
     piece.confirmMove();
     this.exitStaging();
 
-    // Check win condition.
+    // Potentially award points and check for win condition.
     this.removeAndAwardForDeadPieces();
-    this.gameService.checkWinCondition();
   }
 
   confirmAttack(): void {
@@ -167,9 +170,8 @@ export class BoardService {
     piece.attack();
     this.exitStaging();
 
-    // Check win condition.
+    // Potentially award points and check for win condition.
     this.removeAndAwardForDeadPieces();
-    this.gameService.checkWinCondition();
   }
 
   /**
@@ -254,10 +256,12 @@ export class BoardService {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
         if (piece.isDead()) {
+          piece.player.removePiece(piece);
           this.turnService.getOtherPlayer(piece.player).addPoints(piece.points);
           cell.clearPiece();
         }
       }
     }
+    this.gameService.checkWinCondition();
   }
 }

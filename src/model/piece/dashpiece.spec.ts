@@ -5,26 +5,26 @@ import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
 import { DashPiece } from "./dashpiece";
-import { PieceTest } from "./piecetest";
+import { BaseTest } from "../../test/basetest";
 
 describe('Dash Piece', () => {
-  let pt: PieceTest;
+  let t: BaseTest;
 
   beforeEach(() => {
-    pt = new PieceTest();
-    pt.player1.setActive(true);
-    pt.board.clearTurnData();
+    t = new BaseTest();
+    t.player1.setActive(true);
+    t.board.clearTurnData();
   });
 
   it('dash attack', () => {
-    let piece11 = new TestDashPiece(pt.board, pt.player1);
-    let piece21 = new Scrounger(pt.board, pt.player2);
+    let piece11 = new TestDashPiece(t.board, t.player1);
+    let piece21 = new Scrounger(t.board, t.player2);
     piece21.rotateClockwise();
     expect(piece21.getDirection()).toEqual(Direction.RIGHT);
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 1, 0);
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 1, 0);
 
-    pt.performAttack(piece11);
+    t.performAttack(piece11);
   
     // The piece being attacked loses health and rotates 180.
     expect(piece21.getHealth()).toBe(piece21.maxHealth - 1);
@@ -36,14 +36,14 @@ describe('Dash Piece', () => {
   });
 
   it('dash attack with armor break', () => {
-    let piece11 = new TestDashPiece(pt.board, pt.player1);
-    let piece21 = new Scrounger(pt.board, pt.player2);
+    let piece11 = new TestDashPiece(t.board, t.player1);
+    let piece21 = new Scrounger(t.board, t.player2);
     expect(piece21.getDirection()).toEqual(Direction.UP);
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 1, 0);
-    pt.setTerrain(1, 0, Terrain.FOREST); // This makes attack and defense a tie.
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 1, 0);
+    t.setTerrain(1, 0, Terrain.FOREST); // This makes attack and defense a tie.
 
-    pt.performAttack(piece11);
+    t.performAttack(piece11);
   
     // The piece being attacked loses 2 health and rotates 180.
     // The extra damage comes from armor break.

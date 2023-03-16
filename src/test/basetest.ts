@@ -1,11 +1,11 @@
-import { Board } from "../board";
-import { Direction } from "../direction";
-import { Player } from "../player";
-import { Position } from "../position";
-import { Terrain } from "../terrain";
-import { Piece } from "./piece";
+import { Board } from "../model/board";
+import { Direction } from "../model/direction";
+import { Player } from "../model/player";
+import { Position } from "../model/position";
+import { Terrain } from "../model/terrain";
+import { Piece } from "../model/piece/piece";
 
-export class PieceTest {
+export class BaseTest {
 
   public board: Board;
   public player1: Player;
@@ -22,6 +22,7 @@ export class PieceTest {
   initializePiece(piece: Piece, row: number, col: number): void {
     this.board.getByRowCol(row, col).setPiece(piece);
     piece.position = new Position(row, col);
+    piece.clearTurnData();
     piece.stageAction();
   }
 

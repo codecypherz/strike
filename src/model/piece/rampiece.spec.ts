@@ -2,26 +2,26 @@ import { Board } from "../board";
 import { Scrounger } from "../machine/scrounger";
 import { Player } from "../player";
 import { Position } from "../position";
-import { PieceTest } from "./piecetest";
+import { BaseTest } from "../../test/basetest";
 import { RamPiece } from "./rampiece";
 
 describe('Ram Piece', () => {
-  let pt: PieceTest;
+  let t: BaseTest;
 
   beforeEach(() => {
-    pt = new PieceTest();
-    pt.player1.setActive(true);
-    pt.board.clearTurnData();
+    t = new BaseTest();
+    t.player1.setActive(true);
+    t.board.clearTurnData();
   });
 
   it('ram piece into empty cell', () => {
-    let piece11 = new TestRamPiece(pt.board, pt.player1);
-    let piece21 = new Scrounger(pt.board, pt.player2);
+    let piece11 = new TestRamPiece(t.board, t.player1);
+    let piece21 = new Scrounger(t.board, t.player2);
     piece21.rotateClockwise();
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 1, 0);
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 1, 0);
 
-    pt.performAttack(piece11);
+    t.performAttack(piece11);
   
     // The piece being attacked loses health and gets knocked back.
     expect(piece21.getHealth()).toBe(piece21.maxHealth - 1);
@@ -32,13 +32,13 @@ describe('Ram Piece', () => {
   });
 
   it('ram piece into edge of board', () => {
-    let piece11 = new TestRamPiece(pt.board, pt.player1);
-    let piece21 = new Scrounger(pt.board, pt.player2);
+    let piece11 = new TestRamPiece(t.board, t.player1);
+    let piece21 = new Scrounger(t.board, t.player2);
     piece21.rotateClockwise();
-    pt.initializePiece(piece11, 6, 0);
-    pt.initializePiece(piece21, 7, 0);
+    t.initializePiece(piece11, 6, 0);
+    t.initializePiece(piece21, 7, 0);
 
-    pt.performAttack(piece11);
+    t.performAttack(piece11);
   
     // The defender loses health and stays at edge.
     // The defender suffers 1 extra damage due to the edge.
@@ -52,14 +52,14 @@ describe('Ram Piece', () => {
   });
 
   it('ram kills piece', () => {
-    let piece11 = new TestRamPiece(pt.board, pt.player1);
-    let piece21 = new Scrounger(pt.board, pt.player2);
+    let piece11 = new TestRamPiece(t.board, t.player1);
+    let piece21 = new Scrounger(t.board, t.player2);
     piece21.rotateClockwise();
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 1, 0);
-    pt.setHealth(piece21, 1);
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 1, 0);
+    t.setHealth(piece21, 1);
 
-    pt.performAttack(piece11);
+    t.performAttack(piece11);
   
     // The defender dies.
     expect(piece21.isDead()).toBe(true);

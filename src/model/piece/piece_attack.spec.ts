@@ -1,22 +1,22 @@
 import { Scrounger } from "../machine/scrounger";
 import { Piece } from "./piece";
-import { PieceTest } from "./piecetest";
+import { BaseTest } from "../../test/basetest";
 
 describe('Piece Attack', () => {
-  let pt: PieceTest;
+  let t: BaseTest;
   let piece11: Piece;
   let piece12: Piece;
   let piece21: Piece;
 
   beforeEach(() => {
-    pt = new PieceTest();
+    t = new BaseTest();
 
-    pt.setActivePlayer1();
-    piece11 = new Scrounger(pt.board, pt.player1);
-    piece12 = new Scrounger(pt.board, pt.player1);
-    piece21 = new Scrounger(pt.board, pt.player2);
+    t.setActivePlayer1();
+    piece11 = new Scrounger(t.board, t.player1);
+    piece12 = new Scrounger(t.board, t.player1);
+    piece21 = new Scrounger(t.board, t.player2);
     
-    pt.board.clearTurnData();
+    t.board.clearTurnData();
   });
 
   it('#canAttack no action taken', () => {
@@ -29,8 +29,8 @@ describe('Piece Attack', () => {
   });
 
   it('#canAttack with staged sprint', () => {
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 5, 0); // Move just outside of sprint range
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 5, 0); // Move just outside of sprint range
     
     expect(piece11.canMove()).toBe(true);
     expect(piece11.canAttack()).toBe(true);
@@ -40,22 +40,22 @@ describe('Piece Attack', () => {
     piece11.select();
     expect(piece11.hasConfirmableAttack()).toBe(false);
 
-    piece11.moveOrSprintTo(pt.board.getByRowCol(4, 0));
+    piece11.moveOrSprintTo(t.board.getByRowCol(4, 0));
     expect(piece11.stagedSprint).toBe(true);
     expect(piece11.hasConfirmableAttack()).toBe(false);
   });
 
   it('#canAttack last piece 0 attacks', () => {
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 1, 0);
-    pt.setActivePlayer2();
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 1, 0);
+    t.setActivePlayer2();
     expect(piece21.canAttack()).toBe(true);
   });
 
   it('#canAttack last piece 1 attack', () => {
-    pt.initializePiece(piece11, 0, 0);
-    pt.initializePiece(piece21, 1, 0);
-    pt.setActivePlayer2();
+    t.initializePiece(piece11, 0, 0);
+    t.initializePiece(piece21, 1, 0);
+    t.setActivePlayer2();
     expect(piece21.canAttack()).toBe(true);
 
     piece21.select();

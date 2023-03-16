@@ -46,7 +46,8 @@ export class Cell {
 
   setPiece(piece: Piece | null) {
     if (this.piece && piece) {
-      throw new Error('Should not overwrite a piece');
+      throw new Error(
+        'Attempting to overwrite ' + this.piece.name + ' with ' + piece.name);
     }
     this.piece = piece;
   }

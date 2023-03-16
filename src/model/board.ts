@@ -4,6 +4,7 @@ import { Burrower } from "./machine/burrower";
 import { Direction } from "./direction";
 import { Position } from "./position";
 import { Terrain } from "./terrain";
+import { Piece } from "./piece/piece";
 
 /**
  * Provides the data for the board.
