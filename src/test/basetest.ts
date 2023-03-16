@@ -61,7 +61,7 @@ export class BaseTest {
   
   setHealth(piece: Piece, health: number): void {
     piece.clearStagedAttackData();
-    piece.setHealth(1);
+    piece.setHealth(health);
     expect(piece.getUnstagedHealth()).toBe(health);
   }
 
