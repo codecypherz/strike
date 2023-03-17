@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Game } from 'src/model/game';
+import { GameCollection } from 'src/model/gamecollection';
 
 @Component({
   selector: 'app-gameselection',
@@ -7,4 +9,13 @@ import { Component } from '@angular/core';
 })
 export class GameSelectionComponent {
 
+  constructor(private gameCollection: GameCollection) {}
+
+  ngOnInit(): void {
+    this.getGames();
+  }
+  
+  getGames(): Array<Game> {
+    return this.gameCollection.getGames();
+  }
 }

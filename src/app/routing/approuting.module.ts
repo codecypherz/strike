@@ -1,7 +1,6 @@
 import { Injectable, NgModule } from "@angular/core";
 import { Title } from "@angular/platform-browser";
-import { Routes, RouterModule, RouterStateSnapshot, TitleStrategy } from "@angular/router";
-import { AppComponent } from "../app.component";
+import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from "@angular/router";
 import { GameComponent } from "../game/game.component";
 import { GameSelectionComponent } from "../gameselection/gameselection.component";
 import { PageNotFoundComponent } from "../pagenotfound/pagenotfound.component";

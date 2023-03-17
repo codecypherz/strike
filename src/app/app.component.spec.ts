@@ -5,7 +5,7 @@ import { GameService } from 'src/model/game.service';
 import { TurnService } from 'src/model/turn.service';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
-import { GameoverComponent } from './gameover/gameover.component';
+import { GameOverComponent } from './gameover/gameover.component';
 import { PlayerComponent } from './player/player.component';
 import { PlayersComponent } from './players/players.component';
 import { SelectedComponent } from './selected/selected.component';
@@ -15,7 +15,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         AppComponent,
-        GameoverComponent,
+        GameOverComponent,
         SelectedComponent,
         PlayersComponent,
         PlayerComponent,

@@ -9,7 +9,7 @@ import { TurnService } from 'src/model/turn.service';
   templateUrl: './gameover.component.html',
   styleUrls: ['./gameover.component.scss']
 })
-export class GameoverComponent implements OnInit {
+export class GameOverComponent implements OnInit {
 
   winningPlayer!: Player;
 

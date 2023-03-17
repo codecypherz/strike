@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Game } from "./game";
 import { Scrapper } from "./machine/scrapper";
@@ -10,10 +10,18 @@ import { PieceCollection } from "./piececollection";
 @Injectable()
 export class GameCollection {
 
-  public game1 = this.createGame1();
-  public game2 = this.createGame2();
-  public game3 = this.createGame3();
+  private games = new Array<Game>();
 
+  constructor(@Optional() @SkipSelf() service: GameCollection) {
+    this.games.push(this.createGame1());
+    this.games.push(this.createGame2());
+    this.games.push(this.createGame3());
+  }
+
+  getGames(): Array<Game> {
+    return this.games;
+  }
+  
   private createGame1(): Game {
     const board = new Board();
     const pieceCollection = new PieceCollection();

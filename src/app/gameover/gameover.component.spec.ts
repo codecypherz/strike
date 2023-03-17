@@ -4,15 +4,15 @@ import { BoardService } from 'src/model/board.service';
 import { GameService } from 'src/model/game.service';
 import { TurnService } from 'src/model/turn.service';
 
-import { GameoverComponent } from './gameover.component';
+import { GameOverComponent } from './gameover.component';
 
-describe('GameoverComponent', () => {
-  let component: GameoverComponent;
-  let fixture: ComponentFixture<GameoverComponent>;
+describe('GameOverComponent', () => {
+  let component: GameOverComponent;
+  let fixture: ComponentFixture<GameOverComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [GameoverComponent],
+      declarations: [GameOverComponent],
       providers: [
         Board,
         GameService,
@@ -22,7 +22,7 @@ describe('GameoverComponent', () => {
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(GameoverComponent);
+    fixture = TestBed.createComponent(GameOverComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -10,4 +10,8 @@ export class Game {
     this.board = board;
     this.pieceCollection = pieceCollection;
   }
+
+  getId(): string {
+    return this.id;
+  }
 }
