@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { BoardService } from 'src/model/board.service';
 import { Player } from 'src/model/player';
-import { TurnService } from 'src/model/turn.service';
 
 @Component({
   selector: 'app-player',
@@ -11,9 +11,9 @@ export class PlayerComponent {
 
   @Input() player!: Player;
 
-  constructor(private turnService: TurnService) { }
+  constructor(private boardService: BoardService) { }
 
   endTurn() {
-    this.turnService.endTurn();
+    this.boardService.getGame()!.endTurn();
   }
 }

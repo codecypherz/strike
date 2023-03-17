@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Player } from 'src/model/player';
-import { TurnService } from 'src/model/turn.service';
 
 @Component({
   selector: 'app-players',

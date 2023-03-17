@@ -2,9 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { Game } from "./game";
-import { GameService } from "./game.service";
 import { Piece } from "./piece/piece";
-import { TurnService } from "./turn.service";
 
 /**
  * Provides behavior and simple extractions of intent.
@@ -15,36 +13,36 @@ export class BoardService {
   private game: Game | null = null;
   private selectedCell: Cell | null = null;
   private selectedPiece: Piece | null = null;
+  
+  private startTurnCallback = this.onStartTurn.bind(this);
 
   constructor(
-    private turnService: TurnService,
-    private gameService: GameService,
     @Optional() @SkipSelf() service?: BoardService) {
 
     if (service) {
       throw new Error('Singleton violation: BoardService');
     }
-
-    turnService.addEventListener(TurnService.START_TURN_EVENT, this.onStartTurn.bind(this));
-
-    (window as any).boardService = this;
-
-    // TODO: Move this to the UI.
-    //this.turnService.startGame();
   }
 
-  setGame(game: Game): void {
-    this.reset();
+  setGame(game: Game | null): void {
+    if (this.game) {
+      this.game.removeEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
+    }
+    this.exitStaging();
     this.game = game;
+    if (this.game) {
+      this.game.addEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
+    }
+  }
+
+  getGame(): Game {
+    // Throws if game hasn't been set.
+    return this.game!;
   }
 
   private getBoard(): Board {
     // Throws if game hasn't been set.
     return this.game!.getBoard();
-  }
-
-  reset(): void {
-    this.exitStaging();
   }
 
   onStartTurn(): void {
@@ -267,11 +265,11 @@ export class BoardService {
         const piece = cell.getPiece()!;
         if (piece.isDead()) {
           piece.player.removePiece(piece);
-          this.turnService.getOtherPlayer(piece.player).addPoints(piece.points);
+          this.game!.getOtherPlayer(piece.player).addPoints(piece.points);
           cell.clearPiece();
         }
       }
     }
-    this.gameService.checkWinCondition();
+    this.game!.checkWinCondition();
   }
 }

@@ -3,9 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { BoardService } from 'src/model/board.service';
 import { BoardCollection } from 'src/model/boardcollection';
-import { GameService } from 'src/model/game.service';
 import { GameCollection } from 'src/model/gamecollection';
-import { TurnService } from 'src/model/turn.service';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { CellComponent } from './cell/cell.component';
@@ -43,8 +41,6 @@ import { SelectedComponent } from './selected/selected.component';
     BoardCollection,
     BoardService,
     GameCollection,
-    GameService,
-    TurnService,
   ],
   bootstrap: [AppComponent]
 })
