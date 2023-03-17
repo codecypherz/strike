@@ -31,4 +31,8 @@ export class Game {
   getBoard(): Board {
     return this.board;
   }
+
+  start(): void {
+    // TODO: Move all turn service logic here.
+  }
 }

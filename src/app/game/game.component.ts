@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BoardService } from 'src/model/board.service';
 import { Game } from 'src/model/game';
 import { GameCollection } from 'src/model/gamecollection';
 
@@ -12,7 +13,11 @@ export class GameComponent {
 
   game!: Game;
 
-  constructor(private gameCollection: GameCollection, private route: ActivatedRoute) { }
+  constructor(
+    private gameCollection: GameCollection,
+    private route: ActivatedRoute,
+    private boardService: BoardService) {
+  }
 
   ngOnInit() {
     // First, get the game id from the current route.
@@ -25,5 +30,9 @@ export class GameComponent {
       throw new Error(`Unable to find game: ${gameIdFromRoute}`);
     }
     this.game = result;
+
+    // This is now the active game.
+    this.boardService.setGame(this.game);
+    this.game.start();
   }
 }

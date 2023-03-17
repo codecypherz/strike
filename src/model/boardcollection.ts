@@ -17,6 +17,7 @@ export class BoardCollection {
       throw new Error('Singleton violation: BoardCollection');
     }
 
+    console.info('BoardCollection, creating boards');
     this.board1 = this.createBoard1();
     this.board2 = this.createBoard2();
     this.board3 = this.createBoard3();

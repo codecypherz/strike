@@ -18,6 +18,7 @@ export class GameCollection {
       throw new Error('Singleton violation: GameCollection');
     }
 
+    console.info('GameCollection, creating games');
     this.games.push(this.createGame1());
     this.games.push(this.createGame2());
     this.games.push(this.createGame3());

@@ -1,10 +1,8 @@
-import { Injectable, Optional, SkipSelf } from "@angular/core";
+import { v4 as uuidv4 } from 'uuid';
 import { Cell } from "./cell";
-import { Burrower } from "./machine/burrower";
 import { Direction } from "./direction";
 import { Position } from "./position";
 import { Terrain } from "./terrain";
-import { Piece } from "./piece/piece";
 
 /**
  * Provides the data for the board.
@@ -13,9 +11,11 @@ export class Board {
 
   static readonly SIZE: number = 8;
 
+  public id = uuidv4();
   private cells!: Cell[][];
 
   constructor() {
+    console.info('Making new board: ' + this.id);
     this.cells = new Array<Array<Cell>>();
     for (let row = 0; row < Board.SIZE; row++) {
       let rowArr: Cell[] = new Array<Cell>();

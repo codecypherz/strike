@@ -1,6 +1,7 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
+import { Game } from "./game";
 import { GameService } from "./game.service";
 import { Piece } from "./piece/piece";
 import { TurnService } from "./turn.service";
@@ -11,11 +12,11 @@ import { TurnService } from "./turn.service";
 @Injectable()
 export class BoardService {
 
+  private game: Game | null = null;
   private selectedCell: Cell | null = null;
   private selectedPiece: Piece | null = null;
 
   constructor(
-    private board: Board,
     private turnService: TurnService,
     private gameService: GameService,
     @Optional() @SkipSelf() service?: BoardService) {
@@ -29,7 +30,17 @@ export class BoardService {
     (window as any).boardService = this;
 
     // TODO: Move this to the UI.
-    this.turnService.startGame();
+    //this.turnService.startGame();
+  }
+
+  setGame(game: Game): void {
+    this.reset();
+    this.game = game;
+  }
+
+  private getBoard(): Board {
+    // Throws if game hasn't been set.
+    return this.game!.getBoard();
   }
 
   reset(): void {
@@ -43,11 +54,11 @@ export class BoardService {
     
     // This part needs to happen after exiting staging in order for
     // a staged piece to be properly reset.
-    this.board.clearTurnData();
+    this.getBoard().clearTurnData();
     
     // TODO: Animate or indicate what happened at the start of the turn.
     // Allow pieces with start of turn actions to take action.
-    for (let cell of this.board.getCells().flat()) {
+    for (let cell of this.getBoard().getCells().flat()) {
       if (cell.hasPiece()) {
         cell.getPiece()!.takeStartOfTurnAction();
       }
@@ -60,7 +71,7 @@ export class BoardService {
     // Clear turn data again in case a piece died.
     // This is because clearTurnData is based on assigning values
     // for isLastPiece
-    this.board.clearTurnData();
+    this.getBoard().clearTurnData();
 
     // Now show selected actions to effectively clear things,
     // but nothing should be shown since nothing is selected.
@@ -140,7 +151,7 @@ export class BoardService {
     }
 
     // Clear staging for all pieces.
-    this.board.clearStagedAttackData();
+    this.getBoard().clearStagedAttackData();
 
     // Confirm the move, then exit staging for the next action.
     piece.confirmMove();
@@ -163,7 +174,7 @@ export class BoardService {
     }
 
     // Clear staging for all pieces.
-    this.board.clearStagedAttackData();
+    this.getBoard().clearStagedAttackData();
 
     // Perform the attack.
     piece.attack();
@@ -204,7 +215,7 @@ export class BoardService {
 
   showSelectedActions() {
     // Reset the state of the board before showing new actions.
-    for (let cell of this.board.getCells().flat()) {
+    for (let cell of this.getBoard().getCells().flat()) {
       cell.clearIndicators();
       if (cell.hasPiece()) {
         cell.getPiece()!.clearStagedAttackData();
@@ -251,7 +262,7 @@ export class BoardService {
   }
 
   private removeAndAwardForDeadPieces(): void {
-    for (let cell of this.board.getCells().flat()) {
+    for (let cell of this.getBoard().getCells().flat()) {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
         if (piece.isDead()) {
