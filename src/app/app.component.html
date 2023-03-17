@@ -1,6 +1,3 @@
-<!-- This is a dialog that overlays everything -->
-<app-gameover></app-gameover>
-
 <div class="header">
   <img src="/images/banner.png">
   <div class="title">Strike</div>
@@ -10,16 +7,8 @@
   <img src="/images/body_background.webp">
 </div>
 
-<div class="left-panel">
-  <app-selected></app-selected>
-  <audio class="audio-controls" controls loop>
-    <source src="/audio/rusted_sands.mp3" type="audio/mpeg">
-  </audio>
-</div>
-
-<div class="right-panel">
-  <app-players></app-players>
-  <app-board></app-board>
+<div class="router-outlet">
+  <router-outlet></router-outlet>
 </div>
 
 <div class="footer">

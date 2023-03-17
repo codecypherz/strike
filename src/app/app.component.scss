@@ -40,29 +40,10 @@
   opacity: 30%;
 }
 
-.left-panel,
-.right-panel {
+.router-outlet {
   display: inline-block;
   vertical-align: top;
   margin-bottom: 40px;
-}
-
-.left-panel {
-  margin-top: 290px;
-  margin-right: 40px;
-  position: relative;
-  margin-left: 40px;
-}
-
-.right-panel {
-  margin-top: 140px;
-  margin-right: 40px;
-}
-
-.audio-controls {
-  position: absolute;
-  left: 0;
-  top: -96px;
 }
 
 .footer {

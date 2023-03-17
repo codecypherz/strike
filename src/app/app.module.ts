@@ -13,26 +13,37 @@ import { GameService } from 'src/model/game.service';
 import { TurnService } from 'src/model/turn.service';
 import { GameoverComponent } from './gameover/gameover.component';
 import { SelectedComponent } from './selected/selected.component';
+import { GameCollection } from 'src/model/gamecollection';
+import { AppRoutingModule } from './routing/approuting.module';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
+import { GameSelectionComponent } from './gameselection/gameselection.component';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     BoardComponent,
-    PieceComponent,
     CellComponent,
+    GameoverComponent,
+    PageNotFoundComponent,
+    PieceComponent,
     PlayersComponent,
     PlayerComponent,
-    GameoverComponent,
-    SelectedComponent
+    SelectedComponent,
+    GameSelectionComponent,
+    GameComponent,
   ],
   imports: [
-    BrowserModule
+    AppRoutingModule,
+    BrowserModule,
+
   ],
   providers: [
     Board,
     BoardService,
+    GameCollection,
     GameService,
-    TurnService
+    TurnService,
   ],
   bootstrap: [AppComponent]
 })
