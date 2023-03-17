@@ -1,25 +1,19 @@
 import { BaseTest } from "src/test/basetest";
-import { Board } from "./board";
-import { BoardService } from "./board.service";
+import { Game } from "./game";
 import { GameService } from "./game.service";
 import { Bristleback } from "./machine/bristleback";
 import { Scrounger } from "./machine/scrounger";
-import { TurnService } from "./turn.service";
+import { PieceCollection } from "./piececollection";
 
-describe('BoardService', () => {
+describe('GameService', () => {
   let t: BaseTest;
-  let turnService: TurnService;
   let gameService: GameService;
-  let boardService: BoardService;
+  let game: Game;
   beforeEach(() => {
     t = new BaseTest();
-    turnService = new TurnService();
-    t.player1 = turnService.player1;
-    t.player2 = turnService.player2;
-    gameService = new GameService(t.board, turnService);
-    boardService = new BoardService(t.board, turnService, gameService);
-
-
+    gameService = new GameService();
+    game = new Game(t.board, new PieceCollection());
+    gameService.setGame(game);
   });
 
   it('Bristleback hurts pieces at start of turn', () => {
@@ -32,7 +26,7 @@ describe('BoardService', () => {
     expect(piece12.getHealth()).toBe(piece12.maxHealth);
 
     // Triggers the Bristleback on start of turn.
-    turnService.endTurn();
+    game.endTurn();
 
     expect(piece12.getHealth()).toBe(piece12.maxHealth - 1);
   });
@@ -49,7 +43,7 @@ describe('BoardService', () => {
     t.setActivePlayer2();
 
     // Triggers the Bristleback on start of turn.
-    turnService.endTurn();
+    game.endTurn();
 
     expect(piece12.getHealth()).toBe(piece12.maxHealth - 1);
     expect(piece13.isDead()).toBeTrue();
@@ -68,7 +62,7 @@ describe('BoardService', () => {
     t.setActivePlayer2();
 
     // Triggers the Bristleback on start of turn.
-    turnService.endTurn();
+    game.endTurn();
 
     expect(piece12.isDead()).toBeTrue();
     expect(t.player2.getPoints()).toBe(piece12.points);
@@ -86,7 +80,7 @@ describe('BoardService', () => {
     t.setActivePlayer2();
 
     // Triggers the Bristleback on start of turn.
-    turnService.endTurn();
+    game.endTurn();
 
     expect(piece11.isDead()).toBeTrue();
     expect(piece12.isDead()).toBeTrue();

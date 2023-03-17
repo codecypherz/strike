@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Player } from 'src/model/player';
 
 @Component({
@@ -11,9 +11,9 @@ export class PlayerComponent {
 
   @Input() player!: Player;
 
-  constructor(private boardService: BoardService) { }
+  constructor(private gameService: GameService) { }
 
   endTurn() {
-    this.boardService.getGame()!.endTurn();
+    this.gameService.getGame()!.endTurn();
   }
 }

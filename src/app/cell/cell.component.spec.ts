@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Board } from 'src/model/board';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Cell } from 'src/model/cell';
 import { GameService } from 'src/model/game.service';
 import { TurnService } from 'src/model/turn.service';
@@ -20,7 +20,7 @@ describe('CellComponent', () => {
         Board,
         GameService,
         TurnService,
-        BoardService
+        GameService
       ],
     })
       .compileComponents();

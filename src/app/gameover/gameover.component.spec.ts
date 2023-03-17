@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 
 import { GameOverComponent } from './gameover.component';
 
@@ -11,7 +11,7 @@ describe('GameOverComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [GameOverComponent],
       providers: [
-        BoardService
+        GameService
       ],
     })
       .compileComponents();

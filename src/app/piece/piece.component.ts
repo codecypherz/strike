@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Piece } from 'src/model/piece/piece';
 
 @Component({
@@ -11,7 +11,7 @@ export class PieceComponent {
 
   @Input() piece!: Piece;
 
-  constructor(private boardService: BoardService) {}
+  constructor(private gameService: GameService) {}
 
   isPieceSelected() {
     return this.piece && this.piece.selected;
@@ -62,34 +62,34 @@ export class PieceComponent {
 
   cancel(event: Event): void {
     event.stopPropagation();
-    this.boardService.exitStaging();
+    this.gameService.exitStaging();
   }
 
   confirmMove(event: Event): void {
     event.stopPropagation();
-    this.boardService.confirmMove();
+    this.gameService.confirmMove();
   }
 
   confirmAttack(event: Event): void {
     event.stopPropagation();
-    this.boardService.confirmAttack();
+    this.gameService.confirmAttack();
   }
 
   rotateClockwise(event: Event): void {
     event.stopPropagation();
     this.piece.rotateClockwise();
-    this.boardService.showSelectedActions();
+    this.gameService.showSelectedActions();
   }
 
   rotateCounterClockwise(event: Event): void {
     event.stopPropagation();
     this.piece.rotateCounterClockwise();
-    this.boardService.showSelectedActions();
+    this.gameService.showSelectedActions();
   }
 
   overcharge(event: Event): void {
     event.stopPropagation();
     this.piece.overcharge();
-    this.boardService.showSelectedActions();
+    this.gameService.showSelectedActions();
   }
 }

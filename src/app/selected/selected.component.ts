@@ -1,6 +1,6 @@
 import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Cell } from 'src/model/cell';
 import { Piece } from 'src/model/piece/piece';
 import { Terrain } from 'src/model/terrain';
@@ -13,14 +13,14 @@ import { decorate } from '../textdecorator';
 })
 export class SelectedComponent implements OnInit {
 
-  constructor(private boardService: BoardService) {}
+  constructor(private gameService: GameService) {}
 
   ngOnInit(): void {
     this.getSelected();
   }
 
   getSelected(): Cell | null {
-    return this.boardService.getSelectedCell();
+    return this.gameService.getSelectedCell();
   }
 
   getPiece(): Piece {

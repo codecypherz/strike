@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { BoardCollection } from 'src/model/boardcollection';
 import { GameCollection } from 'src/model/gamecollection';
 import { AppComponent } from './app.component';
@@ -39,7 +39,7 @@ import { SelectedComponent } from './selected/selected.component';
   ],
   providers: [
     BoardCollection,
-    BoardService,
+    GameService,
     GameCollection,
   ],
   bootstrap: [AppComponent]

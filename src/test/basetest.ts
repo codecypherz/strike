@@ -15,8 +15,8 @@ export class BaseTest {
     this.board = new Board();
     this.board.setAllTerrain(Terrain.GRASSLAND);
 
-    this.player1 = new Player('player-1', 'Player 1', Direction.DOWN);
-    this.player2 = new Player('player-2', 'Player 2', Direction.UP);
+    this.player1 = new Player(true, 'Player 1', Direction.DOWN);
+    this.player2 = new Player(false, 'Player 2', Direction.UP);
   }
 
   initializePiece(piece: Piece, row: number, col: number): void {

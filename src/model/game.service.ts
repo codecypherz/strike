@@ -8,7 +8,7 @@ import { Piece } from "./piece/piece";
  * Provides behavior and simple extractions of intent.
  */
 @Injectable()
-export class BoardService {
+export class GameService {
 
   private game: Game | null = null;
   private selectedCell: Cell | null = null;
@@ -17,10 +17,10 @@ export class BoardService {
   private startTurnCallback = this.onStartTurn.bind(this);
 
   constructor(
-    @Optional() @SkipSelf() service?: BoardService) {
+    @Optional() @SkipSelf() service?: GameService) {
 
     if (service) {
-      throw new Error('Singleton violation: BoardService');
+      throw new Error('Singleton violation: GameService');
     }
   }
 

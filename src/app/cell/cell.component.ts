@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Cell } from 'src/model/cell';
 
 @Component({
@@ -11,10 +11,10 @@ export class CellComponent {
 
   @Input() cell!: Cell;
 
-  constructor(private boardService: BoardService) { }
+  constructor(private gameService: GameService) { }
 
   onCellClicked(): void {
-    this.boardService.onCellClicked(this.cell);
+    this.gameService.onCellClicked(this.cell);
   }
 
   showAvailableMove(): boolean {

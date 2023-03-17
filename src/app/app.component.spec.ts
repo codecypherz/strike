@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Board } from 'src/model/board';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { GameOverComponent } from './gameover/gameover.component';
@@ -21,7 +21,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         Board,
-        BoardService
+        GameService
       ],
     }).compileComponents();
   });

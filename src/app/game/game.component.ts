@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Game } from 'src/model/game';
 import { GameCollection } from 'src/model/gamecollection';
 
@@ -16,7 +16,7 @@ export class GameComponent {
   constructor(
     private gameCollection: GameCollection,
     private route: ActivatedRoute,
-    private boardService: BoardService) {
+    private gameService: GameService) {
   }
 
   ngOnInit() {
@@ -32,7 +32,7 @@ export class GameComponent {
     this.game = result;
 
     // This is now the active game.
-    this.boardService.setGame(this.game);
+    this.gameService.setGame(this.game);
     this.game.start();
   }
 }

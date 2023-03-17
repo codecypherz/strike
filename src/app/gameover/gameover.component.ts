@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BoardService } from 'src/model/board.service';
+import { GameService } from 'src/model/game.service';
 import { Game } from 'src/model/game';
 import { Player } from 'src/model/player';
 
@@ -16,7 +16,7 @@ export class GameOverComponent implements OnInit {
   winningPlayer!: Player;
 
   constructor(
-    private boardService: BoardService,
+    private gameService: GameService,
     private router: Router) { }
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class GameOverComponent implements OnInit {
   }
 
   newGame(): void {
-    this.boardService.setGame(null);
+    this.gameService.setGame(null);
     this.router.navigate(['game-selection']);
   }
 }
