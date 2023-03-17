@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Player } from 'src/model/player';
 import { TurnService } from 'src/model/turn.service';
 
@@ -9,7 +9,8 @@ import { TurnService } from 'src/model/turn.service';
 })
 export class PlayersComponent implements OnInit {
 
-  constructor(private turnService: TurnService) {}
+  @Input() player1!: Player;
+  @Input() player2!: Player;
 
   ngOnInit(): void {
     this.getPlayer1();
@@ -17,10 +18,10 @@ export class PlayersComponent implements OnInit {
   }
 
   getPlayer1(): Player {
-    return this.turnService.player1;
+    return this.player1;
   }
 
   getPlayer2(): Player {
-    return this.turnService.player2;
+    return this.player2;
   }
 }

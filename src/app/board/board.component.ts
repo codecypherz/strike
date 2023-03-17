@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Board } from 'src/model/board';
 import { Cell } from 'src/model/cell';
 
@@ -9,7 +9,7 @@ import { Cell } from 'src/model/cell';
 })
 export class BoardComponent implements OnInit {
 
-  constructor(private board: Board) {}
+  @Input() board!: Board;
 
   ngOnInit(): void {
     this.getCells();

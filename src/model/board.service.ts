@@ -34,7 +34,6 @@ export class BoardService {
 
   reset(): void {
     this.exitStaging();
-    this.board.reset();
   }
 
   onStartTurn(): void {

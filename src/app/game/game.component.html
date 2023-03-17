@@ -9,6 +9,6 @@
 </div>
 
 <div class="right-panel">
-  <app-players></app-players>
-  <app-board></app-board>
+  <app-players [player1]="game.getPlayer1()" [player2]="game.getPlayer2()"></app-players>
+  <app-board [board]="game.getBoard()"></app-board>
 </div>

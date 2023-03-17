@@ -12,7 +12,7 @@ const routes: Routes = [
     component: GameSelectionComponent,
   },
   {
-    path: 'game',
+    path: 'game/:gameId',
     title: '',
     component: GameComponent,
   },

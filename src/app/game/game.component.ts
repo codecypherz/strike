@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Game } from 'src/model/game';
+import { GameCollection } from 'src/model/gamecollection';
 
 @Component({
   selector: 'app-game',
@@ -7,4 +10,20 @@ import { Component } from '@angular/core';
 })
 export class GameComponent {
 
+  game!: Game;
+
+  constructor(private gameCollection: GameCollection, private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    // First, get the game id from the current route.
+    const routeParams = this.route.snapshot.paramMap;
+    const gameIdFromRoute = String(routeParams.get('gameId'));
+
+    // Find the game that corresponded with the id from the route.
+    const result = this.gameCollection.findById(gameIdFromRoute);
+    if (result == null) {
+      throw new Error(`Unable to find game: ${gameIdFromRoute}`);
+    }
+    this.game = result;
+  }
 }

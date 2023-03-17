@@ -1,7 +1,7 @@
 <div *ngIf="piece" [ngClass]="{
       'piece': true,
-      'player1' : piece.player.id == 'player1',
-      'player2' : piece.player.id == 'player2'
+      'player1' : piece.player.isPlayer1(),
+      'player2' : piece.player.isPlayer2()
       }">
   <div class="piece-outline" [style.transform]="getPieceRotationTransform()">
     <div class="piece-background"></div>

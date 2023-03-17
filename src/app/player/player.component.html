@@ -1,7 +1,7 @@
 <div [ngClass]="{
       'player': true,
-      'player1' : player.id == 'player1',
-      'player2' : player.id == 'player2',
+      'player1' : player.isPlayer1(),
+      'player2' : player.isPlayer2(),
       'active': player.isActive()
       }">
   <div class="player-name">

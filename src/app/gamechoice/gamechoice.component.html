@@ -1,5 +1,5 @@
 <div class="game-choice">
-  <button [routerLink]="['/game']">
-    Select Game {{game.getId()}}
+  <button [routerLink]="['/game', game.getId()]">
+    Select Game: {{game.getId()}}
   </button>
 </div>

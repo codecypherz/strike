@@ -1,6 +1,7 @@
 import { getOnly } from "src/util/sets";
 import { Direction } from "./direction";
 import { Piece } from "./piece/piece";
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * A cell is a portion of the board. A cell has a certain type of terrain
@@ -8,6 +9,7 @@ import { Piece } from "./piece/piece";
  */
 export class Player {
 
+  private id = uuidv4();
   private active: boolean = false;
   private points: number = 0;
 
@@ -17,9 +19,18 @@ export class Player {
   private piecesActivated = new Set<Piece>();
 
   constructor(
-    readonly id: string,
+    readonly isFirst: boolean,
     readonly name: string,
     readonly defaultDirection: Direction) {
+      this.active = isFirst;
+  }
+
+  isPlayer1(): boolean {
+    return this.isFirst;
+  }
+
+  isPlayer2(): boolean {
+    return !this.isFirst;
   }
 
   equals(other: Player): boolean {

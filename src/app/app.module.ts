@@ -19,6 +19,7 @@ import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { GameSelectionComponent } from './gameselection/gameselection.component';
 import { GameComponent } from './game/game.component';
 import { GameChoiceComponent } from './gamechoice/gamechoice.component';
+import { BoardCollection } from 'src/model/boardcollection';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { GameChoiceComponent } from './gamechoice/gamechoice.component';
   ],
   providers: [
     Board,
+    BoardCollection,
     BoardService,
     GameCollection,
     GameService,
