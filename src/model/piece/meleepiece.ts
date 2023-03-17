@@ -18,7 +18,7 @@ export class MeleePiece extends Piece {
     if (rangeRemaining == 0) {
       return attackCells;
     }
-    const cell = this.board.getCellInDirection(pos, dir);
+    const cell = this.getBoard().getCellInDirection(pos, dir);
     // Can't run off the board.
     if (!cell) {
       return attackCells;
@@ -26,7 +26,7 @@ export class MeleePiece extends Piece {
     if (cell.hasPiece()) {
       const piece = cell.getPiece()!;
       // Can't attack your own pieces nor can you attack through them.
-      if (this.player.equals(piece.player)) {
+      if (this.getPlayer().equals(piece.getPlayer())) {
         return attackCells;
       } else {
         // Found a piece to attack.

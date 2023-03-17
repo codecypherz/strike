@@ -17,8 +17,8 @@ describe('Melee Piece', () => {
   });
 
   it('basic attack', () => {
-    let piece11 = new TestMeleePiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestMeleePiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 1, 0);
@@ -35,8 +35,8 @@ describe('Melee Piece', () => {
   });
 
   it('basic attack, armor break', () => {
-    let piece11 = new TestMeleePiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestMeleePiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.setTerrain(1, 0, Terrain.MOUNTAIN); // Ensures armor break
     t.initializePiece(piece11, 0, 0);
@@ -55,8 +55,8 @@ describe('Melee Piece', () => {
   });
 
   it('can attack in range', () => {
-    let piece11 = new TestMeleePiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestMeleePiece();
+    let piece21 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 1, 0);
 
@@ -64,8 +64,8 @@ describe('Melee Piece', () => {
   });
 
   it('cannot attack out of range', () => {
-    let piece11 = new TestMeleePiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestMeleePiece();
+    let piece21 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 2, 0);
 
@@ -74,16 +74,14 @@ describe('Melee Piece', () => {
 });
 
 class TestMeleePiece extends MeleePiece {
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       'Test Melee Piece',
       'image url',
-      2, // points
-      3, // movement
-      1, // attack
-      1, // attack range
-      5, // health
-      player);
+      2,  // points
+      3,  // movement
+      1,  // attack
+      1,  // attack range
+      5); // health
     }
 }

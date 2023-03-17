@@ -1,8 +1,6 @@
-import { Board } from "../board";
-import { Player } from "../player";
+import { Cell } from "../cell";
 import { DashPiece } from "../piece/dashpiece";
 import { Piece } from "../piece/piece";
-import { Cell } from "../cell";
 import { Terrain } from "../terrain";
 
 export class Charger extends DashPiece {
@@ -15,17 +13,15 @@ export class Charger extends DashPiece {
   static ATTACK_RANGE = 2;
   static MAX_HEALTH = 4;
 
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       Charger.NAME,
       Charger.IMAGE_URL,
       Charger.POINTS,
       Charger.MOVEMENT,
       Charger.ATTACK,
       Charger.ATTACK_RANGE,
-      Charger.MAX_HEALTH,
-      player);
+      Charger.MAX_HEALTH);
   }
 
   override hasAbility(): boolean {

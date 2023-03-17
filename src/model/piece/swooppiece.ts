@@ -43,7 +43,7 @@ export class SwoopPiece extends Piece {
       // Base case.
       return attackCells;
     }
-    const cell = this.board.getCellInDirection(pos, dir);
+    const cell = this.getBoard().getCellInDirection(pos, dir);
 
     if (!cell) {
       // Can't run off the board.
@@ -53,14 +53,14 @@ export class SwoopPiece extends Piece {
     if (cell.hasPiece()) {
       const piece = cell.getPiece()!;
       // Can't attack your own pieces nor can you attack through them.
-      if (this.player.equals(piece.player)) {
+      if (this.getPlayer().equals(piece.getPlayer())) {
         return attackCells;
       } else {
         // Found a piece to attack.
         attackCells.toAttack.add(cell);
 
         // A swoop piece moves to the cell next to the one it is attacking.
-        const finishingCell = this.board.getCell(pos);
+        const finishingCell = this.getBoard().getCell(pos);
         if (!this.getPosition().equals(pos)) {
           attackCells.setFinishingCell(finishingCell);
         }

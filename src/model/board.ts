@@ -15,7 +15,6 @@ export class Board {
   private cells!: Cell[][];
 
   constructor() {
-    console.info('Making new board: ' + this.id);
     this.cells = new Array<Array<Cell>>();
     for (let row = 0; row < Board.SIZE; row++) {
       let rowArr: Cell[] = new Array<Cell>();

@@ -49,21 +49,41 @@ export abstract class Piece {
   stagedPullDirection: Direction | null = null;
   stagedOvercharge = false;
 
+  // Set later.
+  private board: Board | null = null;
+  private player: Player | null = null;
+
   constructor(
-    readonly board: Board,
     readonly name: string,
     readonly imageUrl: string,
     readonly points: number,
     readonly moveRange: number,
     readonly attackPower: number,
     readonly attackRange: number,
-    readonly maxHealth: number,
-    readonly player: Player) {
-
+    readonly maxHealth: number) {
     this.health = maxHealth;
-    this.direction = player.defaultDirection.degrees;
+  }
 
-    player.addPiece(this);
+  setBoard(board: Board): void {
+    if (this.board) {
+      throw new Error('Cannot set another board for this piece.');
+    }
+    this.board = board;
+  }
+
+  getBoard(): Board {
+    return this.board!;
+  }
+
+  setPlayer(player: Player): void {
+    if (this.player) {
+      throw new Error('Cannot set another player for this piece.');
+    }
+    this.player = player;
+  }
+
+  getPlayer(): Player {
+    return this.getPlayer()!;
   }
 
   /**
@@ -75,7 +95,7 @@ export abstract class Piece {
       // staged piece is properly reset.
       throw new Error('The piece needs to be deselected before turn end.');
     }
-    this.lastPiece = this.player.isLastPiece(this);
+    this.lastPiece = this.getPlayer().isLastPiece(this);
     this.actions.clear();
     this.clearSelectionData();
     this.clearStagedAttackData();
@@ -124,9 +144,9 @@ export abstract class Piece {
 
     // Undo the selection by putting the piece back where it was.
     // Note: this is happening even after confirming a move, but it's a no-op.
-    const currentCell = this.board.getCell(this.stagedPosition!);
+    const currentCell = this.getBoard().getCell(this.stagedPosition!);
     currentCell.clearPiece();
-    const originalCell = this.board.getCell(this.position);
+    const originalCell = this.getBoard().getCell(this.position);
     originalCell.clearPiece();
     originalCell.setPiece(this);
     this.position = originalCell.position;
@@ -236,7 +256,7 @@ export abstract class Piece {
   }
 
   getCell(): Cell {
-    return this.board.getCell(this.getPosition());
+    return this.getBoard().getCell(this.getPosition());
   }
 
   hasBeenActivated(): boolean {
@@ -245,7 +265,7 @@ export abstract class Piece {
 
   canBeActivated(): boolean {
     // Can't activate unless it's this player's turn.
-    if (!this.player.isActive()) {
+    if (!this.getPlayer().isActive()) {
       return false;
     }
     // True if this piece has already been activated.
@@ -254,11 +274,11 @@ export abstract class Piece {
       return true;
     }
     // Piece hasn't been activated, so check if the player can still do that.
-    return this.player.canActivatePiece();
+    return this.getPlayer().canActivatePiece();
   }
 
   private activate(): void {
-    this.player.addActivatedPiece(this);
+    this.getPlayer().addActivatedPiece(this);
   }
 
   canOvercharge(): boolean {
@@ -315,10 +335,10 @@ export abstract class Piece {
     }
     // We don't return false here for move and attack with overcharge.
     // This is handled in the canAttack method which prevents the combination.
-    if (!this.player.isActive()) {
+    if (!this.getPlayer().isActive()) {
       return false;
     }
-    if (!this.hasBeenActivated() && !this.player.canActivatePiece()) {
+    if (!this.hasBeenActivated() && !this.getPlayer().canActivatePiece()) {
       return false;
     }
     return true;
@@ -350,7 +370,7 @@ export abstract class Piece {
       throw new Error('Cannot move to this cell: ' + destCell.position.toString());
     }
 
-    const srcCell = this.board.getCell(this.getPosition());
+    const srcCell = this.getBoard().getCell(this.getPosition());
     srcCell.clearPiece();
     destCell.setPiece(this);
     this.setPosition(destCell.position);
@@ -403,7 +423,7 @@ export abstract class Piece {
       // Stop at one further than movement range if sprinting.
       return moveCells;
     }
-    for (let cell of this.board.getSurroundingCells(pos)) {
+    for (let cell of this.getBoard().getSurroundingCells(pos)) {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
         if (piece != this) {
@@ -454,10 +474,10 @@ export abstract class Piece {
       // Can't move and attack with overcharge.
       return false;
     }
-    if (!this.player.isActive()) {
+    if (!this.getPlayer().isActive()) {
       return false;
     }
-    if (!this.hasBeenActivated() && !this.player.canActivatePiece()) {
+    if (!this.hasBeenActivated() && !this.getPlayer().canActivatePiece()) {
       return false;
     }
     return true;
@@ -473,15 +493,15 @@ export abstract class Piece {
     if (rangeRemaining == 0) {
       return attackCells;
     }
-    const cell = this.board.getCellInDirection(pos, dir);
-    // Can't run off the this.board.
+    const cell = this.getBoard().getCellInDirection(pos, dir);
+    // Can't run off the this.getBoard().
     if (!cell) {
       return attackCells;
     }
     if (cell.hasPiece()) {
       const piece = cell.getPiece()!;
       // Can't attack your own pieces nor can you attack through them.
-      if (this.player.equals(piece.player)) {
+      if (this.getPlayer().equals(piece.getPlayer())) {
         return attackCells;
       } else {
         // Found a piece to attack.
@@ -554,7 +574,7 @@ export abstract class Piece {
   }
 
   getAttackPowerForAttack_(targetPiece: Piece): number {
-    const cell = this.board.getCell(this.getPosition());
+    const cell = this.getBoard().getCell(this.getPosition());
     let attack = this.getAttackPower(cell);
     const targetSideStrength = this.getTargetSideStrength_(targetPiece);
     if (targetSideStrength == Strength.WEAK) {
@@ -564,7 +584,7 @@ export abstract class Piece {
   }
 
   getDefenseForAttack_(targetPiece: Piece): number {
-    const targetCell = this.board.getCell(targetPiece.getPosition());
+    const targetCell = this.getBoard().getCell(targetPiece.getPosition());
     let defense = targetPiece.getDefense(targetCell);
     const targetSideStrength = this.getTargetSideStrength_(targetPiece);
     if (targetSideStrength == Strength.STRONG) {
@@ -606,7 +626,7 @@ export abstract class Piece {
   knockback_(kbDir: Direction): boolean {
     this.stagedKnockbackDirection = kbDir;
     // Preview the impact of the knockback as well.
-    const kbCell = this.board.getCellInDirection(this.getPosition(), kbDir);
+    const kbCell = this.getBoard().getCellInDirection(this.getPosition(), kbDir);
     if (kbCell) {
       if (kbCell.hasPiece()) {
         // This piece must take an extra damage because of the collision.
@@ -679,10 +699,10 @@ export abstract class Piece {
     if (this.actions.hasAttackedSinceLastOvercharge() && !this.stagedOvercharge) {
       return false;
     }
-    if (!this.player.isActive()) {
+    if (!this.getPlayer().isActive()) {
       return false;
     }
-    if (!this.hasBeenActivated() && !this.player.canActivatePiece()) {
+    if (!this.hasBeenActivated() && !this.getPlayer().canActivatePiece()) {
       return false;
     }
     return true;

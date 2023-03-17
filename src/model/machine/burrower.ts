@@ -1,5 +1,3 @@
-import { Board } from "../board";
-import { Player } from "../player";
 import { MeleePiece } from "../piece/meleepiece";
 import { Piece } from "../piece/piece";
 
@@ -13,16 +11,14 @@ export class Burrower extends MeleePiece {
   static ATTACK_RANGE = 1;
   static MAX_HEALTH = 4;
 
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       Burrower.NAME,
       Burrower.IMAGE_URL,
       Burrower.POINTS,
       Burrower.MOVEMENT,
       Burrower.ATTACK,
       Burrower.ATTACK_RANGE,
-      Burrower.MAX_HEALTH,
-      player);
+      Burrower.MAX_HEALTH);
   }
 }

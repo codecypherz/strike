@@ -17,8 +17,8 @@ describe('GameService', () => {
   });
 
   it('Bristleback hurts pieces at start of turn', () => {
-    let piece11 = new Bristleback(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
+    let piece11 = new Bristleback();
+    let piece12 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece12, 1, 0);
     t.board.clearTurnData();
@@ -32,9 +32,9 @@ describe('GameService', () => {
   });
 
   it('Bristleback kills piece at start of turn, 2 pieces remain', () => {
-    let piece11 = new Bristleback(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
-    let piece13 = new Scrounger(t.board, t.player1);
+    let piece11 = new Bristleback();
+    let piece12 = new Scrounger();
+    let piece13 = new Scrounger();
     t.setHealth(piece13, 1);
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece12, 1, 0);
@@ -53,8 +53,8 @@ describe('GameService', () => {
   });
 
   it('Bristleback kills piece at start of turn, 1 piece remains', () => {
-    let piece11 = new Bristleback(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
+    let piece11 = new Bristleback();
+    let piece12 = new Scrounger();
     t.setHealth(piece12, 1);
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece12, 0, 1);
@@ -70,8 +70,8 @@ describe('GameService', () => {
   });
 
   it('Bristleback kills piece at start of turn, 0 pieces remains', () => {
-    let piece11 = new Bristleback(t.board, t.player1);
-    let piece12 = new Bristleback(t.board, t.player1);
+    let piece11 = new Bristleback();
+    let piece12 = new Bristleback();
     t.setHealth(piece11, 1);
     t.setHealth(piece12, 1);
     t.initializePiece(piece11, 0, 0);

@@ -1,9 +1,7 @@
-import { Board } from "../board";
-import { Player } from "../player";
 import { Direction } from "../direction";
 import { Piece } from "../piece/piece";
-import { Strength } from "../strength";
 import { SwoopPiece } from "../piece/swooppiece";
+import { Strength } from "../strength";
 
 export class Glinthawk extends SwoopPiece {
 
@@ -15,17 +13,15 @@ export class Glinthawk extends SwoopPiece {
   static ATTACK_RANGE = 3;
   static MAX_HEALTH = 5;
 
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       Glinthawk.NAME,
       Glinthawk.IMAGE_URL,
       Glinthawk.POINTS,
       Glinthawk.MOVEMENT,
       Glinthawk.ATTACK,
       Glinthawk.ATTACK_RANGE,
-      Glinthawk.MAX_HEALTH,
-      player);
+      Glinthawk.MAX_HEALTH);
 
     this.sideStrengths = new Map<number, Strength>([
       [Direction.UP.degrees, Strength.WEAK],

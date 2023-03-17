@@ -1,10 +1,8 @@
-import { Board } from "../board";
-import { Player } from "../player";
+import { Cell } from "../cell";
 import { Direction } from "../direction";
 import { Piece } from "../piece/piece";
 import { RamPiece } from "../piece/rampiece";
 import { Strength } from "../strength";
-import { Cell } from "../cell";
 import { Terrain } from "../terrain";
 
 export class Lancehorn extends RamPiece {
@@ -17,17 +15,15 @@ export class Lancehorn extends RamPiece {
   static ATTACK_RANGE = 2;
   static MAX_HEALTH = 5;
 
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       Lancehorn.NAME,
       Lancehorn.IMAGE_URL,
       Lancehorn.POINTS,
       Lancehorn.MOVEMENT,
       Lancehorn.ATTACK,
       Lancehorn.ATTACK_RANGE,
-      Lancehorn.MAX_HEALTH,
-      player);
+      Lancehorn.MAX_HEALTH);
 
     this.sideStrengths = new Map<number, Strength>([
       [Direction.UP.degrees, Strength.STRONG],

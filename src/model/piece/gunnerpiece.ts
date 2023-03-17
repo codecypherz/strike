@@ -20,7 +20,7 @@ export class GunnerPiece extends Piece {
     if (rangeRemaining == 0) {
       return attackCells;
     }
-    const cell = this.board.getCellInDirection(pos, dir);
+    const cell = this.getBoard().getCellInDirection(pos, dir);
     // Can't run off the board.
     if (!cell) {
       return attackCells;
@@ -28,7 +28,7 @@ export class GunnerPiece extends Piece {
     if (cell.hasPiece()) {
       const piece = cell.getPiece()!;
       // Can't attack your own piece, but you *can* shoot through them.
-      if (!this.player.equals(piece.player)) {
+      if (!this.getPlayer().equals(piece.getPlayer())) {
         // Found a piece to attack, but it needs to be at max range to count.
         if (rangeRemaining == 1) {
           // We are at the end of our range, so add it.

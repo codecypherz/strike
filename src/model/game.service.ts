@@ -264,8 +264,8 @@ export class GameService {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
         if (piece.isDead()) {
-          piece.player.removePiece(piece);
-          this.game!.getOtherPlayer(piece.player).addPoints(piece.points);
+          piece.getPlayer().removePiece(piece);
+          this.game!.getOtherPlayer(piece.getPlayer()).addPoints(piece.points);
           cell.clearPiece();
         }
       }

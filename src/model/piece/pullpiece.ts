@@ -49,7 +49,7 @@ export class PullPiece extends Piece {
 
     // Pull the target one closer, if possible.
     const pullDir = this.getDirection().opposite();
-    const pullCell = this.board.getCellInDirection(targetCell.position, pullDir);
+    const pullCell = this.getBoard().getCellInDirection(targetCell.position, pullDir);
     if (pullCell == null) {
       throw new Error('Pull cell should not be null.');
     }

@@ -1,7 +1,7 @@
 <div *ngIf="piece" [ngClass]="{
       'piece': true,
-      'player1' : piece.player.isPlayer1(),
-      'player2' : piece.player.isPlayer2()
+      'player1' : piece.getPlayer().isPlayer1(),
+      'player2' : piece.getPlayer().isPlayer2()
       }">
   <div class="piece-outline" [style.transform]="getPieceRotationTransform()">
     <div class="piece-background"></div>
@@ -17,7 +17,7 @@
   <div class="piece-name">{{piece.name}}</div>
 
   <!-- Show attack if active. -->
-  <div *ngIf="piece.player.isActive()" class="piece-attack">
+  <div *ngIf="piece.getPlayer().isActive()" class="piece-attack">
     <img src="/images/icon/attack_icon_black.png">
     <div class="piece-attack-background">
       <div class="piece-attack-number" [ngClass]="{
@@ -29,7 +29,7 @@
   </div>
 
   <!-- Show defense if not active. -->
-  <div *ngIf="!piece.player.isActive()" class="piece-defense">
+  <div *ngIf="!piece.getPlayer().isActive()" class="piece-defense">
     <img src="/images/icon/shield_icon.png">
     <div class="piece-defense-number" [ngClass]="{
         'stat-buffed': getDefense() > piece.getBaseDefense(),

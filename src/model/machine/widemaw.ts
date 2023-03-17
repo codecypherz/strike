@@ -1,7 +1,5 @@
-import { Board } from "../board";
 import { Piece } from "../piece/piece";
 import { PullPiece } from "../piece/pullpiece";
-import { Player } from "../player";
 
 export class Widemaw extends PullPiece {
 
@@ -13,16 +11,14 @@ export class Widemaw extends PullPiece {
   static ATTACK_RANGE = 2;
   static MAX_HEALTH = 7;
 
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       Widemaw.NAME,
       Widemaw.IMAGE_URL,
       Widemaw.POINTS,
       Widemaw.MOVEMENT,
       Widemaw.ATTACK,
       Widemaw.ATTACK_RANGE,
-      Widemaw.MAX_HEALTH,
-      player);
+      Widemaw.MAX_HEALTH);
   }
 }

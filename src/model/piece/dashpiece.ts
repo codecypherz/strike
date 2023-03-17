@@ -26,7 +26,7 @@ export class DashPiece extends Piece {
       // Base case.
       return attackCells;
     }
-    const cell = this.board.getCellInDirection(pos, dir);
+    const cell = this.getBoard().getCellInDirection(pos, dir);
 
     if (!cell) {
       // Can't run off the board.

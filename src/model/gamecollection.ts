@@ -1,6 +1,7 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { BoardCollection } from "./boardcollection";
 import { Game } from "./game";
+import { Scrapper } from "./machine/scrapper";
 import { PieceCollection } from "./piececollection";
 
 /**
@@ -18,7 +19,6 @@ export class GameCollection {
       throw new Error('Singleton violation: GameCollection');
     }
 
-    console.info('GameCollection, creating games');
     this.games.push(this.createGame1());
     this.games.push(this.createGame2());
     this.games.push(this.createGame3());
@@ -41,12 +41,7 @@ export class GameCollection {
     const board = this.boardCollection.getBoard1();
     const pieceCollection = new PieceCollection();
 
-    // pieceCollection.addPiece(0, 1, new Scrapper(board));
-    // this.addPiece(0, 2, new Glinthawk(board, player1));
-    // this.addPiece(0, 3, new Burrower(board, player1));
-    // this.addPiece(0, 4, new Widemaw(board, player1));
-    // this.addPiece(0, 5, new Charger(board, player1));
-    // this.addPiece(0, 6, new Lancehorn(board, player1));
+    pieceCollection.addPiece(new Scrapper());
 
     return new Game(board, pieceCollection);
   }

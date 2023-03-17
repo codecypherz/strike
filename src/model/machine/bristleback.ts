@@ -1,5 +1,3 @@
-import { Board } from "../board";
-import { Player } from "../player";
 import { Piece } from "../piece/piece";
 import { RamPiece } from "../piece/rampiece";
 
@@ -13,17 +11,15 @@ export class Bristleback extends RamPiece {
   static ATTACK_RANGE = 1;
   static MAX_HEALTH = 4;
 
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       Bristleback.NAME,
       Bristleback.IMAGE_URL,
       Bristleback.POINTS,
       Bristleback.MOVEMENT,
       Bristleback.ATTACK,
       Bristleback.ATTACK_RANGE,
-      Bristleback.MAX_HEALTH,
-      player);
+      Bristleback.MAX_HEALTH);
   }
 
   override hasAbility(): boolean {
@@ -36,8 +32,8 @@ export class Bristleback extends RamPiece {
   }
 
   override takeStartOfTurnAction(): void {
-    if (this.player.isActive()) {
-      for (let cell of this.board.getSurroundingCells(this.getPosition())) {
+    if (this.getPlayer().isActive()) {
+      for (let cell of this.getBoard().getSurroundingCells(this.getPosition())) {
         if (cell.hasPiece()) {
           const piece = cell.getPiece()!;
           piece.takeDamage_(1);
