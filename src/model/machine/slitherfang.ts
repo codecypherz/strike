@@ -1,7 +1,7 @@
-import { MeleePiece } from "../piece/meleepiece";
+import { DashPiece } from "../piece/dashpiece";
 import { Piece } from "../piece/piece";
 
-export class Slitherfang extends MeleePiece {
+export class Slitherfang extends DashPiece {
 
   static NAME = 'Slitherfang';
   static IMAGE_URL = Piece.IMAGE_PATH + 'slitherfang.webp';
