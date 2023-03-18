@@ -89,6 +89,10 @@ export class Player {
     this.pieces.remove(piece);
   }
 
+  getPieces(): PieceCollection {
+    return this.pieces;
+  }
+
   isLastPiece(piece: Piece): boolean {
     return this.pieces.size() == 1 && this.pieces.has(piece);
   }

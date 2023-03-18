@@ -1,5 +1,11 @@
 <div class="game-choice">
-  <button (click)="selectGame()">
-    Select Game: {{game.getId()}}
+  <app-board [board]="game.getBoard()"></app-board>
+  <button class="select-game" (click)="selectGame()">
+    Select
   </button>
+  <ul class="piece-descriptor">
+    <li *ngFor="let pieceDescriptor of getPieceDescriptors()">
+      {{pieceDescriptor}}
+    </li>
+  </ul>
 </div>

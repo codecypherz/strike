@@ -1,0 +1,40 @@
+.game-choice {
+  border: 1px solid white;
+  border-radius: 30px;
+  background: #333;
+  width: 400px;
+  height: 200px;
+  position: relative;
+  display: inline-block;
+  margin: 15px;
+}
+
+// ::ng-deep is required to break css sandbox isolation.
+// This is probably a bad practice ¯\_(ツ)_/¯
+.game-choice ::ng-deep .board {
+  transform: scale(0.20);
+  position: absolute;
+  width: 802px;
+  height: 802px;
+  top: -300px;
+  left: -300px;
+}
+
+button.select-game {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  width: 160px;
+}
+
+ul.piece-descriptor {
+  position: absolute;
+  right: 30px;
+  width: 150px;
+  text-align: left;
+  top: 50px;
+}
+
+.piece-descriptor li {
+  list-style: none;
+}
