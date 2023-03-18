@@ -1,8 +1,6 @@
-import { Board } from "../board";
-import { Scrounger } from "../machine/scrounger";
-import { Player } from "../player";
-import { Position } from "../position";
 import { BaseTest } from "../../test/basetest";
+import { Scrounger } from "../machine/scrounger";
+import { Position } from "../position";
 import { RamPiece } from "./rampiece";
 
 describe('Ram Piece', () => {
@@ -15,8 +13,8 @@ describe('Ram Piece', () => {
   });
 
   it('ram piece into empty cell', () => {
-    let piece11 = new TestRamPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestRamPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 1, 0);
@@ -32,8 +30,8 @@ describe('Ram Piece', () => {
   });
 
   it('ram piece into edge of board', () => {
-    let piece11 = new TestRamPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestRamPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.initializePiece(piece11, 6, 0);
     t.initializePiece(piece21, 7, 0);
@@ -52,8 +50,8 @@ describe('Ram Piece', () => {
   });
 
   it('ram kills piece', () => {
-    let piece11 = new TestRamPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestRamPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 1, 0);
@@ -72,16 +70,14 @@ describe('Ram Piece', () => {
 });
 
 class TestRamPiece extends RamPiece {
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       'Test Ram Piece',
       'image url',
-      2, // points
-      3, // movement
-      1, // attack
-      3, // attack range
-      5, // health
-      player);
+      2,  // points
+      3,  // movement
+      1,  // attack
+      3,  // attack range
+      5,); // health
     }
 }

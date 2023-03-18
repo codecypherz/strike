@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
-import { Board } from 'src/model/board';
 import { GameService } from 'src/model/game.service';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './board/board.component';
 import { GameOverComponent } from './gameover/gameover.component';
 import { PlayerComponent } from './player/player.component';
 import { PlayersComponent } from './players/players.component';
+import { AppRoutingModule } from './routing/approuting.module';
 import { SelectedComponent } from './selected/selected.component';
 
 describe('AppComponent', () => {
@@ -19,8 +19,10 @@ describe('AppComponent', () => {
         PlayerComponent,
         BoardComponent
       ],
+      imports: [
+        AppRoutingModule
+      ],
       providers: [
-        Board,
         GameService
       ],
     }).compileComponents();

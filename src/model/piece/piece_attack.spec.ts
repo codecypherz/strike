@@ -12,9 +12,9 @@ describe('Piece Attack', () => {
     t = new BaseTest();
 
     t.setActivePlayer1();
-    piece11 = new Scrounger(t.board, t.player1);
-    piece12 = new Scrounger(t.board, t.player1);
-    piece21 = new Scrounger(t.board, t.player2);
+    piece11 = new Scrounger();
+    piece12 = new Scrounger();
+    piece21 = new Scrounger();
     
     t.board.clearTurnData();
   });

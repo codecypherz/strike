@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Board } from 'src/model/board';
 import { GameService } from 'src/model/game.service';
-import { GameService } from 'src/model/game.service';
-import { TurnService } from 'src/model/turn.service';
 import { CellComponent } from '../cell/cell.component';
 import { PieceComponent } from '../piece/piece.component';
 
@@ -20,16 +18,13 @@ describe('BoardComponent', () => {
         PieceComponent
       ],
       providers: [
-        Board,
         GameService,
-        TurnService,
-        GameService
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(BoardComponent);
     component = fixture.componentInstance;
+    component.board = new Board();
     fixture.detectChanges();
   });
 

@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Board } from 'src/model/board';
+import { Game } from 'src/model/game';
 import { GameService } from 'src/model/game.service';
 
 import { GameOverComponent } from './gameover.component';
@@ -13,11 +15,11 @@ describe('GameOverComponent', () => {
       providers: [
         GameService
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GameOverComponent);
     component = fixture.componentInstance;
+    component.game = new Game(new Board());
     fixture.detectChanges();
   });
 

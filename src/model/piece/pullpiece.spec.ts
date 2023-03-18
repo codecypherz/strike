@@ -1,7 +1,5 @@
 import { BaseTest } from "../../test/basetest";
-import { Board } from "../board";
 import { Scrounger } from "../machine/scrounger";
-import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
 import { PullPiece } from "./pullpiece";
@@ -16,8 +14,8 @@ describe('Pull Piece', () => {
   });
 
   it('basic attack', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 3, 0);
@@ -30,8 +28,8 @@ describe('Pull Piece', () => {
   });
 
   it('basic attack, kills target', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.setHealth(piece21, 1);
     t.initializePiece(piece11, 0, 0);
@@ -44,8 +42,8 @@ describe('Pull Piece', () => {
   });
 
   it('basic attack, makes collision', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 1, 0);
@@ -65,8 +63,8 @@ describe('Pull Piece', () => {
   });
 
   it('basic attack, makes collision, kills target', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     t.setHealth(piece21, 2);
     piece21.rotateClockwise();
     t.initializePiece(piece11, 0, 0);
@@ -82,8 +80,8 @@ describe('Pull Piece', () => {
   });
 
   it('pull overrides armor break', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     t.setTerrain(3, 0, Terrain.MOUNTAIN); // Ensures armor break
     t.initializePiece(piece11, 0, 0);
@@ -97,8 +95,8 @@ describe('Pull Piece', () => {
   });
 
   it('pull into valid cell', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     t.setTerrain(1, 0, Terrain.FOREST);
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 2, 0);
@@ -107,8 +105,8 @@ describe('Pull Piece', () => {
   });
 
   it('pull into invalid cell', () => {
-    let piece11 = new TestPullPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestPullPiece();
+    let piece21 = new Scrounger();
     t.setTerrain(1, 0, Terrain.CHASM);
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 2, 0);
@@ -118,16 +116,14 @@ describe('Pull Piece', () => {
 });
 
 class TestPullPiece extends PullPiece {
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       'Test Pull Piece',
       'image url',
-      2, // points
-      3, // movement
-      1, // attack
-      3, // attack range
-      5, // health
-      player);
+      2,  // points
+      3,  // movement
+      1,  // attack
+      3,  // attack range
+      5); // health
     }
 }

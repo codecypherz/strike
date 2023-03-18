@@ -1,9 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Board } from 'src/model/board';
-import { GameService } from 'src/model/game.service';
 import { Cell } from 'src/model/cell';
 import { GameService } from 'src/model/game.service';
-import { TurnService } from 'src/model/turn.service';
 import { PieceComponent } from '../piece/piece.component';
 
 import { CellComponent } from './cell.component';
@@ -17,9 +14,6 @@ describe('CellComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [CellComponent, PieceComponent],
       providers: [
-        Board,
-        GameService,
-        TurnService,
         GameService
       ],
     })

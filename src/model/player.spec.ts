@@ -9,16 +9,16 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 2 pieces: no action taken', () => {
-    let piece1 = new Scrounger(t.board, t.player1);
-    let piece2 = new Scrounger(t.board, t.player1);
+    let piece1 = new Scrounger();
+    let piece2 = new Scrounger();
     t.initializePiece(piece1, 0, 2);
     t.initializePiece(piece2, 0, 4);
     expect(t.player1.canEndTurn()).toBe(false);
   });
 
   it('#canEndTurn 2 pieces: 1 move', () => {
-    let piece1 = new Scrounger(t.board, t.player1);
-    let piece2 = new Scrounger(t.board, t.player1);
+    let piece1 = new Scrounger();
+    let piece2 = new Scrounger();
     t.initializePiece(piece1, 0, 2);
     t.initializePiece(piece2, 0, 4);
 
@@ -27,8 +27,8 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 2 pieces: 1 move each', () => {
-    let piece1 = new Scrounger(t.board, t.player1);
-    let piece2 = new Scrounger(t.board, t.player1);
+    let piece1 = new Scrounger();
+    let piece2 = new Scrounger();
     t.initializePiece(piece1, 0, 2);
     t.initializePiece(piece2, 0, 4);
 
@@ -40,9 +40,9 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 2 pieces: 1 piece moves and attacks', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new Scrounger();
+    let piece12 = new Scrounger();
+    let piece21 = new Scrounger();
     t.initializePiece(piece11, 0, 1);
     t.initializePiece(piece12, 0, 4);
     t.initializePiece(piece21, 1, 0);
@@ -53,11 +53,11 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 2 pieces: neither piece can move', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
-    let piece22 = new Scrounger(t.board, t.player2);
-    let piece23 = new Scrounger(t.board, t.player2);
+    let piece11 = new Scrounger();
+    let piece12 = new Scrounger();
+    let piece21 = new Scrounger();
+    let piece22 = new Scrounger();
+    let piece23 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece12, 0, 1);
     // Use player 2 pieces to box in
@@ -73,10 +73,10 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 2 pieces: 1 piece stuck, only 1 moves', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
-    let piece22 = new Scrounger(t.board, t.player2);
+    let piece11 = new Scrounger();
+    let piece12 = new Scrounger();
+    let piece21 = new Scrounger();
+    let piece22 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece12, 0, 4);
     // Use player 2 pieces to box in piece 11
@@ -97,10 +97,10 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 2 pieces: 1 piece stuck, both pieces move', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
-    let piece12 = new Scrounger(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
-    let piece22 = new Scrounger(t.board, t.player2);
+    let piece11 = new Scrounger();
+    let piece12 = new Scrounger();
+    let piece21 = new Scrounger();
+    let piece22 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece12, 0, 1);
     // Use player 2 pieces to box in piece 11
@@ -125,13 +125,13 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 1 piece: no action taken', () => {
-    let piece1 = new Scrounger(t.board, t.player1);
+    let piece1 = new Scrounger();
     t.initializePiece(piece1, 0, 0);
     expect(t.player1.canEndTurn()).toBe(false);
   });
 
   it('#canEndTurn 1 piece: 1 move', () => {
-    let piece1 = new Scrounger(t.board, t.player1);
+    let piece1 = new Scrounger();
     t.initializePiece(piece1, 0, 0);
     expect(t.player1.canEndTurn()).toBe(false);
 
@@ -140,7 +140,7 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 1 piece: 2 moves', () => {
-    let piece1 = new Scrounger(t.board, t.player1);
+    let piece1 = new Scrounger();
     t.initializePiece(piece1, 0, 0);
     expect(t.player1.canEndTurn()).toBe(false);
 
@@ -152,7 +152,7 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 1 piece: 1 move, 1 overcharge', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
+    let piece11 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
 
     t.performMove(piece11, 0, 1);
@@ -165,7 +165,7 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 1 piece: 1 move, 1 overcharge, 1 move', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
+    let piece11 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
 
     t.performMove(piece11, 0, 1);
@@ -181,7 +181,7 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 1 piece: 1 move, 1 overcharge, 1 move, 1 overcharge', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
+    let piece11 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
 
     t.performMove(piece11, 0, 1);
@@ -200,9 +200,9 @@ describe('Player', () => {
   });
 
   it('#canEndTurn 1 piece: unable to move', () => {
-    let piece11 = new Scrounger(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
-    let piece22 = new Scrounger(t.board, t.player2);
+    let piece11 = new Scrounger();
+    let piece21 = new Scrounger();
+    let piece22 = new Scrounger();
     t.initializePiece(piece11, 0, 0);
     // box in the piece so it can't move
     t.initializePiece(piece21, 0, 1);

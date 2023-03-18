@@ -17,8 +17,8 @@ describe('Dash Piece', () => {
   });
 
   it('dash attack', () => {
-    let piece11 = new TestDashPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestDashPiece();
+    let piece21 = new Scrounger();
     piece21.rotateClockwise();
     expect(piece21.getDirection()).toEqual(Direction.RIGHT);
     t.initializePiece(piece11, 0, 0);
@@ -36,8 +36,8 @@ describe('Dash Piece', () => {
   });
 
   it('dash attack with armor break', () => {
-    let piece11 = new TestDashPiece(t.board, t.player1);
-    let piece21 = new Scrounger(t.board, t.player2);
+    let piece11 = new TestDashPiece();
+    let piece21 = new Scrounger();
     expect(piece21.getDirection()).toEqual(Direction.UP);
     t.initializePiece(piece11, 0, 0);
     t.initializePiece(piece21, 1, 0);
@@ -63,16 +63,14 @@ describe('Dash Piece', () => {
 
 
 class TestDashPiece extends DashPiece {
-  constructor(board: Board, player: Player) {
+  constructor() {
     super(
-      board,
       'Test Dash Piece',
       'image url',
-      2, // points
-      3, // movement
-      1, // attack
-      2, // attack range
-      5, // health
-      player);
+      2,  // points
+      3,  // movement
+      1,  // attack
+      2,  // attack range
+      5); // health
     }
 }

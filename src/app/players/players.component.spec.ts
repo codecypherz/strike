@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Board } from 'src/model/board';
+import { Direction } from 'src/model/direction';
 import { GameService } from 'src/model/game.service';
-import { GameService } from 'src/model/game.service';
-import { TurnService } from 'src/model/turn.service';
+import { Player } from 'src/model/player';
 import { PlayerComponent } from '../player/player.component';
 
 import { PlayersComponent } from './players.component';
@@ -18,16 +17,14 @@ describe('PlayersComponent', () => {
         PlayersComponent
       ],
       providers: [
-        Board,
-        GameService,
-        TurnService,
         GameService
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PlayersComponent);
     component = fixture.componentInstance;
+    component.player1 = new Player(true, 'Player 1', Direction.DOWN);
+    component.player2 = new Player(false, 'Player 2', Direction.UP);
     fixture.detectChanges();
   });
 

@@ -16,13 +16,13 @@ describe('Piece', () => {
   beforeEach(() => {
     board = new Board();
 
-    player1 = new Player('player-1', 'Player 1', Direction.DOWN);
+    player1 = new Player(true, 'Player 1', Direction.DOWN);
     player1.setActive(true);
-    piece11 = new Scrounger(board, player1);
-    piece12 = new Scrounger(board, player1);
+    piece11 = new Scrounger();
+    piece12 = new Scrounger();
 
-    player2 = new Player('player-2', 'Player 2', Direction.UP);
-    piece21 = new Scrounger(board, player2);
+    player2 = new Player(false, 'Player 2', Direction.UP);
+    piece21 = new Scrounger();
     
     initializePiece(piece11, 0, 0);
     initializePiece(piece12, 0, 1);

@@ -1,8 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Board } from 'src/model/board';
 import { GameService } from 'src/model/game.service';
-import { GameService } from 'src/model/game.service';
-import { TurnService } from 'src/model/turn.service';
 
 import { PieceComponent } from './piece.component';
 
@@ -14,9 +11,6 @@ describe('PieceComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [PieceComponent],
       providers: [
-        Board,
-        GameService,
-        TurnService,
         GameService
       ],
     })
