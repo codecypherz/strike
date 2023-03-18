@@ -9,6 +9,7 @@ import { Glinthawk } from "./machine/glinthawk";
 import { Lancehorn } from "./machine/lancehorn";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
+import { Slitherfang } from "./machine/slitherfang";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
 import { Player } from "./player";
@@ -71,8 +72,8 @@ export class GameCollection {
     const board = this.boardCollection.createBoard3();
     const game = new Game(board);
     
-    this.addPiece(0, 4, game, Glinthawk);
-    this.addPiece(1, 6, game, Widemaw);
+    this.addPiece(0, 4, game, Slitherfang);
+    this.addPiece(1, 6, game, Burrower);
 
     return game;
   }
