@@ -98,7 +98,9 @@ export class Player {
   }
 
   addActivatedPiece(piece: Piece): void {
-    this.piecesActivated.add(piece);
+    if (!this.piecesActivated.has(piece)) {
+      this.piecesActivated.add(piece);
+    }
   }
 
   canActivatePiece(): boolean {
