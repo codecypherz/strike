@@ -17,6 +17,8 @@ import { PlayerComponent } from './player/player.component';
 import { PlayersComponent } from './players/players.component';
 import { AppRoutingModule } from './routing/approuting.module';
 import { SelectedComponent } from './selected/selected.component';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { DialogService } from 'src/app/service/dialog.service';
 
 @NgModule({
   declarations: [
@@ -36,12 +38,16 @@ import { SelectedComponent } from './selected/selected.component';
   imports: [
     AppRoutingModule,
     BrowserModule,
+    LoggerModule.forRoot({
+      level: NgxLoggerLevel.INFO,
+    }),
   ],
   providers: [
     BoardCollection,
+    DialogService,
     GameService,
     GameCollection,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

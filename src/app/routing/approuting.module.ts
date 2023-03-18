@@ -1,8 +1,10 @@
 import { Injectable, NgModule } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from "@angular/router";
+import { gameResolver } from "../game/game-resolver";
 import { GameComponent } from "../game/game.component";
 import { GameSelectionComponent } from "../gameselection/gameselection.component";
+import { canDeactivateGuard } from "../guard/can-deactivate.guard";
 import { PageNotFoundComponent } from "../pagenotfound/pagenotfound.component";
 
 const routes: Routes = [
@@ -15,6 +17,8 @@ const routes: Routes = [
     path: 'game/:gameId',
     title: '',
     component: GameComponent,
+    canDeactivate: [canDeactivateGuard],
+    resolve: { game: gameResolver },
   },
   { // redirect to 'game-selection'
     path: '',

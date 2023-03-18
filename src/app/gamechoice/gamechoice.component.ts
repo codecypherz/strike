@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Game } from 'src/model/game';
+import { GameService } from 'src/model/game.service';
 import { GameCollection } from 'src/model/gamecollection';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'app-gamechoice',
@@ -13,12 +15,20 @@ export class GameChoiceComponent {
   @Input() game!: Game;
 
   constructor(
+    private logger: NGXLogger,
     private gameCollection: GameCollection,
+    private gameService: GameService,
     private router: Router) {
   }
 
   selectGame(): void {
     this.gameCollection.addCreatedGame(this.game);
+
+    // This is now the active game.
+    this.logger.info(`Starting game: ${this.game.getId()}`);
+    this.gameService.setGame(this.game);
+    this.game.start();
+
     this.router.navigate(['game', this.game.getId()]);
   }
 

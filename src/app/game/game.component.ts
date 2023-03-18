@@ -1,38 +1,35 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GameService } from 'src/model/game.service';
+import { Observable } from 'rxjs';
 import { Game } from 'src/model/game';
-import { GameCollection } from 'src/model/gamecollection';
+import { CanComponentDeactivate } from '../guard/can-deactivate.guard';
+import { DialogService } from '../service/dialog.service';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent {
+export class GameComponent implements CanComponentDeactivate {
 
   game!: Game;
 
   constructor(
-    private gameCollection: GameCollection,
     private route: ActivatedRoute,
-    private gameService: GameService) {
+    private dialogService: DialogService) {
   }
 
   ngOnInit() {
-    // First, get the game id from the current route.
-    const routeParams = this.route.snapshot.paramMap;
-    const gameIdFromRoute = String(routeParams.get('gameId'));
+    this.route.data.subscribe(data => {
+      const game: Game = data['game'];
+      this.game = game;
+    });
+  }
 
-    // Find the game that corresponded with the id from the route.
-    const result = this.gameCollection.findById(gameIdFromRoute);
-    if (result == null) {
-      throw new Error(`Unable to find game: ${gameIdFromRoute}`);
+  canDeactivate(): Observable<boolean> | boolean {
+    if (this.game.isGameOver()) {
+      return true;
     }
-    this.game = result;
-
-    // This is now the active game.
-    this.gameService.setGame(this.game);
-    this.game.start();
+    return this.dialogService.confirm('Quit game?');
   }
 }
