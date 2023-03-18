@@ -3,7 +3,6 @@ import { Game } from "./game";
 import { GameService } from "./game.service";
 import { Bristleback } from "./machine/bristleback";
 import { Scrounger } from "./machine/scrounger";
-import { PieceCollection } from "./piececollection";
 
 describe('GameService', () => {
   let t: BaseTest;
@@ -12,7 +11,7 @@ describe('GameService', () => {
   beforeEach(() => {
     t = new BaseTest();
     gameService = new GameService();
-    game = new Game(t.board, new PieceCollection());
+    game = new Game(t.board);
     gameService.setGame(game);
   });
 

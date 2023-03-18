@@ -10,6 +10,10 @@ import { Strength } from "../strength";
 import { Terrain } from "../terrain";
 import { Actions } from "./actions";
 
+export interface PieceCtor {
+  new (): Piece
+}
+
 /**
  * Represents the data common to all pieces.
  */
@@ -83,7 +87,7 @@ export abstract class Piece {
   }
 
   getPlayer(): Player {
-    return this.getPlayer()!;
+    return this.player!;
   }
 
   /**
@@ -688,6 +692,10 @@ export abstract class Piece {
 
   getDirection(): Direction {
     return Direction.for(this.getDirectionDegrees());
+  }
+
+  setDirection(direction: Direction): void {
+    this.setDirectionDegrees(direction.degrees);
   }
 
   canRotate(): boolean {

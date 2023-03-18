@@ -1,6 +1,7 @@
 <div class="game-selection">
-  <app-gamechoice *ngFor="let game of getGames()" [game]="game">
-  </app-gamechoice>
+  <app-gamechoice [game]="getGame1()"></app-gamechoice>
+  <app-gamechoice [game]="getGame2()"></app-gamechoice>
+  <app-gamechoice [game]="getGame3()"></app-gamechoice>
 
   <div class="custom-game-choice">
     <button disabled="true">

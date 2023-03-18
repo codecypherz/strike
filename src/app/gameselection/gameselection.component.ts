@@ -12,10 +12,20 @@ export class GameSelectionComponent {
   constructor(private gameCollection: GameCollection) {}
 
   ngOnInit(): void {
-    this.getGames();
+    this.getGame1();
+    this.getGame2();
+    this.getGame3();
   }
-  
-  getGames(): Array<Game> {
-    return this.gameCollection.getGames();
+
+  getGame1(): Game {
+    return this.gameCollection.createGame1();
+  }
+
+  getGame2(): Game {
+    return this.gameCollection.createGame2();
+  }
+
+  getGame3(): Game {
+    return this.gameCollection.createGame3();
   }
 }

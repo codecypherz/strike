@@ -8,33 +8,13 @@ import { Terrain } from "./terrain";
 @Injectable()
 export class BoardCollection {
 
-  private board1!: Board;
-  private board2!: Board;
-  private board3!: Board;
-
   constructor(@Optional() @SkipSelf() service: BoardCollection) {
     if (service) {
       throw new Error('Singleton violation: BoardCollection');
     }
-
-    this.board1 = this.createBoard1();
-    this.board2 = this.createBoard2();
-    this.board3 = this.createBoard3();
   }
 
-  getBoard1(): Board {
-    return this.board1;
-  }
-  
-  getBoard2(): Board {
-    return this.board2;
-  }
-  
-  getBoard3(): Board {
-    return this.board3;
-  }
-
-  private createBoard1() {
+  createBoard1() {
     const board = new Board();
     board.getByRowCol(0, 3).terrain = Terrain.FOREST;
     board.getByRowCol(0, 5).terrain = Terrain.FOREST;
@@ -78,7 +58,7 @@ export class BoardCollection {
     return board;
   }
 
-  private createBoard2(): Board {
+  createBoard2(): Board {
     const board = new Board();
     board.getByRowCol(3, 0).terrain = Terrain.FOREST;
     board.getByRowCol(3, 1).terrain = Terrain.FOREST;
@@ -111,7 +91,7 @@ export class BoardCollection {
     return board;
   }
 
-  private createBoard3(): Board {
+  createBoard3(): Board {
     const board = new Board();
     board.getByRowCol(1, 0).terrain = Terrain.MOUNTAIN;
     board.getByRowCol(1, 1).terrain = Terrain.HILL;

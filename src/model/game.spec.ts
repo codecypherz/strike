@@ -1,11 +1,10 @@
 import { Board } from "./board";
 import { Game } from "./game";
-import { PieceCollection } from "./piececollection";
 
 describe('Game', () => {
   let game: Game;
   beforeEach(() => {
-    game = new Game(new Board(), new PieceCollection());
+    game = new Game(new Board());
 
     expect(game.isGameOver()).toBe(false);
     expect(game.getWinningPlayer()).toBeNull();

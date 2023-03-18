@@ -1,7 +1,7 @@
-import { getOnly } from "src/util/sets";
+import { v4 as uuidv4 } from 'uuid';
 import { Direction } from "./direction";
 import { Piece } from "./piece/piece";
-import { v4 as uuidv4 } from 'uuid';
+import { PieceCollection } from "./piececollection";
 
 /**
  * A cell is a portion of the board. A cell has a certain type of terrain
@@ -13,10 +13,11 @@ export class Player {
   private active: boolean = false;
   private points: number = 0;
 
-  private pieces = new Set<Piece>();
+  // Pieces the player currently has.
+  private pieces = new PieceCollection();
 
   // Turn metadata
-  private piecesActivated = new Set<Piece>();
+  private piecesActivated = new PieceCollection();
 
   constructor(
     readonly isFirst: boolean,
@@ -45,8 +46,8 @@ export class Player {
 
   canEndTurn(): boolean {
     // Special rule if you have 1 piece left.
-    if (this.pieces.size == 1) {
-      const piece = getOnly(this.pieces);
+    if (this.pieces.size() == 1) {
+      const piece = this.pieces.getOnly();
       if (!piece.canMove()) {
         return true;
       }
@@ -62,7 +63,7 @@ export class Player {
   }
 
   private areAllPiecesStuck(): boolean {
-    for (let piece of this.pieces) {
+    for (let piece of this.pieces.getSet()) {
       if (piece.canMove() && !piece.isStuck()) {
         return false;
       }
@@ -72,7 +73,7 @@ export class Player {
 
   getNumMoved() {
     let numMoved = 0;
-    for (let piece of this.piecesActivated) {
+    for (let piece of this.piecesActivated.getSet()) {
       if (piece.hasMoved()) {
         numMoved++;
       }
@@ -81,21 +82,15 @@ export class Player {
   }
 
   addPiece(piece: Piece): void {
-    if (this.pieces.has(piece)) {
-      throw new Error('Attempting to add the same piece to the same player.');
-    }
     this.pieces.add(piece);
   }
 
   removePiece(piece: Piece): void {
-    if (!this.pieces.has(piece)) {
-      throw new Error(this.name + ' does not have ' + piece.name + ' to remove.');
-    }
-    this.pieces.delete(piece);
+    this.pieces.remove(piece);
   }
 
   isLastPiece(piece: Piece): boolean {
-    return this.pieces.size == 1 && this.pieces.has(piece);
+    return this.pieces.size() == 1 && this.pieces.has(piece);
   }
 
   addActivatedPiece(piece: Piece): void {
@@ -104,15 +99,15 @@ export class Player {
 
   canActivatePiece(): boolean {
     // If the player has 2 or less pieces, they can always activate.
-    if (this.pieces.size <= 2) {
+    if (this.pieces.size() <= 2) {
       return true;
     }
     // A player can not activate more than 2 pieces.
-    return this.piecesActivated.size < 2;
+    return this.piecesActivated.size() < 2;
   }
 
   clearTurnData(): void {
-    this.piecesActivated = new Set<Piece>();
+    this.piecesActivated = new PieceCollection();
   }
 
   setActive(active: boolean): void {

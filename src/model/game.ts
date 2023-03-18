@@ -14,13 +14,9 @@ export class Game extends EventTarget {
   private player2 = new Player(false, 'Player 2', Direction.UP);
   private winningPlayer: Player | null = null;
 
-  constructor(
-    private board: Board,
-    private pieceCollection: PieceCollection) {
+  constructor(private board: Board) {
     super();
-
     this.board = board;
-    this.pieceCollection = pieceCollection;
   }
 
   getId(): string {
