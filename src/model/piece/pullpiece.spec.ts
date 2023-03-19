@@ -1,24 +1,21 @@
+import { TestMeleePiece } from "src/test/test-melee-piece";
+import { TestPullPiece } from "src/test/test-pull-piece";
 import { BaseTest } from "../../test/basetest";
-import { Scrounger } from "../machine/scrounger";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
-import { PullPiece } from "./pullpiece";
 
 describe('Pull Piece', () => {
   let t: BaseTest;
 
   beforeEach(() => {
     t = new BaseTest();
-    t.player1.setActive(true);
-    t.board.clearTurnData();
   });
 
   it('basic attack', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 3, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 3, 0);
 
     t.performAttack(piece11);
   
@@ -29,11 +26,10 @@ describe('Pull Piece', () => {
 
   it('basic attack, kills target', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
+    let piece21 = new TestMeleePiece();
     t.setHealth(piece21, 1);
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 3, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 3, 0);
 
     t.performAttack(piece11);
   
@@ -43,10 +39,9 @@ describe('Pull Piece', () => {
 
   it('basic attack, makes collision', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
 
     t.performAttack(piece11);
   
@@ -64,11 +59,10 @@ describe('Pull Piece', () => {
 
   it('basic attack, makes collision, kills target', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
+    let piece21 = new TestMeleePiece();
     t.setHealth(piece21, 2);
-    piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
 
     t.performAttack(piece11);
   
@@ -81,11 +75,10 @@ describe('Pull Piece', () => {
 
   it('pull overrides armor break', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
+    let piece21 = new TestMeleePiece();
     t.setTerrain(3, 0, Terrain.MOUNTAIN); // Ensures armor break
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 3, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 3, 0);
 
     t.performAttack(piece11);
   
@@ -96,34 +89,21 @@ describe('Pull Piece', () => {
 
   it('pull into valid cell', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
+    let piece21 = new TestMeleePiece();
     t.setTerrain(1, 0, Terrain.FOREST);
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 2, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 2, 0);
 
     expect(piece11.hasConfirmableAttack()).toBeTrue();
   });
 
   it('pull into invalid cell', () => {
     let piece11 = new TestPullPiece();
-    let piece21 = new Scrounger();
+    let piece21 = new TestMeleePiece();
     t.setTerrain(1, 0, Terrain.CHASM);
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 2, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 2, 0);
 
     expect(piece11.hasConfirmableAttack()).toBeFalse();
   });
 });
-
-class TestPullPiece extends PullPiece {
-  constructor() {
-    super(
-      'Test Pull Piece',
-      'image url',
-      2,  // points
-      3,  // movement
-      1,  // attack
-      3,  // attack range
-      5); // health
-    }
-}

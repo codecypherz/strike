@@ -6,37 +6,25 @@ describe('Game', () => {
   beforeEach(() => {
     game = new Game(new Board());
 
-    expect(game.isGameOver()).toBe(false);
+    expect(game.isGameOver()).toBeFalse();
     expect(game.getWinningPlayer()).toBeNull();
   });
 
   it('#defaultState has player 1 active', () => {
-    expect(game.getPlayer1().isActive()).toBe(true);
-    expect(game.getPlayer2().isActive()).toBe(false);
-  });
-
-  it('#startGame should begin with player 1', () => {
-    game.start();
-    expect(game.getPlayer1().isActive()).toBe(true);
-    expect(game.getPlayer2().isActive()).toBe(false);
-    game.endTurn();
-    expect(game.getPlayer1().isActive()).toBe(false);
-    expect(game.getPlayer2().isActive()).toBe(true);
-    game.start();
-    expect(game.getPlayer1().isActive()).toBe(true);
-    expect(game.getPlayer2().isActive()).toBe(false);
+    expect(game.getPlayer1().isActive()).toBeTrue();
+    expect(game.getPlayer2().isActive()).toBeFalse();
   });
 
   it('#endTurn switches active player', () => {
     game.start();
-    expect(game.getPlayer1().isActive()).toBe(true);
-    expect(game.getPlayer2().isActive()).toBe(false);
+    expect(game.getPlayer1().isActive()).toBeTrue();
+    expect(game.getPlayer2().isActive()).toBeFalse();
     game.endTurn();
-    expect(game.getPlayer1().isActive()).toBe(false);
-    expect(game.getPlayer2().isActive()).toBe(true);
+    expect(game.getPlayer1().isActive()).toBeFalse();
+    expect(game.getPlayer2().isActive()).toBeTrue();
     game.endTurn();
-    expect(game.getPlayer1().isActive()).toBe(true);
-    expect(game.getPlayer2().isActive()).toBe(false);
+    expect(game.getPlayer1().isActive()).toBeTrue();
+    expect(game.getPlayer2().isActive()).toBeFalse();
   });
 
   it('#getActivePlayer returns active player', () => {
@@ -55,7 +43,7 @@ describe('Game', () => {
 
   it('#checkWinCondition no points, not over', () => {
     game.checkWinCondition();
-    expect(game.isGameOver()).toBe(false);
+    expect(game.isGameOver()).toBeFalse();
     expect(game.getWinningPlayer()).toBeNull();
   });
 
@@ -63,7 +51,7 @@ describe('Game', () => {
     game.getPlayer1().addPoints(5);
     game.getPlayer2().addPoints(3);
     game.checkWinCondition();
-    expect(game.isGameOver()).toBe(false);
+    expect(game.isGameOver()).toBeFalse();
     expect(game.getWinningPlayer()).toBeNull();
   });
 
@@ -71,7 +59,7 @@ describe('Game', () => {
     game.getPlayer1().addPoints(7);
     game.getPlayer2().addPoints(3);
     game.checkWinCondition();
-    expect(game.isGameOver()).toBe(true);
+    expect(game.isGameOver()).toBeTrue();
     expect(game.getWinningPlayer()).toEqual(game.getPlayer1());
   });
 
@@ -79,7 +67,7 @@ describe('Game', () => {
     game.getPlayer1().addPoints(1);
     game.getPlayer2().addPoints(7);
     game.checkWinCondition();
-    expect(game.isGameOver()).toBe(true);
+    expect(game.isGameOver()).toBeTrue();
     expect(game.getWinningPlayer()).toEqual(game.getPlayer2());
   });
 
@@ -89,7 +77,7 @@ describe('Game', () => {
     game.getPlayer1().addPoints(7);
     game.getPlayer2().addPoints(7);
     game.checkWinCondition();
-    expect(game.isGameOver()).toBe(true);
+    expect(game.isGameOver()).toBeTrue();
     expect(game.getWinningPlayer()).toEqual(game.getPlayer1());
   });
 
@@ -99,7 +87,7 @@ describe('Game', () => {
     game.getPlayer1().addPoints(7);
     game.getPlayer2().addPoints(7);
     game.checkWinCondition();
-    expect(game.isGameOver()).toBe(true);
+    expect(game.isGameOver()).toBeTrue();
     expect(game.getWinningPlayer()).toEqual(game.getPlayer2());
   });
 });

@@ -16,9 +16,9 @@ describe('Piece Move', () => {
     piece12 = new Scrounger();
     piece21 = new Scrounger();
     
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece12, 0, 1);
-    t.initializePiece(piece21, 7, 7);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece12, t.player1, 0, 1);
+    t.initializePiece(piece21, t.player2, 7, 7);
     t.board.clearTurnData();
 
     // Important assumptions for all tests.

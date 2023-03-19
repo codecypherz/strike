@@ -1,319 +1,204 @@
-import { Board } from "../board";
-import { Direction } from "../direction";
-import { Scrounger } from "../machine/scrounger";
-import { Player } from "../player";
-import { Position } from "../position";
-import { Piece } from "./piece";
+import { BaseTest } from "src/test/basetest";
+import { TestMeleePiece } from "src/test/test-melee-piece";
 
 describe('Piece Overcharge', () => {
-  let player1: Player;
-  let player2: Player;
-  let board: Board;
-  let piece11: Piece;
-  let piece12: Piece;
-  let piece21: Piece;
+  let t: BaseTest;
 
   beforeEach(() => {
-    board = new Board();
-
-    player1 = new Player(true, 'Player 1', Direction.DOWN);
-    player1.setActive(true);
-    piece11 = new Scrounger();
-    piece12 = new Scrounger();
-
-    player2 = new Player(false, 'Player 2', Direction.UP);
-    piece21 = new Scrounger();
-    
-    initializePiece(piece11, 0, 0);
-    initializePiece(piece12, 0, 1);
-    initializePiece(piece21, 7, 7);
-    board.clearTurnData();
-
-    // Important assumptions for all tests.
-    expect(player1.isLastPiece(piece11)).toBe(false);
-    expect(player1.isLastPiece(piece12)).toBe(false);
-    expect(player2.isLastPiece(piece21)).toBe(true);
+    t = new BaseTest();
   });
 
   it('#canOvercharge no action taken', () => {
-    expect(piece11.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+
+    expect(piece11.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge after move', () => {
-    movePieceTo(piece11, 0, 0);
-    expect(piece11.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    expect(piece11.canOvercharge()).toBeFalse();
 
-    piece11.select();
-    piece11.moveOrSprintTo(board.getByRowCol(1, 0));
-    expect(piece11.hasConfirmableMove()).toBe(true);
-    piece11.confirmMove();
-    piece11.deselect();
+    t.performMove(piece11, 1, 0);
 
-    expect(piece11.canOvercharge()).toBe(true);
+    expect(piece11.canOvercharge()).toBeTrue();
   });
 
   it('#canOvercharge attack but no move', () => {
-    movePieceTo(piece11, 0, 0);
-    movePieceTo(piece21, 1, 0);
-    expect(piece11.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
+    expect(piece11.canOvercharge()).toBeFalse();
 
-    piece11.select();
-    expect(piece11.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece11.attack();
-    piece11.deselect();
+    t.performAttack(piece11);
 
-    expect(piece11.canOvercharge()).toBe(false);
+    expect(piece11.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge after move and attack', () => {
-    movePieceTo(piece11, 0, 0);
-    movePieceTo(piece21, 2, 0);
-    expect(piece11.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 2, 0);
+    expect(piece11.canOvercharge()).toBeFalse();
 
-    piece11.select();
-    piece11.moveOrSprintTo(board.getByRowCol(1, 0));
-    expect(piece11.hasConfirmableMove()).toBe(true);
-    piece11.confirmMove();
-    piece11.deselect();
-    expect(piece11.canOvercharge()).toBe(true);
+    t.performMove(piece11, 1, 0);
+    expect(piece11.canOvercharge()).toBeTrue();
 
-    piece11.select();
-    expect(piece11.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece11.attack();
-    piece11.deselect();
-    expect(piece11.canOvercharge()).toBe(true);
+    t.performAttack(piece11);
+    expect(piece11.canOvercharge()).toBeTrue();
   });
 
   it('#canOvercharge last piece no action taken', () => {
-    setActive(player2);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    
+    expect(piece11.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge last piece after 1 move', () => {
-    setActive(player2);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    expect(piece11.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece11, 1, 0);
+    expect(piece11.canOvercharge()).toBeTrue();
   });
 
   it('#canOvercharge last piece 1 attack but no move', () => {
-    setActive(player2);
-    movePieceTo(piece11, 6, 0);
-    movePieceTo(piece21, 7, 0);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece21, t.player2, 7, 0);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    expect(piece21.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece21.attack();
-    piece21.deselect();
+    t.performAttack(piece21);
 
-    expect(piece21.canOvercharge()).toBe(false);
+    expect(piece21.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge last piece after 1 attack and 1 move', () => {
-    setActive(player2);
-    movePieceTo(piece11, 6, 0);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece21, t.player2, 7, 1);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 0);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    expect(piece21.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece21.attack();
-    piece21.deselect();
-
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performAttack(piece21);
+    expect(piece21.canOvercharge()).toBeTrue();
   });
 
   it('#canOvercharge last piece after 1 move and 1 overcharge', () => {
-    setActive(player2);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece21, t.player2, 7, 1);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 0);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    piece21.overcharge();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
+    t.performMoveWithOvercharge(piece21, 7, 1);
 
     // Can't overcharge until another move takes place.
-    expect(piece21.canOvercharge()).toBe(false);
+    expect(piece21.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge last piece after 1 move and 2 attacks', () => {
-    setActive(player2);
-    movePieceTo(piece11, 6, 0);
-    movePieceTo(piece12, 6, 1);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece12 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece12, t.player1, 6, 1);
+    t.initializePiece(piece21, t.player2, 7, 1);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 0);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    expect(piece21.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece21.attack();
-    piece21.deselect();
+    t.performAttack(piece21);
     // Can overcharge at this point.
-    expect(piece21.canOvercharge()).toBe(true);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    piece21.overcharge();
-    expect(piece21.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece21.attack();
-    piece21.deselect();
+    t.performAttackWithOvercharge(piece21);
     // Can not overcharge anymore.
-    expect(piece21.canOvercharge()).toBe(false);
+    expect(piece21.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge last piece after 2 move and 2 attacks and 1 overcharge', () => {
-    setActive(player2);
-    movePieceTo(piece11, 6, 0);
-    movePieceTo(piece12, 6, 1);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece12 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece12, t.player1, 6, 1);
+    t.initializePiece(piece21, t.player2, 7, 1);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 0);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    expect(piece21.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece21.attack();
-    piece21.deselect();
+    t.performAttack(piece21);
     // Can overcharge at this point.
-    expect(piece21.canOvercharge()).toBe(true);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    // Player chooses not to and just moves and attacks again.
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    // Player chooses not to overcharge and just moves and attacks again.
+    t.performMove(piece21, 7, 1);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    expect(piece21.hasConfirmableAttack()).toBe(true);
-    board.clearStagedAttackData();
-    piece21.attack();
-    piece21.deselect();
+    t.performAttack(piece21);
     // Can overcharge, but only the once.
-    expect(piece21.canOvercharge()).toBe(true);
+    expect(piece21.canOvercharge()).toBeTrue();
 
     // Overcharge and move.
-    piece21.select();
-    piece21.overcharge();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
+    t.performMoveWithOvercharge(piece21, 7, 0);
     // No more overcharge to be had.
-    expect(piece21.canOvercharge()).toBe(false);
+    expect(piece21.canOvercharge()).toBeFalse();
   });
 
   it('#canOvercharge last piece after 2 moves and 0 attacks', () => {
-    setActive(player2);
-    movePieceTo(piece11, 6, 0);
-    movePieceTo(piece12, 6, 1);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece12 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece12, t.player1, 6, 1);
+    t.initializePiece(piece21, t.player2, 7, 1);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 0);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 1);
+    expect(piece21.canOvercharge()).toBeTrue();
   });
 
   it('#canOvercharge last piece after 2 moves and 1 overcharge move at end', () => {
-    setActive(player2);
-    movePieceTo(piece11, 6, 0);
-    movePieceTo(piece12, 6, 1);
-    movePieceTo(piece21, 7, 1);
-    expect(piece21.canOvercharge()).toBe(false);
+    const piece11 = new TestMeleePiece();
+    const piece12 = new TestMeleePiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece12, t.player1, 6, 1);
+    t.initializePiece(piece21, t.player2, 7, 1);
+    t.setActivePlayer2();
+    expect(piece21.canOvercharge()).toBeFalse();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 0);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 1));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
-    expect(piece21.canOvercharge()).toBe(true);
+    t.performMove(piece21, 7, 1);
+    expect(piece21.canOvercharge()).toBeTrue();
 
-    piece21.select();
-    piece21.overcharge();
-    piece21.moveOrSprintTo(board.getByRowCol(7, 0));
-    expect(piece21.hasConfirmableMove()).toBe(true);
-    piece21.confirmMove();
-    piece21.deselect();
+    t.performMoveWithOvercharge(piece21, 7, 0);
     // You can't overcharge here because you opted not to overcharge after
     // the first move.
-    expect(piece21.canOvercharge()).toBe(false);
+    expect(piece21.canOvercharge()).toBeFalse();
   });
-
-  function initializePiece(piece: Piece, row: number, col: number) {
-    board.getByRowCol(row, col).setPiece(piece);
-    piece.position = new Position(row, col);
-    piece.stageAction();
-  }
-
-  function movePieceTo(piece: Piece, row: number, col: number) {
-    board.getCell(piece.position).clearPiece();
-    board.getByRowCol(row, col).setPiece(piece);
-    piece.position = new Position(row, col);
-  }
-
-  function setActive(player: Player) {
-    player1.setActive(false);
-    player2.setActive(false);
-    player.setActive(true);
-  }
 });

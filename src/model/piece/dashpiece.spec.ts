@@ -1,35 +1,30 @@
-import { Board } from "../board";
+import { TestDashPiece } from "src/test/test-dash-piece";
+import { TestMeleePiece } from "src/test/test-melee-piece";
+import { BaseTest } from "../../test/basetest";
 import { Direction } from "../direction";
-import { Scrounger } from "../machine/scrounger";
-import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
-import { DashPiece } from "./dashpiece";
-import { BaseTest } from "../../test/basetest";
 
 describe('Dash Piece', () => {
   let t: BaseTest;
 
   beforeEach(() => {
     t = new BaseTest();
-    t.player1.setActive(true);
-    t.board.clearTurnData();
   });
 
   it('dash attack', () => {
     let piece11 = new TestDashPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
-    expect(piece21.getDirection()).toEqual(Direction.RIGHT);
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
+    expect(piece21.getDirection()).toEqual(Direction.UP);
 
     t.performAttack(piece11);
   
     // The piece being attacked loses health and rotates 180.
     expect(piece21.getHealth()).toBe(piece21.maxHealth - 1);
     expect(piece21.getPosition()).toEqual(Position.from(1, 0));
-    expect(piece21.getDirection()).toEqual(Direction.LEFT);
+    expect(piece21.getDirection()).toEqual(Direction.DOWN);
 
     // The attacking piece moves through the defender.
     expect(piece11.getPosition()).toEqual(Position.from(2, 0));
@@ -37,11 +32,11 @@ describe('Dash Piece', () => {
 
   it('dash attack with armor break', () => {
     let piece11 = new TestDashPiece();
-    let piece21 = new Scrounger();
-    expect(piece21.getDirection()).toEqual(Direction.UP);
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
     t.setTerrain(1, 0, Terrain.FOREST); // This makes attack and defense a tie.
+    expect(piece21.getDirection()).toEqual(Direction.UP);
 
     t.performAttack(piece11);
   
@@ -60,17 +55,3 @@ describe('Dash Piece', () => {
     expect(piece11.getHealth()).toBe(piece11.maxHealth - 2);
   });
 });
-
-
-class TestDashPiece extends DashPiece {
-  constructor() {
-    super(
-      'Test Dash Piece',
-      'image url',
-      2,  // points
-      3,  // movement
-      1,  // attack
-      2,  // attack range
-      5); // health
-    }
-}

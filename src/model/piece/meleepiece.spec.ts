@@ -1,27 +1,21 @@
+import { TestMeleePiece } from "src/test/test-melee-piece";
 import { BaseTest } from "../../test/basetest";
-import { Board } from "../board";
-import { Scrounger } from "../machine/scrounger";
-import { Player } from "../player";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
-import { MeleePiece } from "./meleepiece";
-import { SwoopPiece } from "./swooppiece";
 
 describe('Melee Piece', () => {
   let t: BaseTest;
 
   beforeEach(() => {
     t = new BaseTest();
-    t.player1.setActive(true);
-    t.board.clearTurnData();
   });
 
   it('basic attack', () => {
     let piece11 = new TestMeleePiece();
-    let piece21 = new Scrounger();
+    let piece21 = new TestMeleePiece();
     piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
 
     t.performAttack(piece11);
   
@@ -36,11 +30,11 @@ describe('Melee Piece', () => {
 
   it('basic attack, armor break', () => {
     let piece11 = new TestMeleePiece();
-    let piece21 = new Scrounger();
+    let piece21 = new TestMeleePiece();
     piece21.rotateClockwise();
     t.setTerrain(1, 0, Terrain.MOUNTAIN); // Ensures armor break
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
 
     t.performAttack(piece11);
   
@@ -56,32 +50,19 @@ describe('Melee Piece', () => {
 
   it('can attack in range', () => {
     let piece11 = new TestMeleePiece();
-    let piece21 = new Scrounger();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
 
     expect(piece11.hasConfirmableAttack()).toBeTrue();
   });
 
   it('cannot attack out of range', () => {
     let piece11 = new TestMeleePiece();
-    let piece21 = new Scrounger();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 2, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 2, 0);
 
     expect(piece11.hasConfirmableAttack()).toBeFalse();
   });
 });
-
-class TestMeleePiece extends MeleePiece {
-  constructor() {
-    super(
-      'Test Melee Piece',
-      'image url',
-      2,  // points
-      3,  // movement
-      1,  // attack
-      1,  // attack range
-      5); // health
-    }
-}

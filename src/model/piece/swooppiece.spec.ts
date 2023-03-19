@@ -1,5 +1,5 @@
+import { TestMeleePiece } from "src/test/test-melee-piece";
 import { BaseTest } from "../../test/basetest";
-import { Scrounger } from "../machine/scrounger";
 import { Position } from "../position";
 import { SwoopPiece } from "./swooppiece";
 
@@ -8,16 +8,13 @@ describe('Swoop Piece', () => {
 
   beforeEach(() => {
     t = new BaseTest();
-    t.player1.setActive(true);
-    t.board.clearTurnData();
   });
 
   it('basic attack', () => {
     let piece11 = new TestSwoopPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 3, 0);
+    let piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 3, 0);
 
     t.performAttack(piece11);
   

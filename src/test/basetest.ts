@@ -1,12 +1,13 @@
+import { Game } from "src/model/game";
 import { Board } from "../model/board";
-import { Direction } from "../model/direction";
+import { Piece } from "../model/piece/piece";
 import { Player } from "../model/player";
 import { Position } from "../model/position";
 import { Terrain } from "../model/terrain";
-import { Piece } from "../model/piece/piece";
 
 export class BaseTest {
 
+  public game: Game;
   public board: Board;
   public player1: Player;
   public player2: Player;
@@ -14,14 +15,22 @@ export class BaseTest {
   constructor() {
     this.board = new Board();
     this.board.setAllTerrain(Terrain.GRASSLAND);
+    this.game = new Game(this.board);
 
-    this.player1 = new Player(true, 'Player 1', Direction.DOWN);
-    this.player2 = new Player(false, 'Player 2', Direction.UP);
+    this.player1 = this.game.getPlayer1();
+    this.player2 = this.game.getPlayer2();
   }
 
-  initializePiece(piece: Piece, row: number, col: number): void {
-    this.board.getByRowCol(row, col).setPiece(piece);
+  initializePiece(piece: Piece, player: Player, row: number, col: number): void {
+    piece.setDirection(player.defaultDirection);
+    piece.setBoard(this.board);
+    piece.setPlayer(player);
+
     piece.position = new Position(row, col);
+    this.board.getCell(piece.position).setPiece(piece);
+
+    player.addPiece(piece);
+
     piece.clearTurnData();
     piece.stageAction();
   }
@@ -50,8 +59,20 @@ export class BaseTest {
     piece.deselect();
   }
 
-  performAttack(piece: Piece): void {
+  performAttack(piece: Piece) {
+    this.performAttack_(piece, false);
+  }
+
+  performAttackWithOvercharge(piece: Piece) {
+    this.performAttack_(piece, true);
+  }
+
+  private performAttack_(piece: Piece, overcharge: boolean): void {
     piece.select();
+    if (overcharge) {
+      expect(piece.canOvercharge()).toBeTrue();
+      piece.overcharge();
+    }
     expect(piece.canAttack()).toBe(true);
     expect(piece.hasConfirmableAttack()).toBe(true);
     this.board.clearStagedAttackData();

@@ -1,23 +1,22 @@
+import { TestMeleePiece } from "src/test/test-melee-piece";
+import { TestRamPiece } from "src/test/test-ram-piece";
 import { BaseTest } from "../../test/basetest";
-import { Scrounger } from "../machine/scrounger";
 import { Position } from "../position";
-import { RamPiece } from "./rampiece";
 
 describe('Ram Piece', () => {
   let t: BaseTest;
 
   beforeEach(() => {
     t = new BaseTest();
-    t.player1.setActive(true);
     t.board.clearTurnData();
   });
 
   it('ram piece into empty cell', () => {
-    let piece11 = new TestRamPiece();
-    let piece21 = new Scrounger();
+    const piece11 = new TestRamPiece();
+    const piece21 = new TestMeleePiece();
     piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
 
     t.performAttack(piece11);
   
@@ -27,14 +26,15 @@ describe('Ram Piece', () => {
 
     // The attacking piece moves to where the defender was.
     expect(piece11.getPosition()).toEqual(Position.from(1, 0));
+    expect(piece11.getHealth()).toBe(piece11.maxHealth);
   });
 
   it('ram piece into edge of board', () => {
-    let piece11 = new TestRamPiece();
-    let piece21 = new Scrounger();
+    const piece11 = new TestRamPiece();
+    const piece21 = new TestMeleePiece();
     piece21.rotateClockwise();
-    t.initializePiece(piece11, 6, 0);
-    t.initializePiece(piece21, 7, 0);
+    t.initializePiece(piece11, t.player1, 6, 0);
+    t.initializePiece(piece21, t.player2, 7, 0);
 
     t.performAttack(piece11);
   
@@ -50,11 +50,10 @@ describe('Ram Piece', () => {
   });
 
   it('ram kills piece', () => {
-    let piece11 = new TestRamPiece();
-    let piece21 = new Scrounger();
-    piece21.rotateClockwise();
-    t.initializePiece(piece11, 0, 0);
-    t.initializePiece(piece21, 1, 0);
+    const piece11 = new TestRamPiece();
+    const piece21 = new TestMeleePiece();
+    t.initializePiece(piece11, t.player1, 0, 0);
+    t.initializePiece(piece21, t.player2, 1, 0);
     t.setHealth(piece21, 1);
 
     t.performAttack(piece11);
@@ -68,16 +67,3 @@ describe('Ram Piece', () => {
     expect(piece11.getHealth()).toBe(piece11.maxHealth);
   });
 });
-
-class TestRamPiece extends RamPiece {
-  constructor() {
-    super(
-      'Test Ram Piece',
-      'image url',
-      2,  // points
-      3,  // movement
-      1,  // attack
-      3,  // attack range
-      5,); // health
-    }
-}
