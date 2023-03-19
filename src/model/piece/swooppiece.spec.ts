@@ -1,7 +1,7 @@
 import { TestMeleePiece } from "src/test/test-melee-piece";
+import { TestSwoopPiece } from "src/test/test-swoop-piece";
 import { BaseTest } from "../../test/basetest";
 import { Position } from "../position";
-import { SwoopPiece } from "./swooppiece";
 
 describe('Swoop Piece', () => {
   let t: BaseTest;
@@ -28,16 +28,3 @@ describe('Swoop Piece', () => {
     expect(piece11.getPosition()).toEqual(Position.from(2, 0));
   });
 });
-
-class TestSwoopPiece extends SwoopPiece {
-  constructor() {
-    super(
-      'Test Swoop Piece',
-      'image url',
-      2,  // points
-      3,  // movement
-      1,  // attack
-      3,  // attack range
-      5); // health
-    }
-}
