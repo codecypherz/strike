@@ -1,5 +1,5 @@
 import { Direction } from "src/model/direction";
-import { DashPiece } from "src/model/piece/dashpiece";
+import { DashPiece } from "src/model/piece/dash-piece";
 import { Strength } from "src/model/strength";
 
 export class TestDashPiece extends DashPiece {

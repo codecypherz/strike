@@ -3,7 +3,7 @@ import { Board } from 'src/model/board';
 import { Game } from 'src/model/game';
 import { GameService } from 'src/model/game.service';
 
-import { GameOverComponent } from './gameover.component';
+import { GameOverComponent } from './game-over.component';
 
 describe('GameOverComponent', () => {
   let component: GameOverComponent;

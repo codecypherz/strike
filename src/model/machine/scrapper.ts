@@ -1,4 +1,4 @@
-import { GunnerPiece } from "../piece/gunnerpiece";
+import { GunnerPiece } from "../piece/gunner-piece";
 import { Piece } from "../piece/piece";
 
 export class Scrapper extends GunnerPiece {

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Game } from 'src/model/game';
-import { GameCollection } from 'src/model/gamecollection';
+import { GameCollection } from 'src/model/game-collection';
 
 @Component({
-  selector: 'app-gameselection',
-  templateUrl: './gameselection.component.html',
-  styleUrls: ['./gameselection.component.scss']
+  selector: 'app-game-selection',
+  templateUrl: './game-selection.component.html',
+  styleUrls: ['./game-selection.component.scss']
 })
 export class GameSelectionComponent {
 

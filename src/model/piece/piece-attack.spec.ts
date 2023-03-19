@@ -1,5 +1,5 @@
 import { TestMeleePiece } from "src/test/test-melee-piece";
-import { BaseTest } from "../../test/basetest";
+import { BaseTest } from "../../test/base-test";
 
 describe('Piece Attack', () => {
   let t: BaseTest;

@@ -1,4 +1,4 @@
-import { BaseTest } from "src/test/basetest";
+import { BaseTest } from "src/test/base-test";
 import { TestMeleePiece } from "src/test/test-melee-piece";
 import { Board } from "../board";
 import { Direction } from "../direction";

@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameService } from 'src/model/game.service';
 import { Game } from 'src/model/game';
+import { GameService } from 'src/model/game.service';
 import { Player } from 'src/model/player';
 
 @Component({
-  selector: 'app-gameover',
-  templateUrl: './gameover.component.html',
-  styleUrls: ['./gameover.component.scss']
+  selector: 'app-game-over',
+  templateUrl: './game-over.component.html',
+  styleUrls: ['./game-over.component.scss']
 })
 export class GameOverComponent implements OnInit {
 

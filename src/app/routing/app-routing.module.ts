@@ -3,9 +3,9 @@ import { Title } from "@angular/platform-browser";
 import { RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from "@angular/router";
 import { gameResolver } from "../game/game-resolver";
 import { GameComponent } from "../game/game.component";
-import { GameSelectionComponent } from "../gameselection/gameselection.component";
+import { GameSelectionComponent } from "../game-selection/game-selection.component";
 import { canDeactivateGuard } from "../guard/can-deactivate.guard";
-import { PageNotFoundComponent } from "../pagenotfound/pagenotfound.component";
+import { PageNotFoundComponent } from "../page-not-found/page-not-found.component";
 
 const routes: Routes = [
   {

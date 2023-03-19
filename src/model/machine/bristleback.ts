@@ -1,5 +1,5 @@
 import { Piece } from "../piece/piece";
-import { RamPiece } from "../piece/rampiece";
+import { RamPiece } from "../piece/ram-piece";
 
 export class Bristleback extends RamPiece {
 

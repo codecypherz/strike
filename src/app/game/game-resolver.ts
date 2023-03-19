@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from "@angular/router";
+import { EMPTY, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 import { Game } from "src/model/game";
-import { GameCollection } from 'src/model/gamecollection';
-import {EMPTY, of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators';
+import { GameCollection } from 'src/model/game-collection';
 
 export const gameResolver: ResolveFn<Game> = (
   route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {

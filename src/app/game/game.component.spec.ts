@@ -6,11 +6,11 @@ import { Game } from 'src/model/game';
 import { GameService } from 'src/model/game.service';
 import { BoardComponent } from '../board/board.component';
 import { CellComponent } from '../cell/cell.component';
-import { GameOverComponent } from '../gameover/gameover.component';
+import { GameOverComponent } from '../game-over/game-over.component';
 import { PieceComponent } from '../piece/piece.component';
 import { PlayerComponent } from '../player/player.component';
 import { PlayersComponent } from '../players/players.component';
-import { AppRoutingModule } from '../routing/approuting.module';
+import { AppRoutingModule } from '../routing/app-routing.module';
 import { SelectedComponent } from '../selected/selected.component';
 
 import { GameComponent } from './game.component';

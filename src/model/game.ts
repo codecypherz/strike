@@ -1,5 +1,5 @@
 import { Board } from "./board";
-import { PieceCollection } from "./piececollection";
+import { PieceCollection } from "./piece-collection";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
 import { Direction } from "./direction";

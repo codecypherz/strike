@@ -1,10 +1,9 @@
-import { OnInit } from '@angular/core';
-import { Component } from '@angular/core';
-import { GameService } from 'src/model/game.service';
+import { Component, OnInit } from '@angular/core';
 import { Cell } from 'src/model/cell';
+import { GameService } from 'src/model/game.service';
 import { Piece } from 'src/model/piece/piece';
 import { Terrain } from 'src/model/terrain';
-import { decorate } from '../textdecorator';
+import { decorate } from '../text-decorator';
 
 @Component({
   selector: 'app-selected',

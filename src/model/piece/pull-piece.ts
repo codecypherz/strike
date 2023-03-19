@@ -1,5 +1,5 @@
 import { getOnly } from "src/util/sets";
-import { AttackCells } from "../attackcells";
+import { AttackCells } from "../attack-cells";
 import { Cell } from "../cell";
 import { Terrain } from "../terrain";
 import { Piece } from "./piece";

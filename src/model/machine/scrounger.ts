@@ -1,4 +1,4 @@
-import { MeleePiece } from "../piece/meleepiece";
+import { MeleePiece } from "../piece/melee-piece";
 import { Piece } from "../piece/piece";
 
 export class Scrounger extends MeleePiece {

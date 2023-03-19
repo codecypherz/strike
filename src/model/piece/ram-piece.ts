@@ -1,4 +1,4 @@
-import { AttackCells } from "../attackcells";
+import { AttackCells } from "../attack-cells";
 import { Piece } from "./piece";
 
 export class RamPiece extends Piece {

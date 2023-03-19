@@ -1,6 +1,6 @@
 import { TestMeleePiece } from "src/test/test-melee-piece";
 import { TestRamPiece } from "src/test/test-ram-piece";
-import { BaseTest } from "../../test/basetest";
+import { BaseTest } from "../../test/base-test";
 import { Position } from "../position";
 
 describe('Ram Piece', () => {

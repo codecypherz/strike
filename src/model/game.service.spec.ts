@@ -1,4 +1,4 @@
-import { BaseTest } from "src/test/basetest";
+import { BaseTest } from "src/test/base-test";
 import { TestMeleePiece } from "src/test/test-melee-piece";
 import { GameService } from "./game.service";
 import { Bristleback } from "./machine/bristleback";

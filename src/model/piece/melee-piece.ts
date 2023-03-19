@@ -1,5 +1,5 @@
 import { Position } from "../position";
-import { AttackCells } from "../attackcells";
+import { AttackCells } from "../attack-cells";
 import { Direction } from "../direction";
 import { Piece } from "./piece";
 

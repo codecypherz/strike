@@ -1,7 +1,7 @@
 import { Cell } from "../cell";
 import { Direction } from "../direction";
 import { Piece } from "../piece/piece";
-import { RamPiece } from "../piece/rampiece";
+import { RamPiece } from "../piece/ram-piece";
 import { Strength } from "../strength";
 import { Terrain } from "../terrain";
 

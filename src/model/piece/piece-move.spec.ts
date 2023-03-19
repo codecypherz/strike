@@ -1,6 +1,6 @@
 import { Scrounger } from "../machine/scrounger";
 import { Piece } from "./piece";
-import { BaseTest } from "../../test/basetest";
+import { BaseTest } from "../../test/base-test";
 
 describe('Piece Move', () => {
   let t: BaseTest;

@@ -1,9 +1,9 @@
 import { getOnly } from "src/util/sets";
-import { AttackCells } from "../attackcells";
+import { AttackCells } from "../attack-cells";
 import { Board } from "../board";
 import { Cell } from "../cell";
 import { Direction } from "../direction";
-import { MoveCells } from "../movecells";
+import { MoveCells } from "../move-cells";
 import { Player } from "../player";
 import { Position } from "../position";
 import { Strength } from "../strength";

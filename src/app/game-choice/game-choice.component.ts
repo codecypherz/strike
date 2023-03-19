@@ -2,13 +2,13 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Game } from 'src/model/game';
 import { GameService } from 'src/model/game.service';
-import { GameCollection } from 'src/model/gamecollection';
+import { GameCollection } from 'src/model/game-collection';
 import { NGXLogger } from 'ngx-logger';
 
 @Component({
-  selector: 'app-gamechoice',
-  templateUrl: './gamechoice.component.html',
-  styleUrls: ['./gamechoice.component.scss']
+  selector: 'app-game-choice',
+  templateUrl: './game-choice.component.html',
+  styleUrls: ['./game-choice.component.scss']
 })
 export class GameChoiceComponent {
 

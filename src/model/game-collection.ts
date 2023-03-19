@@ -1,6 +1,6 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
-import { BoardCollection } from "./boardcollection";
+import { BoardCollection } from "./board-collection";
 import { Game } from "./game";
 import { Bristleback } from "./machine/bristleback";
 import { Burrower } from "./machine/burrower";

@@ -1,6 +1,6 @@
 import { TestMeleePiece } from "src/test/test-melee-piece";
 import { TestPullPiece } from "src/test/test-pull-piece";
-import { BaseTest } from "../../test/basetest";
+import { BaseTest } from "../../test/base-test";
 import { Position } from "../position";
 import { Terrain } from "../terrain";
 

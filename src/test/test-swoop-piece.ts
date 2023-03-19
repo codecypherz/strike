@@ -1,5 +1,5 @@
 import { Direction } from "src/model/direction";
-import { SwoopPiece } from "src/model/piece/swooppiece";
+import { SwoopPiece } from "src/model/piece/swoop-piece";
 import { Strength } from "src/model/strength";
 
 export class TestSwoopPiece extends SwoopPiece {

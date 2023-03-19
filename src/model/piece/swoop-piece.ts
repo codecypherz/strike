@@ -1,4 +1,4 @@
-import { AttackCells } from "../attackcells";
+import { AttackCells } from "../attack-cells";
 import { Cell } from "../cell";
 import { Direction } from "../direction";
 import { Position } from "../position";

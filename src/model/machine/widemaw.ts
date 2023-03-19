@@ -1,5 +1,5 @@
 import { Piece } from "../piece/piece";
-import { PullPiece } from "../piece/pullpiece";
+import { PullPiece } from "../piece/pull-piece";
 
 export class Widemaw extends PullPiece {
 

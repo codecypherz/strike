@@ -1,5 +1,5 @@
 import { Cell } from "../cell";
-import { DashPiece } from "../piece/dashpiece";
+import { DashPiece } from "../piece/dash-piece";
 import { Piece } from "../piece/piece";
 import { Terrain } from "../terrain";
 

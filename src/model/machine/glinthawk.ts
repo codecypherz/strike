@@ -1,6 +1,6 @@
 import { Direction } from "../direction";
 import { Piece } from "../piece/piece";
-import { SwoopPiece } from "../piece/swooppiece";
+import { SwoopPiece } from "../piece/swoop-piece";
 import { Strength } from "../strength";
 
 export class Glinthawk extends SwoopPiece {

@@ -1,6 +1,6 @@
-import { Position } from "../position";
-import { AttackCells } from "../attackcells";
+import { AttackCells } from "../attack-cells";
 import { Direction } from "../direction";
+import { Position } from "../position";
 import { Piece } from "./piece";
 
 export class GunnerPiece extends Piece {

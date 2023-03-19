@@ -1,5 +1,5 @@
 import { Direction } from "src/model/direction";
-import { RamPiece } from "src/model/piece/rampiece";
+import { RamPiece } from "src/model/piece/ram-piece";
 import { Strength } from "src/model/strength";
 
 export class TestRamPiece extends RamPiece {

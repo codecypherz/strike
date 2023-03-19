@@ -1,5 +1,5 @@
 import { Direction } from "src/model/direction";
-import { PullPiece } from "src/model/piece/pullpiece";
+import { PullPiece } from "src/model/piece/pull-piece";
 import { Strength } from "src/model/strength";
 
 export class TestPullPiece extends PullPiece {

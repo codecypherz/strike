@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Direction } from "./direction";
 import { Piece } from "./piece/piece";
-import { PieceCollection } from "./piececollection";
+import { PieceCollection } from "./piece-collection";
 
 /**
  * A cell is a portion of the board. A cell has a certain type of terrain

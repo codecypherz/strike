@@ -1,5 +1,5 @@
 import { Direction } from "src/model/direction";
-import { MeleePiece } from "src/model/piece/meleepiece";
+import { MeleePiece } from "src/model/piece/melee-piece";
 import { Strength } from "src/model/strength";
 
 export class TestMeleePiece extends MeleePiece {

@@ -1,4 +1,4 @@
-import { DashPiece } from "../piece/dashpiece";
+import { DashPiece } from "../piece/dash-piece";
 import { Piece } from "../piece/piece";
 
 export class Slitherfang extends DashPiece {
