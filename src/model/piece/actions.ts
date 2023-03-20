@@ -2,8 +2,12 @@ export class Actions {
 
   private actions = new Array<Action>();
 
-  addMove(overcharged: boolean, sprinted: boolean): void {
-    this.actions.push(new Move(overcharged, sprinted));
+  addMove(overcharged: boolean): void {
+    this.actions.push(new Move(overcharged));
+  }
+
+  addSprint() {
+    this.actions.push(new Sprint());
   }
 
   addAttack(overcharged: boolean): void {
@@ -18,19 +22,23 @@ export class Actions {
     const filteredActions = new Actions();
     let seenNormalMove = false;
     let seenNormalAttack = false;
+    let seenNormalSprint = false;
     for (let action of this.actions) {
       if (action.overcharged) {
         // Reset point!
         seenNormalMove = false;
         seenNormalAttack = false;
+        seenNormalSprint = false;
         filteredActions.clear();
       } else {
         // Non overcharge action.
         if ((seenNormalMove && action instanceof Move)
-          || (seenNormalAttack && action instanceof Attack)) {
+          || (seenNormalAttack && action instanceof Attack)
+          || (seenNormalSprint && action instanceof Sprint)) {
           // Discovered duplicate - reset point!
           seenNormalMove = action instanceof Move;
           seenNormalAttack = action instanceof Attack;
+          seenNormalSprint = action instanceof Sprint;
           filteredActions.clear();
           filteredActions.actions.push(action);
         }
@@ -39,6 +47,8 @@ export class Actions {
           seenNormalMove = true;
         } else if (action instanceof Attack) {
           seenNormalAttack = true;
+        } else if (action instanceof Sprint) {
+          seenNormalSprint = true;
         }
         filteredActions.actions.push(action);
       }
@@ -59,14 +69,30 @@ export class Actions {
     return false;
   }
 
-  getLastMove(): Action | null {
+  hasSprinted(): boolean {
+    for (let action of this.actions) {
+      if (action instanceof Sprint) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getLastMoveOrSprint(): Action | null {
     let lastMove = null;
     for (let action of this.actions) {
-      if (action instanceof Move) {
+      if (action instanceof Move || action instanceof Sprint) {
         lastMove = action;
       }
     }
     return lastMove;
+  }
+
+  lastActionWasOvercharged(): boolean {
+    if (this.actions.length == 0) {
+      return false;
+    }
+    return this.actions[this.actions.length - 1].overcharged;
   }
 
   hasActionSinceLastOvercharge() {
@@ -83,7 +109,7 @@ export class Actions {
 
   hasAttackedOrSprinted() {
     for (let action of this.actions) {
-      if (action instanceof Attack || (action as Move).sprinted) {
+      if (action instanceof Attack || action instanceof Sprint) {
         return true;
       }
     }
@@ -111,6 +137,15 @@ export class Actions {
     return false;
   }
 
+  hasOvercharged(): boolean {
+    for (let action of this.actions) {
+      if (action.overcharged) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   getNumOvercharges(): number {
     let num = 0;
     for (let action of this.actions) {
@@ -121,10 +156,21 @@ export class Actions {
     return num;
   }
 
-  getNumMovesWithoutOvercharge(): number {
+  getNumMovesOrSprintsWithoutOvercharge(): number {
     let num = 0;
     for (let action of this.actions) {
-      if (action instanceof Move && !action.overcharged) {
+      if (!action.overcharged
+        && (action instanceof Move || action instanceof Sprint)) {
+        num++;
+      }
+    }
+    return num;
+  }
+
+  getNumAttacksWithoutOvercharge(): number {
+    let num = 0;
+    for (let action of this.actions) {
+      if (!action.overcharged && action instanceof Attack) {
         num++;
       }
     }
@@ -142,7 +188,7 @@ export abstract class Action {
 }
 
 export class Move extends Action {
-  constructor(overcharged: boolean, public sprinted: boolean) {
+  constructor(overcharged: boolean) {
     super(overcharged);
   }
 }
@@ -150,5 +196,11 @@ export class Move extends Action {
 export class Attack extends Action {
   constructor(overcharged: boolean) {
     super(overcharged);
+  }
+}
+
+export class Sprint extends Action {
+  constructor() {
+    super(false);
   }
 }

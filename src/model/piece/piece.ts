@@ -298,13 +298,13 @@ export abstract class Piece {
       return false;
     }
     const filteredActions = this.actions.getActionsSinceResetPoint();
-    const lastMove = filteredActions.getLastMove();
+    const lastMoveOrSprint = filteredActions.getLastMoveOrSprint();
     // Can't overcharge if no last move.
-    if (lastMove == null) {
+    if (lastMoveOrSprint == null) {
       return false;
     }
     // As long as the last move was not overcharged, should be good.
-    return !lastMove.overcharged;
+    return !lastMoveOrSprint.overcharged;
   }
 
   overcharge(): void {
@@ -322,18 +322,39 @@ export abstract class Piece {
       // You can't sprint if you can't move.
       return false;
     }
-    // You can't sprint if you've moved or attacked.
-    return !this.actions.hasActionSinceLastOvercharge()
-      && !this.stagedOvercharge;
+    const filteredActions = this.actions.getActionsSinceResetPoint();
+    if (!this.stagedOvercharge) {
+      if (!filteredActions.hasAction()) {
+        return true;
+      }
+      if (this.lastPiece) {
+        if ((filteredActions.hasMoved()
+          || filteredActions.hasSprinted())
+          && this.actions.hasOvercharged()) {
+          return false;
+        }
+        if (!filteredActions.hasMoved()
+          || !filteredActions.hasAttacked()
+          || this.actions.hasOvercharged()) {
+          return false;
+        }
+      } else {
+        // You can't sprint if you've already done something.
+        if (filteredActions.hasMoved() || filteredActions.hasAttacked()) {
+          return false;
+        }
+      }
+    }
+    return true;
   }
 
   canMove(): boolean {
     if (this.lastPiece) {
-      if (this.actions.getNumMovesWithoutOvercharge() == 2 && !this.stagedOvercharge) {
+      if (this.actions.getNumMovesOrSprintsWithoutOvercharge() == 2 && !this.stagedOvercharge) {
         return false;
       }
     } else {
-      if (this.actions.getNumMovesWithoutOvercharge() == 1 && !this.stagedOvercharge) {
+      if (this.actions.getNumMovesOrSprintsWithoutOvercharge() == 1 && !this.stagedOvercharge) {
         return false;
       }
     }
@@ -408,7 +429,14 @@ export abstract class Piece {
       overcharged = true;
       this.takeDamage_(2);
     }
-    this.actions.addMove(overcharged, sprinted);
+    if (sprinted && overcharged) {
+      throw new Error('You can never sprint with overcharge.');
+    }
+    if (sprinted) {
+      this.actions.addSprint();
+    } else {
+      this.actions.addMove(overcharged);
+    }
     this.activate();
   }
 
@@ -469,10 +497,35 @@ export abstract class Piece {
     if (this.stagedSprint) {
       return false;
     }
-    const filteredActions = this.actions.getActionsSinceResetPoint();
-    if (filteredActions.hasAttackedOrSprinted()
-      && !this.stagedOvercharge) {
+    if (!this.lastPiece && this.actions.lastActionWasOvercharged()) {
+      // If you overcharged, you are done.
       return false;
+    }
+    const filteredActions = this.actions.getActionsSinceResetPoint();
+    if (!this.stagedOvercharge) {
+      if (this.lastPiece) {
+        if (this.actions.getNumAttacksWithoutOvercharge() == 2) {
+          return false;
+        }
+        if (!filteredActions.hasAction() && !this.canMove()) {
+          return false;
+        }
+        if (filteredActions.hasAttacked() && !filteredActions.hasMoved()) {
+          return false;
+        }
+        if (filteredActions.hasSprinted()) {
+          return false;
+        }
+        if (filteredActions.hasAttacked()
+          && filteredActions.hasMoved()
+          && this.actions.hasOvercharged()) {
+          return false;
+        }
+      } else {
+        if (filteredActions.hasAttacked() || filteredActions.hasSprinted()) {
+          return false;
+        }
+      }
     }
     if (this.stagedOvercharge && this.hasConfirmableMove()) {
       // Can't move and attack with overcharge.
