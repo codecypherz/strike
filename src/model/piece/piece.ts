@@ -8,6 +8,7 @@ import { Player } from "../player";
 import { Position } from "../position";
 import { Strength } from "../strength";
 import { Terrain } from "../terrain";
+import { ActionTracker } from "./action-tracker";
 import { Actions } from "./actions";
 
 export interface PieceCtor {
@@ -35,6 +36,7 @@ export abstract class Piece {
   // Per-turn data
   // This data is only cleared when a turn ends.
   private actions = new Actions();
+  private actionTracker = new ActionTracker(false);
   private lastPiece = false;
 
   // Selected metadata
@@ -101,6 +103,7 @@ export abstract class Piece {
     }
     this.lastPiece = this.getPlayer().isLastPiece(this);
     this.actions.clear();
+    this.actionTracker = new ActionTracker(this.lastPiece);
     this.clearSelectionData();
     this.clearStagedAttackData();
   }
@@ -264,7 +267,7 @@ export abstract class Piece {
   }
 
   hasBeenActivated(): boolean {
-    return this.actions.hasAction();
+    return this.actionTracker.hasActionBeenTaken();
   }
 
   canBeActivated(): boolean {
@@ -290,21 +293,7 @@ export abstract class Piece {
     if (this.getHealth() <= 1) {
       return false;
     }
-    // Can't overcharge if out of overcharges.
-    const numOvercharges = this.actions.getNumOvercharges();
-    if (this.lastPiece && numOvercharges == 2) {
-      return false;
-    } else if (!this.lastPiece && numOvercharges == 1) {
-      return false;
-    }
-    const filteredActions = this.actions.getActionsSinceResetPoint();
-    const lastMoveOrSprint = filteredActions.getLastMoveOrSprint();
-    // Can't overcharge if no last move.
-    if (lastMoveOrSprint == null) {
-      return false;
-    }
-    // As long as the last move was not overcharged, should be good.
-    return !lastMoveOrSprint.overcharged;
+    return this.actionTracker.canOvercharge();
   }
 
   overcharge(): void {
@@ -318,48 +307,9 @@ export abstract class Piece {
   }
 
   canSprint(): boolean {
-    if (!this.canMove()) {
-      // You can't sprint if you can't move.
+    if (!this.actionTracker.canSprint()) {
       return false;
     }
-    const filteredActions = this.actions.getActionsSinceResetPoint();
-    if (!this.stagedOvercharge) {
-      if (!filteredActions.hasAction()) {
-        return true;
-      }
-      if (this.lastPiece) {
-        if ((filteredActions.hasMoved()
-          || filteredActions.hasSprinted())
-          && this.actions.hasOvercharged()) {
-          return false;
-        }
-        if (!filteredActions.hasMoved()
-          || !filteredActions.hasAttacked()
-          || this.actions.hasOvercharged()) {
-          return false;
-        }
-      } else {
-        // You can't sprint if you've already done something.
-        if (filteredActions.hasMoved() || filteredActions.hasAttacked()) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  canMove(): boolean {
-    if (this.lastPiece) {
-      if (this.actions.getNumMovesOrSprintsWithoutOvercharge() == 2 && !this.stagedOvercharge) {
-        return false;
-      }
-    } else {
-      if (this.actions.getNumMovesOrSprintsWithoutOvercharge() == 1 && !this.stagedOvercharge) {
-        return false;
-      }
-    }
-    // We don't return false here for move and attack with overcharge.
-    // This is handled in the canAttack method which prevents the combination.
     if (!this.getPlayer().isActive()) {
       return false;
     }
@@ -369,8 +319,21 @@ export abstract class Piece {
     return true;
   }
 
-  hasMoved(): boolean {
-    return this.actions.hasMoved();
+  canMove(): boolean {
+    if (!this.actionTracker.canMove() && !this.stagedOvercharge) {
+      return false;
+    }
+    if (!this.getPlayer().isActive()) {
+      return false;
+    }
+    if (!this.hasBeenActivated() && !this.getPlayer().canActivatePiece()) {
+      return false;
+    }
+    return true;
+  }
+
+  hasMovedOrSprinted(): boolean {
+    return this.actionTracker.hasMovedOrSprinted();
   }
 
   isStuck(): boolean {
@@ -383,14 +346,14 @@ export abstract class Piece {
       return false;
     }
     // The piece needs to be able to move in the first place.
-    if (!this.canMove() && !this.canSprint()) {
+    if (!this.canMove() && !this.canSprint() && !this.stagedOvercharge) {
       return false;
     }
     // Make sure the destination cell is one of the valid move cells.
     return this.getMoveCells().hasMoveableOrSprintable(destCell);
   }
 
-  moveOrSprintTo(destCell: Cell) {
+  moveOrSprintTo(destCell: Cell): boolean {
     if (!this.canMoveOrSprintTo(destCell)) {
       throw new Error('Cannot move to this cell: ' + destCell.position.toString());
     }
@@ -402,13 +365,15 @@ export abstract class Piece {
 
     // Stage as sprinted, if appropriate.
     const moveCells = this.getMoveCells();
+    const sprint = moveCells.hasSprintable(destCell);
     if (this.selected) {
-      this.stagedSprint = moveCells.hasSprintable(destCell);
+      this.stagedSprint = sprint;
     }
+    return sprint;
   }
 
   hasConfirmableMove(): boolean {
-    if (!this.canMove()) {
+    if (!this.canMove() && !this.stagedOvercharge) {
       return false;
     }
     return this.stagedPosition != null && !this.position.equals(this.stagedPosition);
@@ -424,18 +389,13 @@ export abstract class Piece {
     this.confirmDirection();
 
     let sprinted = moveCells.hasSprintable(cell);
-    let overcharged = false;
-    if (this.stagedOvercharge) {
-      overcharged = true;
-      this.takeDamage_(2);
-    }
-    if (sprinted && overcharged) {
-      throw new Error('You can never sprint with overcharge.');
-    }
     if (sprinted) {
-      this.actions.addSprint();
+      this.actionTracker.sprint();
+    } else if (this.stagedOvercharge) {
+      this.takeDamage_(2);
+      this.actionTracker.overcharge();
     } else {
-      this.actions.addMove(overcharged);
+      this.actionTracker.move();
     }
     this.activate();
   }
@@ -493,42 +453,13 @@ export abstract class Piece {
   }
 
   canAttack(): boolean {
-    // You can never sprint and attack simultaneously.
     if (this.stagedSprint) {
       return false;
     }
-    if (!this.lastPiece && this.actions.lastActionWasOvercharged()) {
-      // If you overcharged, you are done.
+    if (!this.actionTracker.canAttack() && !this.stagedOvercharge) {
       return false;
     }
-    const filteredActions = this.actions.getActionsSinceResetPoint();
-    if (!this.stagedOvercharge) {
-      if (this.lastPiece) {
-        if (this.actions.getNumAttacksWithoutOvercharge() == 2) {
-          return false;
-        }
-        if (!filteredActions.hasAction() && !this.canMove()) {
-          return false;
-        }
-        if (filteredActions.hasAttacked() && !filteredActions.hasMoved()) {
-          return false;
-        }
-        if (filteredActions.hasSprinted()) {
-          return false;
-        }
-        if (filteredActions.hasAttacked()
-          && filteredActions.hasMoved()
-          && this.actions.hasOvercharged()) {
-          return false;
-        }
-      } else {
-        if (filteredActions.hasAttacked() || filteredActions.hasSprinted()) {
-          return false;
-        }
-      }
-    }
     if (this.stagedOvercharge && this.hasConfirmableMove()) {
-      // Can't move and attack with overcharge.
       return false;
     }
     if (!this.getPlayer().isActive()) {
@@ -579,6 +510,10 @@ export abstract class Piece {
   }
 
   hasConfirmableAttack(): boolean {
+    // You can never attack and sprint at the same time.
+    if (this.stagedSprint) {
+      return false;
+    }
     if (!this.canAttack()) {
       return false;
     }
@@ -665,12 +600,12 @@ export abstract class Piece {
 
   confirmAttackIfNotStaged_(): void {
     if (!this.isStagedAttack()) {
-      let overcharged = false;
       if (this.stagedOvercharge) {
-        overcharged = true;
         this.takeDamage_(2);
+        this.actionTracker.overcharge();
+      } else {
+        this.actionTracker.attack();
       }
-      this.actions.addAttack(overcharged);
       this.activate();
     }
   }
@@ -753,11 +688,10 @@ export abstract class Piece {
 
   canRotate(): boolean {
     // You can't rotate at all if you don't have an attack or move available.
-    if (!this.canMove() && !this.canAttack()) {
+    if (!this.canMove() && !this.canAttack() && !this.stagedOvercharge) {
       return false;
     }
-    // Effectively, attacking locks in the rotation.
-    if (this.actions.hasAttackedSinceLastOvercharge() && !this.stagedOvercharge) {
+    if (!this.actionTracker.canRotate() && !this.stagedOvercharge) {
       return false;
     }
     if (!this.getPlayer().isActive()) {

@@ -240,7 +240,8 @@ describe('Overcharge: Normal', () => {
     t.board.clearTurnData();
     expect(piece11.isLastPiece()).toBeFalse();
 
-    t.performMove(piece11, piece11.moveRange + 1, 0); // Sprint range.
+    const sprinted = t.performMove(piece11, piece11.moveRange + 1, 0);
+    expect(sprinted).toBeTrue();
     expectCanOnlyOvercharge(piece11);
 
     t.performMoveWithOvercharge(piece11, 3, 0);

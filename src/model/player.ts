@@ -74,7 +74,7 @@ export class Player {
   getNumMoved() {
     let numMoved = 0;
     for (let piece of this.piecesActivated.getSet()) {
-      if (piece.hasMoved()) {
+      if (piece.hasMovedOrSprinted()) {
         numMoved++;
       }
     }

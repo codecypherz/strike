@@ -122,7 +122,8 @@ describe('Overcharge: Last Piece', () => {
     expect(piece1.canAttack()).toBeTrue();
     expect(piece1.canSprint()).toBeTrue();
 
-    t.performMove(piece1, 0, 5); // Sprint
+    const sprinted = t.performMove(piece1, 0, 5);
+    expect(sprinted).toBe(true);
     expectCanOnlyOvercharge(piece1);
 
     t.performMoveWithOvercharge(piece1, 0, 2);

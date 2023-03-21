@@ -39,24 +39,25 @@ export class BaseTest {
     this.board.getByRowCol(row, col).terrain = terrain;
   }
 
-  performMove(piece: Piece, row: number, col: number): void {
-    this.performMove_(piece, row, col, false);
+  performMove(piece: Piece, row: number, col: number): boolean {
+    return this.performMove_(piece, row, col, false);
   }
   
   performMoveWithOvercharge(piece: Piece, row: number, col: number): void {
     this.performMove_(piece, row, col, true);
   }
 
-  private performMove_(piece: Piece, row: number, col: number, overcharge: boolean): void {
+  private performMove_(piece: Piece, row: number, col: number, overcharge: boolean): boolean {
     piece.select();
     if (overcharge) {
       expect(piece.canOvercharge()).toBe(true);
       piece.overcharge();
     }
-    piece.moveOrSprintTo(this.board.getByRowCol(row, col));
+    const sprinted = piece.moveOrSprintTo(this.board.getByRowCol(row, col));
     expect(piece.hasConfirmableMove()).toBe(true);
     piece.confirmMove();
     piece.deselect();
+    return sprinted;
   }
 
   performAttack(piece: Piece) {
