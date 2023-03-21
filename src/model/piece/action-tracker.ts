@@ -13,9 +13,17 @@ enum StateName {
   OVERCHARGE
 }
 
+/**
+ * Tracks the actions taken by a piece in a single turn.
+ * 
+ * Manages the valid state transitions between the different
+ * actions taken using a state machine.
+ */
 export class ActionTracker {
 
   stateMachine: StateMachine;
+
+  // This metadata is phase-independent.
   actionTaken = false;
   moved = false;
   sprinted = false;
@@ -80,12 +88,20 @@ export class ActionTracker {
   }
 }
 
+/**
+ * The class responsible for managing transitions between actions for
+ * a given piece on a given turn.
+ * 
+ * The concept of a phase is really only pertinent for a player's last
+ * piece which really takes two turns or "phases" as outlined here.
+ */
 class StateMachine {
   phase: Phase;
   state: State;
   lastPiece: boolean;
 
-  // phase metadata
+  // The actions taken during this phase.
+  // This state is cleared on phase transition.
   phaseActions: Actions;
 
   constructor(lastPiece: boolean) {
@@ -111,7 +127,7 @@ class StateMachine {
       throw new Error('Can only have phase 2 for last piece.');
     }
     this.phase = Phase.TWO;
-    this.phaseActions.clear();
+    this.phaseActions = new Actions();
   }
 
   createState(stateName: StateName): State {
@@ -139,6 +155,11 @@ abstract class State {
   abstract transitionTo(stateName: StateName): State;
 }
 
+/**
+ * The starting state for any piece.
+ * 
+ * All actions, except overcharge, are possible.
+ */
 class StartState extends State {
   canTransitionTo(stateName: StateName): boolean {
     switch (stateName) {
@@ -157,6 +178,17 @@ class StartState extends State {
   }
 }
 
+/**
+ * Normal rules:
+ *   - Can attack if you haven't already
+ *   - Can overcharge
+ * 
+ * Last piece rules:
+ *   - Can attack if you haven't already, otherwise phase 2
+ *   - Moving again transitions to phase 2
+ *   - Sprinting transitions to phase 2
+ *   - Can overcharge
+ */
 class MoveState extends State {
   canTransitionTo(stateName: StateName): boolean {
     if (this.stateMachine.lastPiece) {
@@ -214,6 +246,17 @@ class MoveState extends State {
   }
 }
 
+/**
+ * Normal rules:
+ *   - Can move if you haven't already
+ *   - Can overcharge if you've moved
+ * 
+ * Last piece rules:
+ *   - Can attack only if you've moved; transition to phase 2
+ *   - Moving again transitions to phase 2
+ *   - Sprinting transitions to phase 2
+ *   - Can overcharge if you've moved
+ */
 class AttackState extends State {
   canTransitionTo(stateName: StateName): boolean {
     if (this.stateMachine.lastPiece) {
@@ -274,6 +317,15 @@ class AttackState extends State {
   }
 }
 
+/**
+ * Normal rules:
+ *   - Can't make a non-overcharge action
+ *   - Can overcharge
+ * 
+ * Last piece rules:
+ *   - Any non-overcharge action transitions to phase 2
+ *   - Can overcharge
+ */
 class SprintState extends State {
   canTransitionTo(stateName: StateName): boolean {
     if (this.stateMachine.lastPiece) {
@@ -326,6 +378,14 @@ class SprintState extends State {
   }
 }
 
+/**
+ * Normal rules:
+ *   - No more actions possible
+ * 
+ * Last piece rules:
+ *   - Non-overcharge actions are possible in phase 1, transition to phase 2
+ *   - You can never overcharge after an overcharge
+ */
 class OverchargeState extends State {
   canTransitionTo(stateName: StateName): boolean {
     if (this.stateMachine.lastPiece) {

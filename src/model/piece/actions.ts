@@ -1,88 +1,56 @@
+enum Action {
+  MOVE,
+  SPRINT,
+  ATTACK,
+  OVERCHARGE
+}
+
 export class Actions {
 
   private actions = new Array<Action>();
 
   addMove(): void {
-    this.actions.push(new Move());
+    this.addAction(Action.MOVE);
   }
 
   addSprint() {
-    this.actions.push(new Sprint());
+    this.addAction(Action.SPRINT);
   }
 
   addAttack(): void {
-    this.actions.push(new Attack());
+    this.addAction(Action.ATTACK);
   }
 
   addOvercharge(): void {
-    this.actions.push(new Overcharge());
+    this.addAction(Action.OVERCHARGE);
   }
 
-  getActions(): Array<Action> {
-    return this.actions;
-  }
-
-  hasAction(): boolean {
-    return this.actions.length > 0;
+  private addAction(action: Action): void {
+    this.actions.push(action);
   }
 
   hasMoved(): boolean {
-    for (let action of this.actions) {
-      if (action instanceof Move) {
-        return true;
-      }
-    }
-    return false;
+    return this.hasAction(Action.MOVE);
   }
 
   hasSprinted(): boolean {
-    for (let action of this.actions) {
-      if (action instanceof Sprint) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  hasAttackedSinceLastOvercharge() {
-    // TODO
-    return false;
+    return this.hasAction(Action.SPRINT);
   }
 
   hasAttacked(): boolean {
-    for (let action of this.actions) {
-      if (action instanceof Attack) {
-        return true;
-      }
-    }
-    return false;
+    return this.hasAction(Action.ATTACK);
   }
 
   hasOvercharged(): boolean {
+    return this.hasAction(Action.OVERCHARGE);
+  }
+
+  private hasAction(desiredAction: Action): boolean {
     for (let action of this.actions) {
-      if (action instanceof Overcharge) {
+      if (action == desiredAction) {
         return true;
       }
     }
     return false;
   }
-
-  clear(): void {
-    this.actions = new Array<Action>();
-  }
-}
-
-export interface Action {
-}
-
-export class Move implements Action {
-}
-
-export class Attack implements Action {
-}
-
-export class Sprint implements Action {
-}
-
-export class Overcharge implements Action {
 }

@@ -9,7 +9,6 @@ import { Position } from "../position";
 import { Strength } from "../strength";
 import { Terrain } from "../terrain";
 import { ActionTracker } from "./action-tracker";
-import { Actions } from "./actions";
 
 export interface PieceCtor {
   new (): Piece
@@ -35,7 +34,6 @@ export abstract class Piece {
 
   // Per-turn data
   // This data is only cleared when a turn ends.
-  private actions = new Actions();
   private actionTracker = new ActionTracker(false);
   private lastPiece = false;
 
@@ -102,7 +100,6 @@ export abstract class Piece {
       throw new Error('The piece needs to be deselected before turn end.');
     }
     this.lastPiece = this.getPlayer().isLastPiece(this);
-    this.actions.clear();
     this.actionTracker = new ActionTracker(this.lastPiece);
     this.clearSelectionData();
     this.clearStagedAttackData();
