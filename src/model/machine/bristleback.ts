@@ -28,7 +28,7 @@ export class Bristleback extends RamPiece {
 
   override getAbilityDescription(): string {
     return 'All machines in attack range <debuff>lose 1 HP</debuff>, ' +
-        'friend or foe, during the start of every turn.';
+      'friend or foe, during the start of every turn.';
   }
 
   override takeStartOfTurnAction(): void {

@@ -13,7 +13,7 @@ export class GameService {
   private game: Game | null = null;
   private selectedCell: Cell | null = null;
   private selectedPiece: Piece | null = null;
-  
+
   private startTurnCallback = this.onStartTurn.bind(this);
 
   constructor(
@@ -49,11 +49,11 @@ export class GameService {
     this.exitStaging();
     this.selectedCell = null;
     this.selectedPiece = null;
-    
+
     // This part needs to happen after exiting staging in order for
     // a staged piece to be properly reset.
     this.getBoard().clearTurnData();
-    
+
     // TODO: Animate or indicate what happened at the start of the turn.
     // Allow pieces with start of turn actions to take action.
     for (let cell of this.getBoard().getCells().flat()) {

@@ -7,7 +7,7 @@ export class Position {
     this.col = col;
   }
 
-  equals(other: Position|null|undefined): boolean {
+  equals(other: Position | null | undefined): boolean {
     if (!other) {
       return false;
     }

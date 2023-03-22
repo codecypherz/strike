@@ -11,7 +11,7 @@ import { Terrain } from "../terrain";
 import { ActionTracker } from "./action-tracker";
 
 export interface PieceCtor {
-  new (): Piece
+  new(): Piece
 }
 
 /**
@@ -190,7 +190,7 @@ export abstract class Piece {
   isDead(): boolean {
     return this.health <= 0;
   }
-  
+
   setHealth(health: number): void {
     let newValue = Math.max(0, health); // no negative health allowed.
     this.isStagedAttack() ? this.stagedHealth = newValue : this.health = newValue;

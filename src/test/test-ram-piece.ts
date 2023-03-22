@@ -13,11 +13,11 @@ export class TestRamPiece extends RamPiece {
       3,   // attack range
       5,); // health
 
-      this.sideStrengths = new Map<number, Strength>([
-        [Direction.UP.degrees, Strength.NEUTRAL],
-        [Direction.RIGHT.degrees, Strength.NEUTRAL],
-        [Direction.LEFT.degrees, Strength.NEUTRAL],
-        [Direction.DOWN.degrees, Strength.NEUTRAL]
-      ]);
-    }
+    this.sideStrengths = new Map<number, Strength>([
+      [Direction.UP.degrees, Strength.NEUTRAL],
+      [Direction.RIGHT.degrees, Strength.NEUTRAL],
+      [Direction.LEFT.degrees, Strength.NEUTRAL],
+      [Direction.DOWN.degrees, Strength.NEUTRAL]
+    ]);
+  }
 }

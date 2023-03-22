@@ -5,7 +5,7 @@ import { Player } from "./player";
 import { Direction } from "./direction";
 
 export class Game extends EventTarget {
-  
+
   static START_TURN_EVENT = 'start_turn';
 
   private id = uuidv4();

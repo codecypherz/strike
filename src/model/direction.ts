@@ -5,7 +5,7 @@ export class Direction {
   static DOWN = new Direction(180);
   static LEFT = new Direction(270);
 
-  private constructor(readonly degrees: number) {}
+  private constructor(readonly degrees: number) { }
 
   static for(degrees: number): Direction {
     if (degrees == Direction.UP.degrees) {

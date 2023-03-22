@@ -23,7 +23,7 @@ export class Player {
     readonly isFirst: boolean,
     readonly name: string,
     readonly defaultDirection: Direction) {
-      this.active = isFirst;
+    this.active = isFirst;
   }
 
   isPlayer1(): boolean {

@@ -33,7 +33,7 @@ export class AttackCells {
   hasFinishingCell(): boolean {
     return this.finishingCell != null;
   }
-  
+
   getFinishingCell(): Cell | null {
     return this.finishingCell;
   }

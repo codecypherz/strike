@@ -59,7 +59,7 @@ export class GameCollection {
   createGame2(): Game {
     const board = this.boardCollection.createBoard2();
     const game = new Game(board);
-    
+
     this.addPiece(0, 4, game, Bristleback);
     this.addPiece(0, 1, game, Scrounger);
     this.addPiece(0, 6, game, Lancehorn);
@@ -71,7 +71,7 @@ export class GameCollection {
   createGame3(): Game {
     const board = this.boardCollection.createBoard3();
     const game = new Game(board);
-    
+
     this.addPiece(0, 4, game, Slitherfang);
     this.addPiece(1, 6, game, Burrower);
 
@@ -81,7 +81,7 @@ export class GameCollection {
   createGame4(): Game {
     const board = this.boardCollection.createBoard4();
     const game = new Game(board);
-    
+
     this.addPiece(1, 0, game, Lancehorn);
     this.addPiece(1, 3, game, Lancehorn);
     this.addPiece(1, 6, game, Widemaw);
@@ -94,7 +94,7 @@ export class GameCollection {
   createGame5(): Game {
     const board = this.boardCollection.createBoard5();
     const game = new Game(board);
-    
+
     this.addPiece(0, 2, game, Charger);
     this.addPiece(0, 4, game, Charger);
     this.addPiece(0, 6, game, Charger);
@@ -107,7 +107,7 @@ export class GameCollection {
   createGame6(): Game {
     const board = this.boardCollection.createBoard6();
     const game = new Game(board);
-    
+
     this.addPiece(0, 2, game, Bristleback);
     this.addPiece(0, 4, game, Glinthawk);
     this.addPiece(0, 3, game, Scrapper);
@@ -121,7 +121,7 @@ export class GameCollection {
   createGame7(): Game {
     const board = this.boardCollection.createBoard7();
     const game = new Game(board);
-    
+
     this.addPiece(0, 1, game, Scrapper);
     this.addPiece(0, 5, game, Charger);
     this.addPiece(0, 6, game, Scrapper);
@@ -134,7 +134,7 @@ export class GameCollection {
   createGame8(): Game {
     const board = this.boardCollection.createBoard8();
     const game = new Game(board);
-    
+
     this.addPiece(1, 3, game, Widemaw);
     this.addPiece(0, 6, game, Widemaw);
     this.addPiece(0, 1, game, Scrapper);

@@ -42,7 +42,7 @@ export class BaseTest {
   performMove(piece: Piece, row: number, col: number): boolean {
     return this.performMove_(piece, row, col, false);
   }
-  
+
   performMoveWithOvercharge(piece: Piece, row: number, col: number): void {
     this.performMove_(piece, row, col, true);
   }
@@ -80,7 +80,7 @@ export class BaseTest {
     piece.attack();
     piece.deselect();
   }
-  
+
   setHealth(piece: Piece, health: number): void {
     piece.clearStagedAttackData();
     piece.setHealth(health);
