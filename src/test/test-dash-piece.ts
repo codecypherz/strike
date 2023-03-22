@@ -10,7 +10,7 @@ export class TestDashPiece extends DashPiece {
       2,  // points
       3,  // movement
       1,  // attack
-      2,  // attack range
+      3,  // attack range
       5); // health
 
     this.sideStrengths = new Map<number, Strength>([

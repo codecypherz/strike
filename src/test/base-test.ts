@@ -50,11 +50,11 @@ export class BaseTest {
   private performMove_(piece: Piece, row: number, col: number, overcharge: boolean): boolean {
     piece.select();
     if (overcharge) {
-      expect(piece.canOvercharge()).toBe(true);
+      expect(piece.canOvercharge()).toBeTrue();
       piece.overcharge();
     }
     const sprinted = piece.moveOrSprintTo(this.board.getByRowCol(row, col));
-    expect(piece.hasConfirmableMove()).toBe(true);
+    expect(piece.hasConfirmableMove()).toBeTrue();
     piece.confirmMove();
     piece.deselect();
     return sprinted;
@@ -74,8 +74,8 @@ export class BaseTest {
       expect(piece.canOvercharge()).toBeTrue();
       piece.overcharge();
     }
-    expect(piece.canAttack()).toBe(true);
-    expect(piece.hasConfirmableAttack()).toBe(true);
+    expect(piece.canAttack()).toBeTrue();
+    expect(piece.hasConfirmableAttack()).toBeTrue();
     this.board.clearStagedAttackData();
     piece.attack();
     piece.deselect();

@@ -2,6 +2,7 @@ import { Position } from "../position";
 import { AttackCells } from "../attack-cells";
 import { Direction } from "../direction";
 import { Piece } from "./piece";
+import { Terrain } from "../terrain";
 
 
 export class DashPiece extends Piece {
@@ -33,9 +34,17 @@ export class DashPiece extends Piece {
       return attackCells;
     }
 
+    if (cell.terrain == Terrain.CHASM) {
+      // None of the found cells can be a chasm.
+      return attackCells;
+    }
+
     if (rangeRemaining == 1) {
       // This cell is the finishing cell.
-      attackCells.setFinishingCell(cell);
+      if (!cell.hasPiece()) {
+        // ... but you can't finish in an occupied cell.
+        attackCells.setFinishingCell(cell);
+      }
       return attackCells;
     }
 
@@ -97,14 +106,18 @@ export class DashPiece extends Piece {
         targetPiece.stagedKnockbackDirection = this.getDirection();
       }
 
-      // If not staged, finalize rotation of target and move to finishing cell.
+      // If not staged, finalize rotation of target.
       if (!this.isStagedAttack()) {
         // TODO: Give rotation indicator?
         targetPiece.rotate180();
-        const finishingCell = attackCells.getFinishingCell()!;
-        finishingCell.setPiece(this);
-        this.position = finishingCell.position;
       }
+    }
+
+    // If not staged, move to finishing cell.
+    if (!this.isStagedAttack()) {
+      const finishingCell = attackCells.getFinishingCell()!;
+      finishingCell.setPiece(this);
+      this.position = finishingCell.position;
     }
 
     this.confirmAttackIfNotStaged_();
