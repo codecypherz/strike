@@ -79,8 +79,7 @@ export class ActionTracker {
   }
 
   canRotate(): boolean {
-    return !this.stateMachine.phaseActions.hasAttacked()
-      || this.stateMachine.state instanceof OverchargeState;
+    return this.stateMachine.state.canRotate();
   }
 
   hasMovedOrSprinted(): boolean {
@@ -153,6 +152,7 @@ abstract class State {
 
   abstract canTransitionTo(stateName: StateName): boolean;
   abstract transitionTo(stateName: StateName): State;
+  abstract canRotate(): boolean;
 }
 
 /**
@@ -171,6 +171,10 @@ class StartState extends State {
       default:
         return false;
     }
+  }
+
+  canRotate(): boolean {
+    return true;
   }
 
   transitionTo(stateName: StateName): State {
@@ -244,6 +248,10 @@ class MoveState extends State {
     }
     return this.stateMachine.createState(stateName);
   }
+
+  canRotate(): boolean {
+    return true;
+  }
 }
 
 /**
@@ -315,6 +323,14 @@ class AttackState extends State {
     }
     return this.stateMachine.createState(stateName);
   }
+
+  canRotate(): boolean {
+    if (this.stateMachine.lastPiece) {
+      return this.stateMachine.phase == Phase.ONE;
+    } else {
+      return false;
+    }
+  }
 }
 
 /**
@@ -376,6 +392,14 @@ class SprintState extends State {
     }
     return this.stateMachine.createState(stateName);
   }
+
+  canRotate(): boolean {
+    if (this.stateMachine.lastPiece) {
+      return this.stateMachine.phase == Phase.ONE;
+    } else {
+      return false;
+    }
+  }
 }
 
 /**
@@ -435,5 +459,13 @@ class OverchargeState extends State {
       }
     }
     return this.stateMachine.createState(stateName);
+  }
+
+  canRotate(): boolean {
+    if (this.stateMachine.lastPiece) {
+      return this.stateMachine.phase == Phase.ONE;
+    } else {
+      return false;
+    }
   }
 }

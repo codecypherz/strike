@@ -685,7 +685,10 @@ export abstract class Piece {
 
   canRotate(): boolean {
     // You can't rotate at all if you don't have an attack or move available.
-    if (!this.canMove() && !this.canAttack() && !this.stagedOvercharge) {
+    if (!this.canMove()
+      && !this.canAttack()
+      && !this.canSprint()
+      && !this.stagedOvercharge) {
       return false;
     }
     if (!this.actionTracker.canRotate() && !this.stagedOvercharge) {
