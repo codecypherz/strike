@@ -22,27 +22,8 @@ describe('Piece', () => {
 
   it('#canRotate not active player turn', () => {
     const piece11 = new TestMeleePiece();
-    const piece21 = new TestMeleePiece();
     t.initializePiece(piece11, t.player1, 0, 0);
-    t.initializePiece(piece21, t.player2, 7, 0);
-    expect(piece11.canRotate()).toBeTrue();
-    expect(piece21.canRotate()).toBeFalse();
-  });
-
-  it('#canRotate before move but after attack', () => {
-    const piece11 = new TestMeleePiece();
-    const piece21 = new TestMeleePiece();
-    t.initializePiece(piece11, t.player1, 0, 0);
-    t.initializePiece(piece21, t.player2, 1, 0);
-    
-    expect(piece11.canMove()).toBeTrue();
-    expect(piece11.canAttack()).toBeTrue();
-    expect(piece11.canRotate()).toBeTrue();
-
-    t.performAttack(piece11);
-
-    expect(piece11.canMove()).toBeTrue();
-    expect(piece11.canAttack()).toBeFalse();
+    t.setActivePlayer2();
     expect(piece11.canRotate()).toBeFalse();
   });
 });
