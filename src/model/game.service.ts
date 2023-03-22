@@ -35,6 +35,10 @@ export class GameService {
     }
   }
 
+  isGameSet(): boolean {
+    return this.game != null;
+  }
+
   getGame(): Game {
     // Throws if game hasn't been set.
     return this.game!;

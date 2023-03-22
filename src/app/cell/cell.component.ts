@@ -14,7 +14,9 @@ export class CellComponent {
   constructor(private gameService: GameService) { }
 
   onCellClicked(): void {
-    this.gameService.onCellClicked(this.cell);
+    if (this.gameService.isGameSet()) {
+      this.gameService.onCellClicked(this.cell);
+    }
   }
 
   showAvailableMove(): boolean {
