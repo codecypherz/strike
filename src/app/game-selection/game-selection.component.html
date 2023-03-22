@@ -1,7 +1,8 @@
 <div class="game-selection">
-  <app-game-choice [game]="getGame1()"></app-game-choice>
-  <app-game-choice [game]="getGame2()"></app-game-choice>
-  <app-game-choice [game]="getGame3()"></app-game-choice>
+  <app-game-choice
+    *ngFor="let game of getPreMadeGames()"
+    [game]="game">
+  </app-game-choice>
 
   <div class="custom-game-choice">
     <div class="custom-board-outline"></div>

@@ -48,11 +48,10 @@ export class GameCollection {
     const board = this.boardCollection.createBoard1();
     const game = new Game(board);
 
-    this.addPiece(0, 1, game, Scrapper);
-    this.addPiece(0, 2, game, Burrower);
-    this.addPiece(0, 3, game, Charger);
-    this.addPiece(0, 4, game, Glinthawk);
-    this.addPiece(0, 5, game, Widemaw);
+    this.addPiece(1, 2, game, Scrapper);
+    this.addPiece(1, 3, game, Burrower);
+    this.addPiece(0, 4, game, Charger);
+    this.addPiece(1, 6, game, Glinthawk);
 
     return game;
   }
@@ -61,9 +60,10 @@ export class GameCollection {
     const board = this.boardCollection.createBoard2();
     const game = new Game(board);
     
-    this.addPiece(0, 3, game, Bristleback);
-    this.addPiece(0, 4, game, Scrounger);
-    this.addPiece(0, 5, game, Lancehorn);
+    this.addPiece(0, 4, game, Bristleback);
+    this.addPiece(0, 1, game, Scrounger);
+    this.addPiece(0, 6, game, Lancehorn);
+    this.addPiece(1, 3, game, Glinthawk);
 
     return game;
   }
@@ -74,6 +74,71 @@ export class GameCollection {
     
     this.addPiece(0, 4, game, Slitherfang);
     this.addPiece(1, 6, game, Burrower);
+
+    return game;
+  }
+
+  createGame4(): Game {
+    const board = this.boardCollection.createBoard4();
+    const game = new Game(board);
+    
+    this.addPiece(1, 0, game, Lancehorn);
+    this.addPiece(1, 3, game, Lancehorn);
+    this.addPiece(1, 6, game, Widemaw);
+    this.addPiece(1, 1, game, Scrapper);
+    this.addPiece(0, 6, game, Scrapper);
+
+    return game;
+  }
+
+  createGame5(): Game {
+    const board = this.boardCollection.createBoard5();
+    const game = new Game(board);
+    
+    this.addPiece(0, 2, game, Charger);
+    this.addPiece(0, 4, game, Charger);
+    this.addPiece(0, 6, game, Charger);
+    this.addPiece(1, 3, game, Burrower);
+    this.addPiece(1, 5, game, Burrower);
+
+    return game;
+  }
+
+  createGame6(): Game {
+    const board = this.boardCollection.createBoard6();
+    const game = new Game(board);
+    
+    this.addPiece(0, 2, game, Bristleback);
+    this.addPiece(0, 4, game, Glinthawk);
+    this.addPiece(0, 3, game, Scrapper);
+    this.addPiece(1, 4, game, Burrower);
+    this.addPiece(1, 6, game, Burrower);
+    this.addPiece(0, 7, game, Scrounger);
+
+    return game;
+  }
+
+  createGame7(): Game {
+    const board = this.boardCollection.createBoard7();
+    const game = new Game(board);
+    
+    this.addPiece(0, 1, game, Scrapper);
+    this.addPiece(0, 5, game, Charger);
+    this.addPiece(0, 6, game, Scrapper);
+    this.addPiece(1, 2, game, Lancehorn);
+    this.addPiece(1, 3, game, Burrower);
+
+    return game;
+  }
+
+  createGame8(): Game {
+    const board = this.boardCollection.createBoard8();
+    const game = new Game(board);
+    
+    this.addPiece(1, 3, game, Widemaw);
+    this.addPiece(0, 6, game, Widemaw);
+    this.addPiece(0, 1, game, Scrapper);
+    this.addPiece(1, 4, game, Lancehorn);
 
     return game;
   }

@@ -11,21 +11,16 @@ export class GameSelectionComponent {
 
   constructor(private gameCollection: GameCollection) {}
 
-  ngOnInit(): void {
-    this.getGame1();
-    this.getGame2();
-    this.getGame3();
-  }
-
-  getGame1(): Game {
-    return this.gameCollection.createGame1();
-  }
-
-  getGame2(): Game {
-    return this.gameCollection.createGame2();
-  }
-
-  getGame3(): Game {
-    return this.gameCollection.createGame3();
+  getPreMadeGames(): Array<Game> {
+    const games = new Array<Game>();
+    games.push(this.gameCollection.createGame1());
+    games.push(this.gameCollection.createGame2());
+    games.push(this.gameCollection.createGame3());
+    games.push(this.gameCollection.createGame4());
+    games.push(this.gameCollection.createGame5());
+    games.push(this.gameCollection.createGame6());
+    games.push(this.gameCollection.createGame7());
+    games.push(this.gameCollection.createGame8());
+    return games;
   }
 }
