@@ -17,9 +17,11 @@
   <app-piece [piece]="cell.getPiece()!"></app-piece>
 
   <!-- Render this as an overlay on the piece. -->
+  <!--
   <div *ngIf=cell.willBeAttacked class="cell-will-be-attacked">
     <img src="/images/icon/attack_icon_black.png">
   </div>
+  -->
   <div *ngIf=showAttackInRange() class="cell-in-attack-range">
     <img src="/images/icon/attack_icon_black.png">
   </div>

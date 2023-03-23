@@ -17,6 +17,14 @@ export class PieceComponent {
     return this.piece && this.piece.selected;
   }
 
+  isHealthDropping(): boolean {
+    return this.getHealthDropAmount() > 0;
+  }
+
+  getHealthDropAmount(): number {
+    return this.piece.getUnstagedHealth() - this.piece.getHealth();
+  }
+
   getPieceRotationTransform(): string {
     return 'rotate(' + this.piece.getDirection().degrees + 'deg)';
   }

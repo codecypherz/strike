@@ -38,15 +38,23 @@
     </div>
   </div>
 
+  <!-- Always show health -->
   <div class="piece-health">
-    <img src="/images/icon/black_heart.png">
+    <img src="/images/icon/heart_black.png">
     <div class="piece-health-number" [ngClass]="{
         'stat-buffed': piece.getHealth() > piece.getUnstagedHealth(),
         'stat-debuffed': piece.getHealth() < piece.getUnstagedHealth()}">
       {{piece.getHealth()}}
     </div>
   </div>
+  <div *ngIf="isHealthDropping()" class="piece-health-drop-indicator">
+    <img src="/images/icon/heart_red.png">
+    <div class="piece-health-drop-number">
+      -{{getHealthDropAmount()}}
+    </div>
+  </div>
 </div>
+
 <!-- These are the buttons that show up once the piece is selected. -->
 <div *ngIf="isPieceSelected()" class="piece-buttons">
   <button class="piece-button cancel-selection" (click)="cancel($event)">
@@ -54,20 +62,14 @@
       <img class="cancel-selection-image" src="/images/icon/cancel_black.png">
     </div>
   </button>
-  <button
-      class="piece-button confirm-move"
-      [ngClass]="{'is-confirmable': piece.hasConfirmableMove()}"
-      (click)="confirmMove($event)"
-      [disabled]="!piece.canMove()">
+  <button class="piece-button confirm-move" [ngClass]="{'is-confirmable': piece.hasConfirmableMove()}"
+    (click)="confirmMove($event)" [disabled]="!piece.canMove()">
     <div class="piece-button-img-container">
       <img class="confirm-move-image" src="/images/icon/move_icon_black.png">
     </div>
   </button>
-  <button
-      class="piece-button confirm-attack"
-      [ngClass]="{'is-confirmable': piece.hasConfirmableAttack()}"
-      (click)="confirmAttack($event)"
-      [disabled]="!piece.canAttack()">
+  <button class="piece-button confirm-attack" [ngClass]="{'is-confirmable': piece.hasConfirmableAttack()}"
+    (click)="confirmAttack($event)" [disabled]="!piece.canAttack()">
     <div class="piece-button-img-container">
       <img class="confirm-attack-image" src="/images/icon/attack_icon_black.png">
     </div>
