@@ -2,7 +2,7 @@ import { BaseTest } from "src/test/base-test";
 import { TestMeleePiece } from "src/test/test-melee-piece";
 import { Piece } from "./piece";
 
-describe('Overcharge: Normal', () => {
+describe('Piece Actions (Normal)', () => {
   let t: BaseTest;
 
   beforeEach(() => {

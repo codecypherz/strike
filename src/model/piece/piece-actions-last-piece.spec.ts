@@ -2,7 +2,7 @@ import { BaseTest } from "src/test/base-test";
 import { TestMeleePiece } from "src/test/test-melee-piece";
 import { Piece } from "./piece";
 
-describe('Overcharge: Last Piece', () => {
+describe('Piece Actions (Last Piece)', () => {
   let t: BaseTest;
   let piece1: TestMeleePiece;
   let piece21: TestMeleePiece;
