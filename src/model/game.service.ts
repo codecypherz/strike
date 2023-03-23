@@ -235,6 +235,9 @@ export class GameService {
       const moveCells = this.selectedPiece.getMoveCells();
       for (let cell of moveCells.getMoveableCells()) {
         cell.availableMove = true;
+        if (this.selectedPiece.position.equals(cell.position)) {
+          cell.availableMoveStarting = true;
+        }
       }
       for (let cell of moveCells.getSprintableCells()) {
         cell.availableSprint = true;

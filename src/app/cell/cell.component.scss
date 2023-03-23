@@ -63,6 +63,7 @@
 }
 
 .cell-available-move,
+.cell-available-move-starting,
 .cell-available-sprint,
 .cell-where-attack-will-end {
   border: solid white 3px;
@@ -92,6 +93,7 @@
   width: 30px;
 }
 
+.cell-available-move-starting,
 .cell-available-sprint {
   width: 50px;
   height: 50px;

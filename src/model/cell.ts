@@ -15,6 +15,7 @@ export class Cell {
 
   // Temporary indicators
   availableMove = false;
+  availableMoveStarting = false;
   availableSprint = false;
   willBeAttacked = false;
   inAttackRange = false;
@@ -26,6 +27,7 @@ export class Cell {
 
   clearIndicators() {
     this.availableMove = false;
+    this.availableMoveStarting = false;
     this.availableSprint = false;
     this.willBeAttacked = false;
     this.inAttackRange = false;

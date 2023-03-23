@@ -20,14 +20,24 @@ export class CellComponent {
   }
 
   showAvailableMove(): boolean {
-    return this.cell.availableMove && !this.cell.whereAttackWillEnd;
+    return this.cell.availableMove
+      && !this.cell.availableMoveStarting
+      && !this.cell.whereAttackWillEnd;
+  }
+
+  showAvailableMoveStarting(): boolean {
+    return this.cell.availableMoveStarting;
   }
 
   showAvailableSprint(): boolean {
-    return this.cell.availableSprint && !this.cell.whereAttackWillEnd;
+    return this.cell.availableSprint
+      && !this.cell.availableMoveStarting
+      && !this.cell.whereAttackWillEnd;
   }
 
   showAttackInRange(): boolean {
-    return this.cell.inAttackRange && !this.cell.whereAttackWillEnd;
+    return this.cell.inAttackRange
+      && !this.cell.availableMoveStarting
+      && !this.cell.whereAttackWillEnd;
   }
 }
