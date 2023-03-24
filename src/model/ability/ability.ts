@@ -16,4 +16,8 @@ export abstract class Ability {
   takeStartOfTurnAction(): void {
     // Do nothing by default.
   }
+
+  takeEndOfAttackAction(attackedPieces: Piece[]): void {
+    // Do nothing by default.
+  }
 }

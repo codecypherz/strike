@@ -57,4 +57,52 @@ export class Cell {
   clearPiece(): void {
     this.setPiece(null);
   }
+
+  raiseTerrain(): void {
+    switch (this.terrain) {
+      case Terrain.CHASM:
+        this.terrain = Terrain.MARSH;
+        return;
+      case Terrain.MARSH:
+        this.terrain = Terrain.GRASSLAND;
+        return;
+      case Terrain.GRASSLAND:
+        this.terrain = Terrain.FOREST;
+        return;
+      case Terrain.FOREST:
+        this.terrain = Terrain.HILL;
+        return;
+      case Terrain.HILL:
+        this.terrain = Terrain.MOUNTAIN;
+        return;
+      case Terrain.MOUNTAIN:
+        // Nothing higher
+      default:
+        return;
+    }
+  }
+
+  lowerTerrain(): void {
+    switch (this.terrain) {
+      case Terrain.MOUNTAIN:
+        this.terrain = Terrain.HILL;
+        return;
+      case Terrain.HILL:
+        this.terrain = Terrain.FOREST;
+        return;
+      case Terrain.FOREST:
+        this.terrain = Terrain.GRASSLAND;
+        return;
+      case Terrain.GRASSLAND:
+        this.terrain = Terrain.MARSH;
+        return;
+      case Terrain.MARSH:
+        this.terrain = Terrain.CHASM;
+        return;
+      case Terrain.CHASM:
+        // Nothing lower
+      default:
+        return;
+    }
+  }
 }

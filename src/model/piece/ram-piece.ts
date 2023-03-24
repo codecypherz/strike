@@ -57,6 +57,7 @@ export class RamPiece extends Piece {
       this.position = oldTargetPieceCell.position;
     }
 
+    this.takeEndOfAttackAction_([targetPiece]);
     this.confirmAttackIfNotStaged_();
     return attackCells;
   }

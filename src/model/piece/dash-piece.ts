@@ -83,6 +83,7 @@ export class DashPiece extends Piece {
     this.confirmMovementIfNotStaged_();
 
     // Perform the attack.
+    const piecesAttacked = new Array<Piece>();
     for (let cellToAttack of attackCells.toAttack) {
       if (!cellToAttack.hasPiece()) {
         throw new Error('Cell to attack did not have a piece.');
@@ -111,6 +112,8 @@ export class DashPiece extends Piece {
         // TODO: Give rotation indicator?
         targetPiece.rotate180();
       }
+
+      piecesAttacked.push(targetPiece);
     }
 
     // If not staged, move to finishing cell.
@@ -120,6 +123,7 @@ export class DashPiece extends Piece {
       this.position = finishingCell.position;
     }
 
+    this.takeEndOfAttackAction_(piecesAttacked);
     this.confirmAttackIfNotStaged_();
     return attackCells;
   }

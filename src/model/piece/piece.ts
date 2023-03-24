@@ -577,6 +577,7 @@ export abstract class Piece {
       }
     }
 
+    this.takeEndOfAttackAction_([targetPiece]);
     this.confirmAttackIfNotStaged_();
     return attackCells;
   }
@@ -603,6 +604,12 @@ export abstract class Piece {
 
   armorBreakKnocksBack_(): boolean {
     return true;
+  }
+
+  takeEndOfAttackAction_(piecesAttacked: Piece[]): void {
+    if (this.ability) {
+      this.ability.takeEndOfAttackAction(piecesAttacked);
+    }
   }
 
   confirmMovementIfNotStaged_(): void {

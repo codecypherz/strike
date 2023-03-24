@@ -1,3 +1,4 @@
+import { AlterTerrain } from "../ability/alter-terrain";
 import { DashPiece } from "../piece/dash-piece";
 import { Piece } from "../piece/piece";
 
@@ -20,5 +21,7 @@ export class Slitherfang extends DashPiece {
       Slitherfang.ATTACK,
       Slitherfang.ATTACK_RANGE,
       Slitherfang.MAX_HEALTH);
+    
+    this.setAbility(new AlterTerrain(this));
   }
 }
