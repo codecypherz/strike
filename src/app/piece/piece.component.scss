@@ -186,6 +186,27 @@
   color: var(--debuffed_color);
 }
 
+.piece-points-indicator {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  background: rgba(0, 0, 0, 80%);
+  border-radius: 10px;
+}
+
+.piece-points-indicator>img {
+  width: 20px;
+  vertical-align: middle;
+}
+
+.piece-points-number {
+  display: inline-block;
+  vertical-align: middle;
+  margin-top: -2px;
+}
+
 // =============================================
 // Piece Attack
 // =============================================
@@ -342,7 +363,7 @@
 .cancel-selection {
   left: 50%;
   transform: translateX(-50%);
-  top: -45px;
+  top: -40px;
 }
 
 .cancel-selection-image {
@@ -350,8 +371,8 @@
 }
 
 .confirm-move {
-  left: -45px;
-  top: -45px;
+  left: -40px;
+  top: -40px;
 }
 
 .confirm-move-image {
@@ -359,8 +380,8 @@
 }
 
 .confirm-attack {
-  right: -45px;
-  top: -45px;
+  right: -40px;
+  top: -40px;
 }
 
 .confirm-attack-image {
@@ -370,7 +391,7 @@
 .overcharge {
   left: 50%;
   transform: translateX(-50%);
-  bottom: -45px;
+  bottom: -40px;
 }
 
 .overcharge-image {
@@ -378,13 +399,13 @@
 }
 
 .rotate-cw {
-  left: -45px;
-  bottom: -45px;
+  left: -40px;
+  bottom: -40px;
 }
 
 .rotate-ccw {
-  right: -45px;
-  bottom: -45px;
+  right: -40px;
+  bottom: -40px;
 }
 
 .rotate-cw-image,

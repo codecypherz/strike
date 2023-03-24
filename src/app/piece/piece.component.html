@@ -47,10 +47,21 @@
       {{piece.getHealth()}}
     </div>
   </div>
-  <div *ngIf="isHealthDropping()" class="piece-health-drop-indicator">
+
+  <!-- Conditional overlays based on attack outcomes. -->
+  <div *ngIf="showHealthDrop()" class="piece-health-drop-indicator">
     <img src="/images/icon/heart_red.png">
     <div class="piece-health-drop-number">
       -{{getHealthDropAmount()}}
+    </div>
+  </div>
+  <div *ngIf="showPointsAwarded()" class="piece-points-indicator">
+    <img src="/images/icon/victory_points.png">
+    <div class="piece-points-number" [ngClass]="{
+      'stat-debuffed' : piece.getPlayer().isActive(),
+      'stat-buffed' : !piece.getPlayer().isActive()
+      }">
+      {{getPointsAwarded()}}
     </div>
   </div>
 </div>

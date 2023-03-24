@@ -17,12 +17,25 @@ export class PieceComponent {
     return this.piece && this.piece.selected;
   }
 
-  isHealthDropping(): boolean {
-    return this.getHealthDropAmount() > 0;
+  showHealthDrop(): boolean {
+    // Show if the piece is hurt, but let points override.
+    return this.getHealthDropAmount() > 0 && !this.showPointsAwarded();
   }
 
   getHealthDropAmount(): number {
     return this.piece.getUnstagedHealth() - this.piece.getHealth();
+  }
+
+  showPointsAwarded(): boolean {
+    return this.piece.getHealth() <= 0;
+  }
+
+  getPointsAwarded(): string {
+    if (this.piece.getPlayer().isActive()) {
+      return '-' + this.piece.points;
+    } else {
+      return '+' + this.piece.points;
+    }
   }
 
   getPieceRotationTransform(): string {
