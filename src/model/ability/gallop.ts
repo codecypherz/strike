@@ -9,7 +9,7 @@ export class Gallop extends Ability {
   }
 
   getAbilityDescription(): string {
-    return 'Attack increased by <buff>+1</buff> when attacking from a Grassland tile.';
+    return 'When attacking from Grassland terrain, gain <buff>+1</buff> Combat Power.';
   }
 
   override modifyAttackPower(attackPower: number, cell: Cell): number {

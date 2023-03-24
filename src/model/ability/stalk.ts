@@ -2,18 +2,18 @@ import { Cell } from "../cell";
 import { Terrain } from "../terrain";
 import { Ability } from "./ability";
 
-export class Climb extends Ability {
+export class Stalk extends Ability {
 
   getAbilityName(): string {
-    return 'Climb';
+    return 'Stalk';
   }
 
   getAbilityDescription(): string {
-    return 'When attacking from Hill terrain, gain <buff>+1</buff> Combat Power.';
+    return 'When attacking from Forest terrain, gain <buff>+1</buff> Combat Power.';
   }
 
   override modifyAttackPower(attackPower: number, cell: Cell): number {
-    if (cell.terrain == Terrain.HILL) {
+    if (cell.terrain == Terrain.FOREST) {
       return attackPower + 1;
     }
     return attackPower;

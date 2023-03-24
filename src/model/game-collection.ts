@@ -7,6 +7,7 @@ import { Bellowback } from "./machine/bellowback";
 import { Bristleback } from "./machine/bristleback";
 import { Burrower } from "./machine/burrower";
 import { Charger } from "./machine/charger";
+import { Clamberjaw } from "./machine/clamberjaw";
 import { Glinthawk } from "./machine/glinthawk";
 import { Lancehorn } from "./machine/lancehorn";
 import { Scrapper } from "./machine/scrapper";
@@ -85,7 +86,7 @@ export class GameCollection {
     const game = new Game(board);
 
     this.addPiece(1, 0, game, Lancehorn);
-    this.addPiece(1, 3, game, Lancehorn);
+    this.addPiece(1, 3, game, Clamberjaw);
     this.addPiece(1, 6, game, Widemaw);
     this.addPiece(0, 2, game, Bellowback);
 
