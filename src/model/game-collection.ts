@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { BoardCollection } from "./board-collection";
 import { Game } from "./game";
 import { Behemoth } from "./machine/behemoth";
+import { Bellowback } from "./machine/bellowback";
 import { Bristleback } from "./machine/bristleback";
 import { Burrower } from "./machine/burrower";
 import { Charger } from "./machine/charger";
@@ -86,8 +87,7 @@ export class GameCollection {
     this.addPiece(1, 0, game, Lancehorn);
     this.addPiece(1, 3, game, Lancehorn);
     this.addPiece(1, 6, game, Widemaw);
-    this.addPiece(1, 1, game, Scrapper);
-    this.addPiece(0, 6, game, Scrapper);
+    this.addPiece(0, 2, game, Bellowback);
 
     return game;
   }
