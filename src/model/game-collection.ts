@@ -13,6 +13,7 @@ import { Lancehorn } from "./machine/lancehorn";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { Slitherfang } from "./machine/slitherfang";
+import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
 import { Player } from "./player";
@@ -99,7 +100,7 @@ export class GameCollection {
 
     this.addPiece(0, 4, game, Behemoth);
     this.addPiece(0, 6, game, Charger);
-    this.addPiece(1, 3, game, Burrower);
+    this.addPiece(1, 3, game, TrackerBurrower);
 
     return game;
   }
