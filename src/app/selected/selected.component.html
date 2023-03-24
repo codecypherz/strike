@@ -17,6 +17,12 @@
       <div class="selected-piece-name">
         {{getPiece().name}}
       </div>
+      <div class="selected-piece-points">
+        <img class="selected-piece-points-bg" src="/images/icon/victory_points.png">
+        <div class="selected-piece-points-value">
+          {{getPiece().points}}
+        </div>
+      </div>
       <div class="selected-piece-type">
         <b>TYPE: </b>{{getPiece().getPieceType()}}
       </div>
@@ -24,9 +30,6 @@
       </div>
       <div class="selected-piece-image-container">
         <img class="selected-piece-image" src="{{getPiece().imageUrl}}">
-        <div class="selected-piece-points">
-          VP: {{getPiece().points}}
-        </div>
       </div>
       <div class="selected-piece-stats">
         <div class="selected-piece-stat">

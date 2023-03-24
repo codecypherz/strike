@@ -63,11 +63,19 @@
   margin-top: 5px;
 }
 
-.selected-piece-points {
-  font-size: 30px;
+.selected-piece-points-bg,
+.selected-piece-points-value {
   position: absolute;
+  top: 9px;
   right: 20px;
-  top: 10px;
+  width: 40px;
+}
+
+.selected-piece-points-value {
+  font-size: 24px;
+  top: 7px;
+  color: black;
+  text-align: center;
 }
 
 .selected-terrain-image,
