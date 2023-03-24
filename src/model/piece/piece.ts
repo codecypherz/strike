@@ -1,4 +1,5 @@
 import { getOnly } from "src/util/sets";
+import { Ability } from "../ability/ability";
 import { AttackCells } from "../attack-cells";
 import { Board } from "../board";
 import { Cell } from "../cell";
@@ -31,6 +32,7 @@ export abstract class Piece {
     [Direction.LEFT.degrees, Strength.NEUTRAL],
     [Direction.DOWN.degrees, Strength.WEAK]
   ]);
+  private ability: Ability | null = null;
 
   // Per-turn data
   // This data is only cleared when a turn ends.
@@ -88,6 +90,31 @@ export abstract class Piece {
 
   getPlayer(): Player {
     return this.player!;
+  }
+
+  setAbility(ability: Ability): void {
+    if (this.ability) {
+      throw new Error('Attempting to override piece ability.');
+    }
+    this.ability = ability;
+  }
+
+  takeStartOfTurnAction(): void {
+    if (this.ability) {
+      this.ability.takeStartOfTurnAction();
+    }
+  }
+
+  hasAbility(): boolean {
+    return this.ability != null;
+  }
+
+  getAbilityName(): string {
+    return this.ability ? this.ability.getAbilityName() : '';
+  }
+
+  getAbilityDescription(): string {
+    return this.ability ? this.ability.getAbilityDescription() : '';
   }
 
   /**
@@ -167,18 +194,6 @@ export abstract class Piece {
     return this.lastPiece;
   }
 
-  takeStartOfTurnAction(): void {
-    // Do nothing by default.
-  }
-
-  hasAbility(): boolean {
-    return false;
-  }
-
-  getAbilityDescription(): string {
-    return '';
-  }
-
   getHealth(): number {
     return this.isStagedAttack() ? this.stagedHealth! : this.health;
   }
@@ -236,7 +251,11 @@ export abstract class Piece {
   }
 
   getAttackPower(cell: Cell): number {
-    return this.attackPower + cell.terrain.elevation;
+    const normalAttackPower = this.attackPower + cell.terrain.elevation;
+    if (this.ability) {
+      return this.ability.modifyAttackPower(normalAttackPower, cell);
+    }
+    return normalAttackPower;
   }
 
   getDefense(cell: Cell): number {

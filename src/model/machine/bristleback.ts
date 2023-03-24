@@ -1,3 +1,4 @@
+import { Spray } from "../ability/spray";
 import { Piece } from "../piece/piece";
 import { RamPiece } from "../piece/ram-piece";
 
@@ -20,25 +21,7 @@ export class Bristleback extends RamPiece {
       Bristleback.ATTACK,
       Bristleback.ATTACK_RANGE,
       Bristleback.MAX_HEALTH);
-  }
 
-  override hasAbility(): boolean {
-    return true;
-  }
-
-  override getAbilityDescription(): string {
-    return 'All machines in attack range <debuff>lose 1 HP</debuff>, ' +
-      'friend or foe, during the start of every turn.';
-  }
-
-  override takeStartOfTurnAction(): void {
-    if (this.getPlayer().isActive()) {
-      for (let cell of this.getBoard().getSurroundingCells(this.getPosition())) {
-        if (cell.hasPiece()) {
-          const piece = cell.getPiece()!;
-          piece.takeDamage_(1);
-        }
-      }
-    }
+    this.setAbility(new Spray(this));
   }
 }

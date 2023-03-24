@@ -1,7 +1,6 @@
-import { Cell } from "../cell";
+import { Gallop } from "../ability/gallop";
 import { DashPiece } from "../piece/dash-piece";
 import { Piece } from "../piece/piece";
-import { Terrain } from "../terrain";
 
 export class Charger extends DashPiece {
 
@@ -22,21 +21,7 @@ export class Charger extends DashPiece {
       Charger.ATTACK,
       Charger.ATTACK_RANGE,
       Charger.MAX_HEALTH);
-  }
-
-  override hasAbility(): boolean {
-    return true;
-  }
-
-  override getAbilityDescription(): string {
-    return 'Attack increased by <buff>+1</buff> when attacking from a Grassland tile.';
-  }
-
-  override getAttackPower(cell: Cell): number {
-    const attackPower = super.getAttackPower(cell);
-    if (cell.terrain == Terrain.GRASSLAND) {
-      return attackPower + 1;
-    }
-    return attackPower;
+    
+    this.setAbility(new Gallop(this));
   }
 }
