@@ -1,4 +1,3 @@
-import { Stalk } from "../ability/stalk";
 import { MeleePiece } from "../piece/melee-piece";
 import { Piece } from "../piece/piece";
 
@@ -21,7 +20,5 @@ export class Clawstrider extends MeleePiece {
       Clawstrider.ATTACK,
       Clawstrider.ATTACK_RANGE,
       Clawstrider.MAX_HEALTH);
-
-    this.setAbility(new Stalk(this));
   }
 }
