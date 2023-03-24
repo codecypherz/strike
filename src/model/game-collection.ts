@@ -2,6 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { BoardCollection } from "./board-collection";
 import { Game } from "./game";
+import { Behemoth } from "./machine/behemoth";
 import { Bristleback } from "./machine/bristleback";
 import { Burrower } from "./machine/burrower";
 import { Charger } from "./machine/charger";
@@ -95,11 +96,9 @@ export class GameCollection {
     const board = this.boardCollection.createBoard5();
     const game = new Game(board);
 
-    this.addPiece(0, 2, game, Charger);
-    this.addPiece(0, 4, game, Charger);
+    this.addPiece(0, 4, game, Behemoth);
     this.addPiece(0, 6, game, Charger);
     this.addPiece(1, 3, game, Burrower);
-    this.addPiece(1, 5, game, Burrower);
 
     return game;
   }

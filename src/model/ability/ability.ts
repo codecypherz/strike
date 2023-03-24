@@ -13,6 +13,11 @@ export abstract class Ability {
     return attackPower;
   }
 
+  modifyDefense(defense: number, cell: Cell): number {
+    // Defense is not modified by default.
+    return defense;
+  }
+
   takeStartOfTurnAction(): void {
     // Do nothing by default.
   }

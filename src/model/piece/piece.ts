@@ -259,7 +259,11 @@ export abstract class Piece {
   }
 
   getDefense(cell: Cell): number {
-    return cell.terrain.elevation;
+    const normalDefense = cell.terrain.elevation;
+    if (this.ability) {
+      return this.ability.modifyDefense(normalDefense, cell);
+    }
+    return normalDefense;
   }
 
   getFrontStrength(): Strength {
