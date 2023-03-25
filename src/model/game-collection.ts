@@ -36,6 +36,7 @@ import { Snapmaw } from "./machine/snapmaw";
 import { Spikesnout } from "./machine/spikesnout";
 import { Stalker } from "./machine/stalker";
 import { Stormbird } from "./machine/stormbird";
+import { Sunwing } from "./machine/sunwing";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
@@ -131,6 +132,7 @@ export class GameCollection {
     this.addPiece(0, 6, game, Rollerback);
     this.addPiece(1, 3, game, TrackerBurrower);
     this.addPiece(1, 5, game, Rockbreaker);
+    this.addPiece(1, 7, game, Sunwing);
 
     return game;
   }
