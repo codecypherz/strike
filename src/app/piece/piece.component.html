@@ -73,16 +73,24 @@
       <img class="cancel-selection-image" src="/images/icon/cancel_black.png">
     </div>
   </button>
-  <button class="piece-button confirm-move" [ngClass]="{'is-confirmable': piece.hasConfirmableMove()}"
-    (click)="confirmMove($event)" [disabled]="!piece.canMove()">
+  <button
+    class="piece-button confirm-move"
+    [ngClass]="{'is-confirmable': piece.hasConfirmableMove()}"
+    (click)="confirmMove($event)"
+    [disabled]="!piece.canMove()">
     <div class="piece-button-img-container">
       <img class="confirm-move-image" src="/images/icon/move_icon_black.png">
+      <!--<img class="confirm-image" *ngIf="piece.hasConfirmableMove()" src="/images/icon/confirm_icon.png">-->
     </div>
   </button>
-  <button class="piece-button confirm-attack" [ngClass]="{'is-confirmable': piece.hasConfirmableAttack()}"
-    (click)="confirmAttack($event)" [disabled]="!piece.canAttack()">
+  <button
+    class="piece-button confirm-attack"
+    [ngClass]="{'is-confirmable': piece.hasConfirmableAttack()}"
+    (click)="confirmAttack($event)"
+    [disabled]="!piece.canAttack()">
     <div class="piece-button-img-container">
       <img class="confirm-attack-image" src="/images/icon/attack_icon_black.png">
+      <!--<img class="confirm-image" *ngIf="piece.hasConfirmableAttack()" src="/images/icon/confirm_icon.png">-->
     </div>
   </button>
   <button class="piece-button rotate-cw" (click)="rotateClockwise($event)" [disabled]="!piece.canRotate()">
