@@ -1,10 +1,6 @@
-import { Climb } from "../ability/climb";
 import { Empower } from "../ability/empower";
-import { Direction } from "../direction";
 import { MeleePiece } from "../piece/melee-piece";
 import { Piece } from "../piece/piece";
-import { RamPiece } from "../piece/ram-piece";
-import { Strength } from "../strength";
 
 export class Leaplasher extends MeleePiece {
 

@@ -21,7 +21,6 @@ export class Empower extends Ability {
         const piece = cell.getPiece()!;
         // Don't buff yourself or your enemies.
         if (piece != this.piece && piece.getPlayer().equals(this.piece.getPlayer())) {
-          console.info('Buffing ', piece, ' by 1');
           piece.buffAttack(1);
         }
       }
