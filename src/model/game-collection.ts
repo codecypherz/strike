@@ -34,6 +34,7 @@ import { Slaughterspine } from "./machine/slaughterspine";
 import { Slitherfang } from "./machine/slitherfang";
 import { Snapmaw } from "./machine/snapmaw";
 import { Spikesnout } from "./machine/spikesnout";
+import { Stalker } from "./machine/stalker";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
@@ -77,6 +78,7 @@ export class GameCollection {
     this.addPiece(1, 3, game, Burrower);
     this.addPiece(0, 4, game, Spikesnout);
     this.addPiece(1, 6, game, Snapmaw);
+    this.addPiece(0, 2, game, Stalker);
 
     return game;
   }
