@@ -28,6 +28,7 @@ import { Scorcher } from "./machine/scorcher";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { ShellWalker } from "./machine/shell-walker";
+import { Shellsnapper } from "./machine/shellsnapper";
 import { Slitherfang } from "./machine/slitherfang";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
@@ -95,6 +96,7 @@ export class GameCollection {
     this.addPiece(0, 4, game, Slitherfang);
     this.addPiece(1, 6, game, Scorcher);
     this.addPiece(0, 2, game, ShellWalker);
+    this.addPiece(1, 3, game, Shellsnapper);
 
     return game;
   }
