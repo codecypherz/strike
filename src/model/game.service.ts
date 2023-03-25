@@ -73,7 +73,7 @@ export class GameService {
     // Clear turn data again in case a piece died.
     // This is because clearTurnData is based on assigning values
     // for isLastPiece
-    this.getBoard().clearTurnData();
+    this.getBoard().setLastPieceData();
 
     // Now show selected actions to effectively clear things,
     // but nothing should be shown since nothing is selected.

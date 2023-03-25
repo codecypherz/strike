@@ -23,9 +23,9 @@ export class PullPiece extends Piece {
 
   override getAttackPower(cell: Cell): number {
     if (cell.terrain == Terrain.MARSH) {
-      return this.attackPower + 1;
+      return this.attackPower + 1 + this.getAttackBuff();
     }
-    return this.attackPower + cell.terrain.elevation;
+    return this.attackPower + cell.terrain.elevation + this.getAttackBuff();
   }
 
   override getDefense(cell: Cell): number {

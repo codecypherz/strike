@@ -26,7 +26,7 @@ export class SwoopPiece extends Piece {
 
   override getAttackPower(cell: Cell): number {
     // Swoop type gain +1 power no matter the terrain.
-    return this.attackPower + 1;
+    return this.attackPower + 1 + this.getAttackBuff();
   }
 
   override getDefense(cell: Cell): number {

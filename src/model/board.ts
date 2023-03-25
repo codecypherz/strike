@@ -84,6 +84,15 @@ export class Board {
     }
   }
 
+  setLastPieceData(): void {
+    for (let cell of this.getCells().flat()) {
+      cell.selected = false;
+      if (cell.hasPiece()) {
+        cell.getPiece()!.setLastPieceData();
+      }
+    }
+  }
+
   setAllTerrain(terrain: Terrain) {
     for (let cell of this.getCells().flat()) {
       cell.terrain = terrain;

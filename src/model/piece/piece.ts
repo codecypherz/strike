@@ -39,6 +39,7 @@ export abstract class Piece {
   // This data is only cleared when a turn ends.
   private actionTracker = new ActionTracker(false);
   private lastPiece = false;
+  private attackBuff = 0;
 
   // Selected metadata
   // This data is cleared if selection changes and when a turn ends.
@@ -121,16 +122,21 @@ export abstract class Piece {
   /**
    * Resets all piece data.
    */
-  clearTurnData() {
+  clearTurnData(): void {
     if (this.selected) {
       // The caller needs to handle deselection in order to ensure a
       // staged piece is properly reset.
       throw new Error('The piece needs to be deselected before turn end.');
     }
-    this.lastPiece = this.getPlayer().isLastPiece(this);
+    this.attackBuff = 0;
+    this.setLastPieceData();
     this.actionTracker = new ActionTracker(this.lastPiece);
     this.clearSelectionData();
     this.clearStagedAttackData();
+  }
+
+  setLastPieceData(): void {
+    this.lastPiece = this.getPlayer().isLastPiece(this);
   }
 
   clearStagedAttackData(): void {
@@ -251,8 +257,16 @@ export abstract class Piece {
     return this.stagedPullDirection;
   }
 
+  buffAttack(amount: number): void {
+    this.attackBuff += amount;
+  }
+
+  getAttackBuff(): number {
+    return this.attackBuff;
+  }
+
   getAttackPower(cell: Cell): number {
-    const normalAttackPower = this.attackPower + cell.terrain.elevation;
+    const normalAttackPower = this.attackPower + cell.terrain.elevation + this.attackBuff;
     if (this.ability) {
       return this.ability.modifyAttackPower(normalAttackPower, cell);
     }
