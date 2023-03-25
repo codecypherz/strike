@@ -1,6 +1,7 @@
 import { Cell } from "../cell";
 import { AttackResults } from "../piece/attack-results";
 import { Piece } from "../piece/piece";
+import { Position } from "../position";
 
 export abstract class Ability {
 
@@ -35,5 +36,26 @@ export abstract class Ability {
    */
   takeActionAfterBeingAttacked(attackingPiece: Piece): void {
     // Do nothing by default.
+  }
+
+  getCellsInRange_(pos: Position, rangeRemaining: number): Set<Cell> {
+    const board = this.piece.getBoard();
+    const cells = new Set<Cell>();
+    
+    // Base case
+    if (rangeRemaining == 0) {
+      return cells;
+    }
+
+    // Add the surrounding cells.
+    for (let cell of board.getSurroundingCells(pos)) {
+      cells.add(cell);
+
+      // Recurse with reduced ranged.
+      const moreCells = this.getCellsInRange_(cell.position, rangeRemaining - 1);
+      moreCells.forEach(cells.add, cells);
+    }
+    
+    return cells;
   }
 }

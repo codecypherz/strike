@@ -1,30 +1,27 @@
-import { Board } from "../board";
-import { Cell } from "../cell";
-import { Position } from "../position";
 import { Ability } from "./ability";
 
-export class Spray extends Ability {
+export class Whiplash extends Ability {
 
   getAbilityName(): string {
-    return 'Spray';
+    return 'Whiplash';
   }
 
   getAbilityDescription(): string {
-    return 'All machines in attack range <debuff>lose 1 HP</debuff>, ' +
-      'friend or foe, during the start of every turn.';
+    return 'At the start of each turn, all pieces within Attack Range ' +
+      'rotate 180 degrees.';
   }
 
   override takeStartOfTurnAction(): void {
     // Get all cells in attack range.
     const sprayCells = this.getCellsInRange_(this.piece.position, this.piece.attackRange);
 
-    // Damage every piece you find.
+    // Rotate every piece you find.
     for (let cell of sprayCells) {
       if (cell.hasPiece()) {
         const piece = cell.getPiece()!;
-        // Make sure you don't hurt yourself.
+        // Make sure you don't rotate yourself.
         if (piece != this.piece) {
-          piece.takeDamage_(1);
+          piece.rotate180();
         }
       }
     }

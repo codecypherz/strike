@@ -9,6 +9,7 @@ import { Bristleback } from "./machine/bristleback";
 import { Burrower } from "./machine/burrower";
 import { Charger } from "./machine/charger";
 import { Clamberjaw } from "./machine/clamberjaw";
+import { Dreadwing } from "./machine/dreadwing";
 import { ElementalClawstrider } from "./machine/elemental-clawstrider";
 import { Glinthawk } from "./machine/glinthawk";
 import { Lancehorn } from "./machine/lancehorn";
@@ -116,7 +117,6 @@ export class GameCollection {
     this.addPiece(0, 3, game, Scrapper);
     this.addPiece(1, 4, game, ApexClawstrider);
     this.addPiece(1, 6, game, Burrower);
-    this.addPiece(0, 7, game, Scrounger);
 
     return game;
   }
@@ -139,8 +139,8 @@ export class GameCollection {
     const game = new Game(board);
 
     this.addPiece(1, 3, game, Widemaw);
-    this.addPiece(0, 6, game, Widemaw);
-    this.addPiece(0, 1, game, Scrapper);
+    this.addPiece(0, 6, game, Dreadwing);
+    this.addPiece(0, 5, game, Scrapper);
     this.addPiece(1, 4, game, Lancehorn);
 
     return game;
