@@ -13,6 +13,7 @@ import { Dreadwing } from "./machine/dreadwing";
 import { ElementalClawstrider } from "./machine/elemental-clawstrider";
 import { Fanghorn } from "./machine/fanghorn";
 import { Fireclaw } from "./machine/fireclaw";
+import { Frostclaw } from "./machine/frostclaw";
 import { Glinthawk } from "./machine/glinthawk";
 import { Lancehorn } from "./machine/lancehorn";
 import { Scrapper } from "./machine/scrapper";
@@ -142,7 +143,7 @@ export class GameCollection {
 
     this.addPiece(1, 3, game, Widemaw);
     this.addPiece(0, 6, game, Dreadwing);
-    this.addPiece(0, 5, game, Scrapper);
+    this.addPiece(0, 5, game, Frostclaw);
     this.addPiece(1, 4, game, Lancehorn);
 
     return game;
