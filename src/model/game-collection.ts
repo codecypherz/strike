@@ -21,6 +21,7 @@ import { Leaplasher } from "./machine/leaplasher";
 import { Longleg } from "./machine/longleg";
 import { Plowhorn } from "./machine/plowhorn";
 import { Ravager } from "./machine/ravager";
+import { RedeyeWatcher } from "./machine/redeye-watcher";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { Slitherfang } from "./machine/slitherfang";
@@ -124,7 +125,7 @@ export class GameCollection {
     this.addPiece(0, 4, game, Glinthawk);
     this.addPiece(0, 3, game, Leaplasher);
     this.addPiece(1, 4, game, ApexClawstrider);
-    this.addPiece(1, 6, game, Burrower);
+    this.addPiece(1, 6, game, RedeyeWatcher);
 
     return game;
   }

@@ -17,11 +17,16 @@
   margin-top: 5px;
 }
 
-.nothing-selected-title,
-.selected-piece-name {
+.nothing-selected-title {
   text-transform: uppercase;
   text-align: left;
   padding: 10px 20px 10px 20px;
+}
+
+.selected-piece-name {
+  text-transform: uppercase;
+  text-align: left;
+  padding: 10px 50px 10px 20px;
 }
 
 .nothing-selected-title {
