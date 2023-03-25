@@ -24,6 +24,7 @@ import { Ravager } from "./machine/ravager";
 import { RedeyeWatcher } from "./machine/redeye-watcher";
 import { Rockbreaker } from "./machine/rockbreaker";
 import { Rollerback } from "./machine/rollerback";
+import { Scorcher } from "./machine/scorcher";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { Slitherfang } from "./machine/slitherfang";
@@ -91,7 +92,7 @@ export class GameCollection {
     const game = new Game(board);
 
     this.addPiece(0, 4, game, Slitherfang);
-    this.addPiece(1, 6, game, Burrower);
+    this.addPiece(1, 6, game, Scorcher);
 
     return game;
   }
