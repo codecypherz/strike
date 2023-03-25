@@ -40,6 +40,7 @@ import { Sunwing } from "./machine/sunwing";
 import { Thunderjaw } from "./machine/thunderjaw";
 import { Tideripper } from "./machine/tideripper";
 import { TrackerBurrower } from "./machine/tracker-burrower";
+import { Tremortusk } from "./machine/tremortusk";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
 import { Player } from "./player";
@@ -92,7 +93,7 @@ export class GameCollection {
     const game = new Game(board);
 
     this.addPiece(0, 4, game, Bristleback);
-    this.addPiece(0, 1, game, Scrounger);
+    this.addPiece(0, 1, game, Tremortusk);
     this.addPiece(0, 6, game, Tideripper);
     this.addPiece(1, 3, game, Glinthawk);
     this.addPiece(1, 7, game, Slaughterspine);
