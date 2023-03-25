@@ -12,6 +12,7 @@ import { Clamberjaw } from "./machine/clamberjaw";
 import { Dreadwing } from "./machine/dreadwing";
 import { ElementalClawstrider } from "./machine/elemental-clawstrider";
 import { Fanghorn } from "./machine/fanghorn";
+import { Fireclaw } from "./machine/fireclaw";
 import { Glinthawk } from "./machine/glinthawk";
 import { Lancehorn } from "./machine/lancehorn";
 import { Scrapper } from "./machine/scrapper";
@@ -128,7 +129,7 @@ export class GameCollection {
 
     this.addPiece(0, 1, game, Scrapper);
     this.addPiece(0, 5, game, Charger);
-    this.addPiece(0, 6, game, Scrapper);
+    this.addPiece(0, 6, game, Fireclaw);
     this.addPiece(1, 2, game, Fanghorn);
     this.addPiece(1, 3, game, Burrower);
 

@@ -1,4 +1,3 @@
-import { Climb } from "../ability/climb";
 import { HighGround } from "../ability/high-ground";
 import { Direction } from "../direction";
 import { Piece } from "../piece/piece";
