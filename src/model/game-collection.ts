@@ -23,6 +23,7 @@ import { Plowhorn } from "./machine/plowhorn";
 import { Ravager } from "./machine/ravager";
 import { RedeyeWatcher } from "./machine/redeye-watcher";
 import { Rockbreaker } from "./machine/rockbreaker";
+import { Rollerback } from "./machine/rollerback";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { Slitherfang } from "./machine/slitherfang";
@@ -112,7 +113,7 @@ export class GameCollection {
     const game = new Game(board);
 
     this.addPiece(0, 4, game, Behemoth);
-    this.addPiece(0, 6, game, Charger);
+    this.addPiece(0, 6, game, Rollerback);
     this.addPiece(1, 3, game, TrackerBurrower);
     this.addPiece(1, 5, game, Rockbreaker);
 
