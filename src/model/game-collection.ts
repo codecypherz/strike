@@ -37,6 +37,7 @@ import { Spikesnout } from "./machine/spikesnout";
 import { Stalker } from "./machine/stalker";
 import { Stormbird } from "./machine/stormbird";
 import { Sunwing } from "./machine/sunwing";
+import { Thunderjaw } from "./machine/thunderjaw";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
@@ -171,6 +172,7 @@ export class GameCollection {
     this.addPiece(0, 6, game, Dreadwing);
     this.addPiece(0, 5, game, Frostclaw);
     this.addPiece(1, 4, game, Lancehorn);
+    this.addPiece(0, 2, game, Thunderjaw);
 
     return game;
   }
