@@ -30,6 +30,7 @@ import { Scrounger } from "./machine/scrounger";
 import { ShellWalker } from "./machine/shell-walker";
 import { Shellsnapper } from "./machine/shellsnapper";
 import { Skydrifter } from "./machine/skydrifter";
+import { Slaughterspine } from "./machine/slaughterspine";
 import { Slitherfang } from "./machine/slitherfang";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
@@ -86,6 +87,7 @@ export class GameCollection {
     this.addPiece(0, 1, game, Scrounger);
     this.addPiece(0, 6, game, Lancehorn);
     this.addPiece(1, 3, game, Glinthawk);
+    this.addPiece(1, 7, game, Slaughterspine);
 
     return game;
   }
