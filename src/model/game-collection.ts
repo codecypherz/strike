@@ -2,6 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { BoardCollection } from "./board-collection";
 import { Game } from "./game";
+import { ApexClawstrider } from "./machine/apex-clawstrider";
 import { Behemoth } from "./machine/behemoth";
 import { Bellowback } from "./machine/bellowback";
 import { Bristleback } from "./machine/bristleback";
@@ -113,7 +114,7 @@ export class GameCollection {
     this.addPiece(0, 2, game, Bristleback);
     this.addPiece(0, 4, game, Glinthawk);
     this.addPiece(0, 3, game, Scrapper);
-    this.addPiece(1, 4, game, ElementalClawstrider);
+    this.addPiece(1, 4, game, ApexClawstrider);
     this.addPiece(1, 6, game, Burrower);
     this.addPiece(0, 7, game, Scrounger);
 

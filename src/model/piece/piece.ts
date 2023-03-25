@@ -617,6 +617,12 @@ export abstract class Piece {
     if (this.ability) {
       this.ability.takeEndOfAttackAction(attackResults);
     }
+    for (let attackedPiece of attackResults.getAttackedPieces()) {
+      const piece = attackedPiece.piece;
+      if (piece.hasAbility()) {
+        piece.ability!.takeActionAfterBeingAttacked(this);
+      }
+    }
   }
 
   confirmMovementIfNotStaged_(): void {

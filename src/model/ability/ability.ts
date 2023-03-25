@@ -23,7 +23,17 @@ export abstract class Ability {
     // Do nothing by default.
   }
 
+  /**
+   * Lets the attacking piece perform some ability.
+   */
   takeEndOfAttackAction(attackResults: AttackResults): void {
+    // Do nothing by default.
+  }
+
+  /**
+   * Lets the piece being attacked perform some ability.
+   */
+  takeActionAfterBeingAttacked(attackingPiece: Piece): void {
     // Do nothing by default.
   }
 }
