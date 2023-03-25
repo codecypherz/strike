@@ -15,6 +15,7 @@ import { Fanghorn } from "./machine/fanghorn";
 import { Fireclaw } from "./machine/fireclaw";
 import { Frostclaw } from "./machine/frostclaw";
 import { Glinthawk } from "./machine/glinthawk";
+import { Grazer } from "./machine/grazer";
 import { Lancehorn } from "./machine/lancehorn";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
@@ -128,7 +129,7 @@ export class GameCollection {
     const board = this.boardCollection.createBoard7();
     const game = new Game(board);
 
-    this.addPiece(0, 1, game, Scrapper);
+    this.addPiece(0, 1, game, Grazer);
     this.addPiece(0, 5, game, Charger);
     this.addPiece(0, 6, game, Fireclaw);
     this.addPiece(1, 2, game, Fanghorn);
