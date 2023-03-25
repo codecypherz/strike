@@ -1,6 +1,4 @@
-import { Cell } from "../cell";
-import { Piece } from "../piece/piece";
-import { Terrain } from "../terrain";
+import { AttackResults } from "../piece/attack-results";
 import { Ability } from "./ability";
 
 export class AlterTerrain extends Ability {
@@ -14,7 +12,7 @@ export class AlterTerrain extends Ability {
         + 'will lower and the terrain below the opposing machine will raise.';
   }
 
-  override takeEndOfAttackAction(attackedPieces: Piece[]): void {
+  override takeEndOfAttackAction(attackResults: AttackResults): void {
     // Don't modify the terrain if this is staged.
     if (this.piece.isStagedAttack()) {
       return;
@@ -24,7 +22,8 @@ export class AlterTerrain extends Ability {
     this.piece.getBoard().getCell(this.piece.position).lowerTerrain();
 
     // Raise the terrain of each attacked piece.
-    for (let piece of attackedPieces) {
+    for (let attackedPiece of attackResults.getAttackedPieces()) {
+      const piece = attackedPiece.piece;
       piece.getBoard().getCell(piece.position).raiseTerrain();
     }
   }

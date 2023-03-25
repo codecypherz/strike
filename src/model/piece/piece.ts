@@ -10,6 +10,7 @@ import { Position } from "../position";
 import { Strength } from "../strength";
 import { Terrain } from "../terrain";
 import { ActionTracker } from "./action-tracker";
+import { AttackResults } from "./attack-results";
 
 export interface PieceCtor {
   new(): Piece
@@ -559,6 +560,8 @@ export abstract class Piece {
       throw new Error('This piece only attacks other pieces');
     }
     const targetPiece = targetCell.getPiece()!;
+    const attackResults = new AttackResults();
+    attackResults.addAttackedPiece(targetPiece, targetPiece.position);
 
     // Maybe update some movement since that can be combined with the attack.
     this.confirmMovementIfNotStaged_();
@@ -581,7 +584,7 @@ export abstract class Piece {
       }
     }
 
-    this.takeEndOfAttackAction_([targetPiece]);
+    this.takeEndOfAttackAction_(attackResults);
     this.confirmAttackIfNotStaged_();
     return attackCells;
   }
@@ -610,9 +613,9 @@ export abstract class Piece {
     return true;
   }
 
-  takeEndOfAttackAction_(piecesAttacked: Piece[]): void {
+  takeEndOfAttackAction_(attackResults: AttackResults): void {
     if (this.ability) {
-      this.ability.takeEndOfAttackAction(piecesAttacked);
+      this.ability.takeEndOfAttackAction(attackResults);
     }
   }
 

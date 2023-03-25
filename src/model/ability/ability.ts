@@ -1,4 +1,5 @@
 import { Cell } from "../cell";
+import { AttackResults } from "../piece/attack-results";
 import { Piece } from "../piece/piece";
 
 export abstract class Ability {
@@ -22,7 +23,7 @@ export abstract class Ability {
     // Do nothing by default.
   }
 
-  takeEndOfAttackAction(attackedPieces: Piece[]): void {
+  takeEndOfAttackAction(attackResults: AttackResults): void {
     // Do nothing by default.
   }
 }

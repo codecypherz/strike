@@ -5,7 +5,7 @@ export class Clawstrider extends MeleePiece {
 
   static NAME = 'Clawstrider';
   static IMAGE_URL = Piece.IMAGE_PATH + 'clawstrider.webp';
-  static POINTS = 4;
+  static POINTS = 3;
   static MOVEMENT = 2;
   static ATTACK = 3;
   static ATTACK_RANGE = 2;

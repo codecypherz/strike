@@ -1,4 +1,5 @@
 import { AttackCells } from "../attack-cells";
+import { AttackResults } from "./attack-results";
 import { Piece } from "./piece";
 
 export class RamPiece extends Piece {
@@ -28,6 +29,8 @@ export class RamPiece extends Piece {
       throw new Error('This piece only attacks other pieces');
     }
     const targetPiece = targetCell.getPiece()!;
+    const attackResults = new AttackResults();
+    attackResults.addAttackedPiece(targetPiece, targetPiece.position);
 
     // Maybe update some movement since that can be combined with the attack.
     this.confirmMovementIfNotStaged_();
@@ -57,7 +60,7 @@ export class RamPiece extends Piece {
       this.position = oldTargetPieceCell.position;
     }
 
-    this.takeEndOfAttackAction_([targetPiece]);
+    this.takeEndOfAttackAction_(attackResults);
     this.confirmAttackIfNotStaged_();
     return attackCells;
   }

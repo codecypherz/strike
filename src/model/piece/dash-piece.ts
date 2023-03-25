@@ -1,8 +1,9 @@
-import { Position } from "../position";
 import { AttackCells } from "../attack-cells";
 import { Direction } from "../direction";
-import { Piece } from "./piece";
+import { Position } from "../position";
 import { Terrain } from "../terrain";
+import { AttackResults } from "./attack-results";
+import { Piece } from "./piece";
 
 
 export class DashPiece extends Piece {
@@ -83,12 +84,13 @@ export class DashPiece extends Piece {
     this.confirmMovementIfNotStaged_();
 
     // Perform the attack.
-    const piecesAttacked = new Array<Piece>();
+    const attackResults = new AttackResults();
     for (let cellToAttack of attackCells.toAttack) {
       if (!cellToAttack.hasPiece()) {
         throw new Error('Cell to attack did not have a piece.');
       }
       const targetPiece = cellToAttack.getPiece()!;
+      attackResults.addAttackedPiece(targetPiece, targetPiece.position);
 
       // Calculate attack and defense.
       // This calculation needs to happen before rotating the target piece.
@@ -112,8 +114,6 @@ export class DashPiece extends Piece {
         // TODO: Give rotation indicator?
         targetPiece.rotate180();
       }
-
-      piecesAttacked.push(targetPiece);
     }
 
     // If not staged, move to finishing cell.
@@ -123,7 +123,7 @@ export class DashPiece extends Piece {
       this.position = finishingCell.position;
     }
 
-    this.takeEndOfAttackAction_(piecesAttacked);
+    this.takeEndOfAttackAction_(attackResults);
     this.confirmAttackIfNotStaged_();
     return attackCells;
   }
