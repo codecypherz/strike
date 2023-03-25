@@ -38,6 +38,7 @@ import { Stalker } from "./machine/stalker";
 import { Stormbird } from "./machine/stormbird";
 import { Sunwing } from "./machine/sunwing";
 import { Thunderjaw } from "./machine/thunderjaw";
+import { Tideripper } from "./machine/tideripper";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Widemaw } from "./machine/widemaw";
 import { Piece, PieceCtor } from "./piece/piece";
@@ -92,7 +93,7 @@ export class GameCollection {
 
     this.addPiece(0, 4, game, Bristleback);
     this.addPiece(0, 1, game, Scrounger);
-    this.addPiece(0, 6, game, Lancehorn);
+    this.addPiece(0, 6, game, Tideripper);
     this.addPiece(1, 3, game, Glinthawk);
     this.addPiece(1, 7, game, Slaughterspine);
 
