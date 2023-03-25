@@ -19,6 +19,7 @@ import { Grazer } from "./machine/grazer";
 import { Lancehorn } from "./machine/lancehorn";
 import { Leaplasher } from "./machine/leaplasher";
 import { Longleg } from "./machine/longleg";
+import { Plowhorn } from "./machine/plowhorn";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { Slitherfang } from "./machine/slitherfang";
@@ -61,7 +62,7 @@ export class GameCollection {
     const board = this.boardCollection.createBoard1();
     const game = new Game(board);
 
-    this.addPiece(1, 2, game, Scrapper);
+    this.addPiece(1, 2, game, Plowhorn);
     this.addPiece(1, 3, game, Burrower);
     this.addPiece(0, 4, game, Charger);
     this.addPiece(1, 6, game, Glinthawk);
