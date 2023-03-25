@@ -22,6 +22,7 @@ import { Longleg } from "./machine/longleg";
 import { Plowhorn } from "./machine/plowhorn";
 import { Ravager } from "./machine/ravager";
 import { RedeyeWatcher } from "./machine/redeye-watcher";
+import { Rockbreaker } from "./machine/rockbreaker";
 import { Scrapper } from "./machine/scrapper";
 import { Scrounger } from "./machine/scrounger";
 import { Slitherfang } from "./machine/slitherfang";
@@ -113,6 +114,7 @@ export class GameCollection {
     this.addPiece(0, 4, game, Behemoth);
     this.addPiece(0, 6, game, Charger);
     this.addPiece(1, 3, game, TrackerBurrower);
+    this.addPiece(1, 5, game, Rockbreaker);
 
     return game;
   }

@@ -1,10 +1,10 @@
 import { Blind } from "../ability/blind";
 import { Direction } from "../direction";
+import { GunnerPiece } from "../piece/gunner-piece";
 import { Piece } from "../piece/piece";
-import { RamPiece } from "../piece/ram-piece";
 import { Strength } from "../strength";
 
-export class RedeyeWatcher extends RamPiece {
+export class RedeyeWatcher extends GunnerPiece {
 
   static NAME = 'Redeye Watcher';
   static IMAGE_URL = Piece.IMAGE_PATH + 'redeye_watcher.webp';
