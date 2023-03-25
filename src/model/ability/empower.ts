@@ -13,7 +13,8 @@ export class Empower extends Ability {
 
   override takeStartOfTurnAction(): void {
     // Get all cells in attack range.
-    const buffCells = this.getCellsInRange_(this.piece.position, this.piece.attackRange);
+    const buffCells = this.piece.getBoard().getCellsInRange(
+      this.piece.position, this.piece.attackRange);
 
     // Buff every ally you find.
     for (let cell of buffCells) {

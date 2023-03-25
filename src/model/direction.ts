@@ -32,4 +32,21 @@ export class Direction {
     }
     throw new Error('No opposite direction for ' + this);
   }
+
+  clockwise90(): Direction {
+    if (this == Direction.UP) {
+      return Direction.RIGHT;
+    } else if (this == Direction.RIGHT) {
+      return Direction.DOWN;
+    } else if (this == Direction.DOWN) {
+      return Direction.LEFT;
+    } else if (this == Direction.LEFT) {
+      return Direction.UP;
+    }
+    throw new Error('No clockwise90 direction for ' + this);
+  }
+
+  counterClockwise90(): Direction {
+    return this.clockwise90().opposite();
+  }
 }

@@ -1,8 +1,4 @@
-import { Cell } from "../cell";
-import { Direction } from "../direction";
-import { AttackResults } from "../piece/attack-results";
 import { Piece } from "../piece/piece";
-import { Terrain } from "../terrain";
 import { Ability } from "./ability";
 
 export class Retaliate extends Ability {
@@ -20,48 +16,22 @@ export class Retaliate extends Ability {
     // Use position accessors because we should show retaliate damage during staging.
     const attackPos = attackingPiece.getPosition();
     const selfPos = this.piece.getPosition();
-    let range = null;
-    if (attackPos.row < selfPos.row) {
-      if (attackPos.col != selfPos.col) {
-        throw new Error('Cannot handle diagonal retaliate');
-      }
-      range = selfPos.row - attackPos.row;
-      this.setSelfDirection(attackingPiece, Direction.UP);
-    } else if (attackPos.row > selfPos.row) {
-      if (attackPos.col != selfPos.col) {
-        throw new Error('Cannot handle diagonal retaliate');
-      }
-      range = attackPos.row - selfPos.row;
-      this.setSelfDirection(attackingPiece, Direction.DOWN);
-    } else if (attackPos.col < selfPos.col) {
-      if (attackPos.row != selfPos.row) {
-        throw new Error('Cannot handle diagonal retaliate');
-      }
-      range = selfPos.col - attackPos.col;
-      this.setSelfDirection(attackingPiece, Direction.LEFT);
-    } else if (attackPos.col > selfPos.col) {
-      if (attackPos.row != selfPos.row) {
-        throw new Error('Cannot handle diagonal retaliate');
-      }
-      range = attackPos.col - selfPos.col;
-      this.setSelfDirection(attackingPiece, Direction.RIGHT);
-    }
+    const direction = selfPos.getDirectionTowards(attackPos);
 
-    // If in range, deal 1 damage to the attacker.
-    if (range == null) {
-      throw new Error('Unable to determine range for retaliate');
-    }
-    if (this.piece.attackRange >= range) {
-      attackingPiece.takeDamage_(1);
-    }
-  }
-
-  private setSelfDirection(attackingPiece: Piece, direction: Direction): void {
     // Can't call this.piece.setDirection because self is not staged, attacker is staged.
     if (attackingPiece.isStagedAttack()) {
       this.piece.stagedDirection = direction.degrees;
     } else {
       this.piece.setDirection(direction);
+    }
+
+    // Compute range.
+    // The diff between either row or col will be zero since diagonal is not supported.
+    let range = Math.abs(attackPos.row - selfPos.row) + Math.abs(attackPos.col - selfPos.col);
+
+    // Deal damage if in range.
+    if (this.piece.attackRange >= range) {
+      attackingPiece.takeDamage_(1);
     }
   }
 }

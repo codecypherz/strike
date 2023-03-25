@@ -13,7 +13,8 @@ export class Whiplash extends Ability {
 
   override takeStartOfTurnAction(): void {
     // Get all cells in attack range.
-    const sprayCells = this.getCellsInRange_(this.piece.position, this.piece.attackRange);
+    const sprayCells = this.piece.getBoard().getCellsInRange(
+      this.piece.position, this.piece.attackRange);
 
     // Rotate every piece you find.
     for (let cell of sprayCells) {

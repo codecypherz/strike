@@ -67,6 +67,26 @@ export class Board {
     return null;
   }
 
+  getCellsInRange(pos: Position, rangeRemaining: number): Set<Cell> {
+    const cells = new Set<Cell>();
+    
+    // Base case
+    if (rangeRemaining == 0) {
+      return cells;
+    }
+
+    // Add the surrounding cells.
+    for (let cell of this.getSurroundingCells(pos)) {
+      cells.add(cell);
+
+      // Recurse with reduced ranged.
+      const moreCells = this.getCellsInRange(cell.position, rangeRemaining - 1);
+      moreCells.forEach(cells.add, cells);
+    }
+    
+    return cells;
+  }
+
   clearStagedAttackData(): void {
     for (let cell of this.getCells().flat()) {
       if (cell.hasPiece()) {

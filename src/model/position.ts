@@ -1,3 +1,5 @@
+import { Direction } from "./direction";
+
 export class Position {
   readonly row: number;
   readonly col: number;
@@ -5,6 +7,10 @@ export class Position {
   constructor(row: number, col: number) {
     this.row = row;
     this.col = col;
+  }
+
+  static from(row: number, col: number): Position {
+    return new Position(row, col);
   }
 
   equals(other: Position | null | undefined): boolean {
@@ -18,7 +24,28 @@ export class Position {
     return '(' + this.row + ',' + this.col + ')';
   }
 
-  static from(row: number, col: number): Position {
-    return new Position(row, col);
+  getDirectionTowards(target: Position): Direction {
+    if (target.row < this.row) {
+      if (target.col != this.col) {
+        throw new Error('Cannot handle diagonal direction finding');
+      }
+      return Direction.UP;
+    } else if (target.row > this.row) {
+      if (target.col != this.col) {
+        throw new Error('Cannot handle diagonal direction finding');
+      }
+      return Direction.DOWN;
+    } else if (target.col < this.col) {
+      if (target.row != this.row) {
+        throw new Error('Cannot handle diagonal direction finding');
+      }
+      return Direction.LEFT;
+    } else if (target.col > this.col) {
+      if (target.row != this.row) {
+        throw new Error('Cannot handle diagonal direction finding');
+      }
+      return Direction.RIGHT;
+    }
+    throw new Error('Unable to determine direction towards target');
   }
 }
