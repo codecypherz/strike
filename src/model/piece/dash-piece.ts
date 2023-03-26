@@ -109,11 +109,7 @@ export class DashPiece extends Piece {
         targetPiece.stagedKnockbackDirection = this.getDirection();
       }
 
-      // If not staged, finalize rotation of target.
-      if (!this.isStagedAttack()) {
-        // TODO: Give rotation indicator?
-        targetPiece.rotate180();
-      }
+      this.rotateTarget(targetPiece);
     }
 
     // If not staged, move to finishing cell.
@@ -126,5 +122,13 @@ export class DashPiece extends Piece {
     this.takeEndOfAttackAction_(attackResults);
     this.confirmAttackIfNotStaged_();
     return attackCells;
+  }
+
+  rotateTarget(targetPiece: Piece): void {
+      // If not staged, finalize rotation of target.
+      if (!this.isStagedAttack()) {
+        // TODO: Give rotation indicator?
+        targetPiece.rotate180();
+      }
   }
 }

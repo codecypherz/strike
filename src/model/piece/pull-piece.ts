@@ -48,6 +48,13 @@ export class PullPiece extends Piece {
     const targetPiece = targetCell.getPiece()!;
 
     // Pull the target one closer, if possible.
+    this.pullTarget(targetPiece);
+
+    return attackCells;
+  }
+
+  pullTarget(targetPiece: Piece): void {
+    const targetCell = this.getBoard().getCell(targetPiece.position);
     const pullDir = this.getDirection().opposite();
     const pullCell = this.getBoard().getCellInDirection(targetCell.position, pullDir);
     if (pullCell == null) {
@@ -67,8 +74,6 @@ export class PullPiece extends Piece {
         targetPiece.position = pullCell.position;
       }
     }
-
-    return attackCells;
   }
 
   override armorBreakKnocksBack_(): boolean {

@@ -1,5 +1,8 @@
 import { Cell } from "../cell";
 import { AttackResults } from "../piece/attack-results";
+import { DashPiece } from "../piece/dash-piece";
+import { PullPiece } from "../piece/pull-piece";
+import { RamPiece } from "../piece/ram-piece";
 import { Ability } from "./ability";
 
 export class Sweep extends Ability {
@@ -16,6 +19,7 @@ export class Sweep extends Ability {
     // The sweep ability only supports a single target (as of right now).
     const attackedPieces = attackResults.getAttackedPieces();
     if (attackedPieces.length != 1) {
+      // This works, but it would have broken if Thunderjaw had a range of 3.
       throw new Error('Sweep does not support more than 1 target');
     }
     const attackPos = attackedPieces.at(0)!.originalPosition;
@@ -51,6 +55,17 @@ export class Sweep extends Ability {
       if (this.piece.armorBreakKnocksBack_()) {
         targetPiece.knockback_(this.piece.getDirection());
       }
+    }
+
+    // This is kind of a hack, but need to copy some behavior from Dash and Pull pieces.
+    if (this.piece instanceof PullPiece) {
+      (this.piece as PullPiece).pullTarget(targetPiece);
+    } else if (this.piece instanceof DashPiece) {
+      (this.piece as DashPiece).rotateTarget(targetPiece);
+    }
+    // There is no RamPiece with the Sweep ability, so we don't need to do anything.
+    if (this.piece instanceof RamPiece) {
+      throw new Error('Sweep is not supported for RamPiece');
     }
   }
 }
