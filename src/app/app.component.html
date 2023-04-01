@@ -1,6 +1,7 @@
 <div class="header">
   <img src="/images/banner.png">
   <div class="title" (click)="navigateHome()">Strike</div>
+  <div *ngIf=getNavigationTitle() class="navigation-title">{{getNavigationTitle()}}</div>
   <audio class="audio-controls" controls loop>
     <!--<source src="/audio/rusted_sands.mp3" type="audio/mpeg">-->
     <!--<source src="/audio/awash.mp3" type="audio/mpeg">-->

@@ -6,12 +6,18 @@ import { GameComponent } from "../game/game.component";
 import { GameSelectionComponent } from "../game-selection/game-selection.component";
 import { canDeactivateGuard } from "../guard/can-deactivate.guard";
 import { PageNotFoundComponent } from "../page-not-found/page-not-found.component";
+import { CustomGameComponent } from "../custom-game/custom-game.component";
 
 const routes: Routes = [
   {
     path: 'game-selection',
     title: '',
     component: GameSelectionComponent,
+  },
+  {
+    path: 'custom-game',
+    title: '',
+    component: CustomGameComponent,
   },
   {
     path: 'game/:gameId',

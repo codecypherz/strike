@@ -25,6 +25,17 @@
   cursor: pointer;
 }
 
+.navigation-title {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 30px;
+  background: rgba(0, 0, 0, 60%);
+  border-radius: 30px;
+  padding: 10px 30px;
+}
+
 .audio-controls {
   position: absolute;
   right: 22px;

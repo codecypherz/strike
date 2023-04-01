@@ -19,6 +19,7 @@ import { PlayerComponent } from './player/player.component';
 import { PlayersComponent } from './players/players.component';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { SelectedComponent } from './selected/selected.component';
+import { CustomGameComponent } from './custom-game/custom-game.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { SelectedComponent } from './selected/selected.component';
     GameSelectionComponent,
     GameComponent,
     GameChoiceComponent,
-    GameOverComponent
+    GameOverComponent,
+    CustomGameComponent
   ],
   imports: [
     AppRoutingModule,
