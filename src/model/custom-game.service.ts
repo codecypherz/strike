@@ -44,5 +44,10 @@ export class CustomGameService {
 
   onCellClicked(cell: Cell): void {
     cell.terrain = this.selectedTerrain;
+
+    // Mirror the tile on the other side.
+    const mirroredCell = this.getGame().getBoard()
+        .getByRowCol(7 - cell.position.row, 7 - cell.position.col);
+    mirroredCell.terrain = this.selectedTerrain;
   }
 }

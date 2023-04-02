@@ -2,3 +2,22 @@ app-cell {
   display: inline-flex;
   vertical-align: top;
 }
+
+.mirror-block {
+  position: absolute;
+  top: 397px;
+  z-index: 100;
+  left: 40px;
+  right: 40px;
+  bottom: 0;
+  background: rgba(0, 0, 0, 50%);
+  border-top: 5px dashed white;
+}
+
+.mirror-block-text {
+  top: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 70px;
+}
