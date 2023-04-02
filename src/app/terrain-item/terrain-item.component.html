@@ -1,5 +1,8 @@
 <div class="terrain-item" (click)="select()" [ngClass]="{'terrain-selected': isSelected()}">
   <img class="terrain-item-image" src="/images/terrain/{{terrain.type}}.png">
+  <div class="terrain-name">
+    {{terrain.type}}
+  </div>
   <div class="terrain-combat-power">
     <span [innerHTML]="getCombatPower()"></span>
   </div>
