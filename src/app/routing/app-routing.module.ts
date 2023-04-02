@@ -7,6 +7,9 @@ import { GameSelectionComponent } from "../game-selection/game-selection.compone
 import { canDeactivateGuard } from "../guard/can-deactivate.guard";
 import { PageNotFoundComponent } from "../page-not-found/page-not-found.component";
 import { CustomGameComponent } from "../custom-game/custom-game.component";
+import { BoardSetupComponent } from "../board-setup/board-setup.component";
+import { PieceSelectionComponent } from "../piece-selection/piece-selection.component";
+import { PiecePlacementComponent } from "../piece-placement/piece-placement.component";
 
 const routes: Routes = [
   {
@@ -18,6 +21,20 @@ const routes: Routes = [
     path: 'custom-game',
     title: '',
     component: CustomGameComponent,
+    children: [
+      {
+        path: 'board-setup',
+        component: BoardSetupComponent,
+      },
+      {
+        path: 'piece-selection',
+        component: PieceSelectionComponent,
+      },
+      {
+        path: 'piece-placement',
+        component: PiecePlacementComponent,
+      },
+    ],
   },
   {
     path: 'game/:gameId',

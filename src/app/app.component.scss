@@ -49,6 +49,7 @@
   top: 101px;
   bottom: 0;
   overflow: hidden;
+  z-index: var(--z_app_background);
 }
 
 .app-background>img {

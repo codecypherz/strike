@@ -1,0 +1,26 @@
+<div class="custom-game-progress">
+  <a
+    routerLink="board-setup"
+    class="custom-game-setup-step"
+    [ngClass]="{'active-setup-step': isBoardSetupActive()}">
+    Board Setup
+  </a>
+  <a
+    routerLink="piece-selection"
+    class="custom-game-setup-step"
+    [ngClass]="{'active-setup-step': isPieceSelectionActive()}">
+    Piece Selection
+  </a>
+  <a
+    routerLink="piece-placement"
+    class="custom-game-setup-step"
+    [ngClass]="{'active-setup-step': isPiecePlacementActive()}">
+    Piece Placement
+  </a>
+  <div class="custom-game-setup-step">
+    <!-- TODO: Enable once setup is complete. -->
+    <button disabled="true">
+      Start Game
+    </button>
+  </div>
+</div>

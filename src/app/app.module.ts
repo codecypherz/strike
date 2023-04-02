@@ -20,6 +20,10 @@ import { PlayersComponent } from './players/players.component';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { SelectedComponent } from './selected/selected.component';
 import { CustomGameComponent } from './custom-game/custom-game.component';
+import { BoardSetupComponent } from './board-setup/board-setup.component';
+import { CustomGameProgressComponent } from './custom-game-progress/custom-game-progress.component';
+import { PieceSelectionComponent } from './piece-selection/piece-selection.component';
+import { PiecePlacementComponent } from './piece-placement/piece-placement.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,11 @@ import { CustomGameComponent } from './custom-game/custom-game.component';
     GameComponent,
     GameChoiceComponent,
     GameOverComponent,
-    CustomGameComponent
+    CustomGameComponent,
+    BoardSetupComponent,
+    CustomGameProgressComponent,
+    PieceSelectionComponent,
+    PiecePlacementComponent
   ],
   imports: [
     AppRoutingModule,

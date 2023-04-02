@@ -1,0 +1,19 @@
+.custom-game-progress {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 50%);
+  height: 50px;
+}
+
+.custom-game-setup-step {
+  display: inline-block;
+  font-size: 20px;
+  color: #aaa;
+  text-decoration: none;
+  width: 220px;
+  margin-top: 9px;
+}
+
+.custom-game-setup-step.active-setup-step {
+  font-weight: bold;
+  color: #fff;
+}
