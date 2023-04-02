@@ -25,6 +25,9 @@ import { CustomGameProgressComponent } from './custom-game-progress/custom-game-
 import { PieceSelectionComponent } from './piece-selection/piece-selection.component';
 import { PiecePlacementComponent } from './piece-placement/piece-placement.component';
 import { CustomGameService } from 'src/model/custom-game.service';
+import { TerrainSelectorComponent } from './terrain-selector/terrain-selector.component';
+import { BoardSelectorComponent } from './board-selector/board-selector.component';
+import { TerrainItemComponent } from './terrain-item/terrain-item.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { CustomGameService } from 'src/model/custom-game.service';
     BoardSetupComponent,
     CustomGameProgressComponent,
     PieceSelectionComponent,
-    PiecePlacementComponent
+    PiecePlacementComponent,
+    TerrainSelectorComponent,
+    BoardSelectorComponent,
+    TerrainItemComponent
   ],
   imports: [
     AppRoutingModule,

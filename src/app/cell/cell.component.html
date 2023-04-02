@@ -1,4 +1,5 @@
-<div class="cell" [ngClass]="{'selected': cell.selected}" (click)="onCellClicked()">
+<div class="cell" [ngClass]="{'selected': cell.selected}"
+    (pointerdown)="onCellClicked()">
   <div class="cell-terrain" class="{{cell.terrain.type}}">
     <img class="cell-terrain-image" src="/images/terrain/{{cell.terrain.type}}.png">
   </div>

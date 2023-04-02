@@ -1,0 +1,22 @@
+.terrain-selector {
+  display: inline-block;
+  width: 160px;
+  border: 1.5px solid var(--foreground_color);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: -600px;
+  font-size: 26px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--background_color);
+}
+
+.terrain-selector-title {
+  border-bottom: 1px solid var(--foreground_color);
+}
+
+.terrain-selector-list {
+  padding-top: 18px;
+  padding-bottom: 10px;
+}

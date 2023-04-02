@@ -1,0 +1,17 @@
+.board-selector {
+  display: inline-block;
+  width: 200px;
+  border: 1.5px solid var(--foreground_color);
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin-left: 440px;
+  font-size: 26px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--background_color);
+}
+
+.board-selector-title {
+  border-bottom: 1px solid var(--foreground_color);
+}

@@ -8,7 +8,7 @@ export const canActivateCustomSetupGuard: CanActivateChildFn = (
   const customGameService = inject(CustomGameService);
   const router = inject(Router);
 
-  if (customGameService.hasActiveGame()) {
+  if (customGameService.isSetupActive()) {
     return true;
   } else {
     router.navigate(['/game-selection']);

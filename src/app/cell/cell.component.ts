@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { GameService } from 'src/model/game.service';
 import { Cell } from 'src/model/cell';
+import { CustomGameService } from 'src/model/custom-game.service';
 
 @Component({
   selector: 'app-cell',
@@ -11,10 +12,15 @@ export class CellComponent {
 
   @Input() cell!: Cell;
 
-  constructor(private gameService: GameService) { }
+  constructor(
+    private customGameService: CustomGameService,
+    private gameService: GameService) {
+  }
 
   onCellClicked(): void {
-    if (this.gameService.isGameSet()) {
+    if (this.customGameService.isSetupActive()) {
+      this.customGameService.onCellClicked(this.cell);
+    } else if (this.gameService.isGameSet()) {
       this.gameService.onCellClicked(this.cell);
     }
   }

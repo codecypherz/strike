@@ -1,0 +1,48 @@
+.terrain-item {
+  height: 100px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  position: relative;
+}
+
+.terrain-item-image {
+  height: 100%;
+  border: 5px solid black;
+  // Hacky centering of poorly cropped images :(
+  margin-top: -3px;
+  margin-left: 4px;
+}
+
+.terrain-item.terrain-selected>.terrain-item-image {
+  border: 5px solid white;
+}
+
+.terrain-combat-power {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 70%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+}
+
+.terrain-combat-power>span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.terrain-note {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  width: 100px;
+  right: 0;
+  height: 18px;
+  font-size: 14px;
+  transform: translateX(-50%);
+}
