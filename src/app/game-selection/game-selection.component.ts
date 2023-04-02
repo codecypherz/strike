@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { Board } from 'src/model/board';
+import { CustomGameService } from 'src/model/custom-game.service';
 import { Game } from 'src/model/game';
 import { GameCollection } from 'src/model/game-collection';
 
@@ -10,7 +13,9 @@ import { GameCollection } from 'src/model/game-collection';
 export class GameSelectionComponent {
 
   constructor(
-    private gameCollection: GameCollection) {
+    private gameCollection: GameCollection,
+    private customGameService: CustomGameService,
+    private router: Router) {
     }
 
   getPreMadeGames(): Array<Game> {
@@ -24,5 +29,10 @@ export class GameSelectionComponent {
     games.push(this.gameCollection.createGame7());
     games.push(this.gameCollection.createGame8());
     return games;
+  }
+
+  startCustomGameSetup(): void {
+    this.customGameService.startSetup();
+    this.router.navigate(['/custom-game/board-setup']);
   }
 }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CustomGameService } from 'src/model/custom-game.service';
+import { Game } from 'src/model/game';
 
 @Component({
   selector: 'app-board-setup',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class BoardSetupComponent {
 
+  constructor(private customGameService: CustomGameService) {}
+
+  getGame(): Game {
+    return this.customGameService.getGame();
+  }
 }

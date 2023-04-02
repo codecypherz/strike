@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Board } from 'src/model/board';
-import { Game } from 'src/model/game';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-custom-game',
@@ -8,6 +6,5 @@ import { Game } from 'src/model/game';
   styleUrls: ['./custom-game.component.scss']
 })
 export class CustomGameComponent {
-
-  game = new Game(new Board());
+  
 }

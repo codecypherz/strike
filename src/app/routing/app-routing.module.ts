@@ -10,6 +10,7 @@ import { CustomGameComponent } from "../custom-game/custom-game.component";
 import { BoardSetupComponent } from "../board-setup/board-setup.component";
 import { PieceSelectionComponent } from "../piece-selection/piece-selection.component";
 import { PiecePlacementComponent } from "../piece-placement/piece-placement.component";
+import { canActivateCustomSetupGuard } from "../custom-game/can-activate-custom-setup.guard";
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
     path: 'custom-game',
     title: '',
     component: CustomGameComponent,
+    canActivateChild: [canActivateCustomSetupGuard],
     children: [
       {
         path: 'board-setup',

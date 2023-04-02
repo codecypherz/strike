@@ -24,6 +24,7 @@ import { BoardSetupComponent } from './board-setup/board-setup.component';
 import { CustomGameProgressComponent } from './custom-game-progress/custom-game-progress.component';
 import { PieceSelectionComponent } from './piece-selection/piece-selection.component';
 import { PiecePlacementComponent } from './piece-placement/piece-placement.component';
+import { CustomGameService } from 'src/model/custom-game.service';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { PiecePlacementComponent } from './piece-placement/piece-placement.compo
   ],
   providers: [
     BoardCollection,
+    CustomGameService,
     DialogService,
     GameService,
     GameCollection,
