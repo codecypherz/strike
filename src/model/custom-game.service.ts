@@ -18,6 +18,7 @@ export class CustomGameService {
 
   startSetup(): void {
     this.game = new Game(new Board());
+    this.game.getBoard().setSetupMode(true);
     this.selectedTerrain = Terrain.GRASSLAND;
   }
 
@@ -32,6 +33,12 @@ export class CustomGameService {
   getGame(): Game {
     // Throws if game hasn't been set.
     return this.game!;
+  }
+
+  setBoard(board: Board): void {
+    // TODO Might need to create a copy.
+    board.setSetupMode(true);
+    this.getGame().setBoard(board);
   }
 
   selectTerrain(terrain: Terrain): void {

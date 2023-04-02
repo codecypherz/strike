@@ -35,6 +35,10 @@ export class Game extends EventTarget {
     return this.board;
   }
 
+  setBoard(board: Board): void {
+    this.board = board;
+  }
+  
   start(): void {
     this.dispatchEvent(new Event(Game.START_TURN_EVENT));
   }

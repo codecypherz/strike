@@ -13,6 +13,7 @@ export class Board {
 
   public id = uuidv4();
   private cells!: Cell[][];
+  private setupMode = false;
 
   constructor() {
     this.cells = new Array<Array<Cell>>();
@@ -25,6 +26,14 @@ export class Board {
     }
   }
 
+  inSetupMode(): boolean {
+    return this.setupMode;
+  }
+
+  setSetupMode(setupMode: boolean): void {
+    this.setupMode = setupMode;
+  }
+  
   getCells(): Cell[][] {
     return this.cells;
   }

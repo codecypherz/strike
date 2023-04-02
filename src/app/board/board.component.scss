@@ -6,7 +6,7 @@ app-cell {
 .mirror-block {
   position: absolute;
   top: 397px;
-  z-index: 100;
+  z-index: var(--z_mirror_overlay);
   left: 40px;
   right: 40px;
   bottom: 0;

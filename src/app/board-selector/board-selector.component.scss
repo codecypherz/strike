@@ -1,6 +1,6 @@
 .board-selector {
   display: inline-block;
-  width: 200px;
+  width: 220px;
   border: 1.5px solid var(--foreground_color);
   position: absolute;
   left: 50%;
@@ -14,4 +14,13 @@
 
 .board-selector-title {
   border-bottom: 1px solid var(--foreground_color);
+}
+
+.board-selector-list {
+  height: 720px;
+  overflow: auto;
+}
+
+app-board-item:last-child ::ng-deep > div {
+  margin-bottom: 20px;
 }

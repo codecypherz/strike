@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { BoardCollection } from 'src/model/board-collection';
 
 @Component({
   selector: 'app-board-selector',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class BoardSelectorComponent {
 
+  constructor(public boardCollection: BoardCollection) { }
 }

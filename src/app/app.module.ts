@@ -28,6 +28,7 @@ import { CustomGameService } from 'src/model/custom-game.service';
 import { TerrainSelectorComponent } from './terrain-selector/terrain-selector.component';
 import { BoardSelectorComponent } from './board-selector/board-selector.component';
 import { TerrainItemComponent } from './terrain-item/terrain-item.component';
+import { BoardItemComponent } from './board-item/board-item.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { TerrainItemComponent } from './terrain-item/terrain-item.component';
     PiecePlacementComponent,
     TerrainSelectorComponent,
     BoardSelectorComponent,
-    TerrainItemComponent
+    TerrainItemComponent,
+    BoardItemComponent
   ],
   imports: [
     AppRoutingModule,

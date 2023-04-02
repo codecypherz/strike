@@ -1,0 +1,24 @@
+.board-item {
+  position: relative;
+  height: 180px;
+}
+
+// ::ng-deep is required to break css sandbox isolation.
+// This is probably a bad practice ¯\_(ツ)_/¯
+.board-item ::ng-deep .board {
+  transform: scale(0.20);
+  position: absolute;
+  width: 802px;
+  height: 802px;
+  top: -300px;
+  left: -300px;
+}
+
+.board-item-click-trap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: pointer;
+}
