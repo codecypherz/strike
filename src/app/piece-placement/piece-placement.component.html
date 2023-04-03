@@ -1,3 +1,9 @@
 <div class="piece-placement">
-  Piece placement will go here.
+  <div class="left-panel">
+    <app-selected></app-selected>
+  </div>
+  
+  <div class="right-panel">
+    <app-board [board]="getGame().getBoard()"></app-board>
+  </div>
 </div>

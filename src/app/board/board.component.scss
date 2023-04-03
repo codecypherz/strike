@@ -3,12 +3,18 @@ app-cell {
   vertical-align: top;
 }
 
+.board {
+  width: 800px;
+  position: relative;
+  margin: auto;
+}
+
 .mirror-block {
   position: absolute;
   top: 397px;
   z-index: var(--z_mirror_overlay);
-  left: 40px;
-  right: 40px;
+  left: 0;
+  right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 50%);
   border-top: 5px dashed white;

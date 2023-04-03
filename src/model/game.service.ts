@@ -2,7 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { Game } from "./game";
-import { Piece } from "./piece/piece";
+import { SelectService } from "./select.service";
 
 /**
  * Provides behavior and simple extractions of intent.
@@ -11,12 +11,11 @@ import { Piece } from "./piece/piece";
 export class GameService {
 
   private game: Game | null = null;
-  private selectedCell: Cell | null = null;
-  private selectedPiece: Piece | null = null;
 
   private startTurnCallback = this.onStartTurn.bind(this);
 
   constructor(
+    private selectService: SelectService,
     @Optional() @SkipSelf() service?: GameService) {
 
     if (service) {
@@ -25,6 +24,7 @@ export class GameService {
   }
 
   setGame(game: Game | null): void {
+    this.selectService.deselect();
     if (this.game) {
       this.game.removeEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
     }
@@ -51,8 +51,7 @@ export class GameService {
 
   onStartTurn(): void {
     this.exitStaging();
-    this.selectedCell = null;
-    this.selectedPiece = null;
+    this.selectService.deselect();
 
     // This part needs to happen after exiting staging in order for
     // a staged piece to be properly reset.
@@ -81,28 +80,24 @@ export class GameService {
   }
 
   onCellClicked(cell: Cell): void {
-    if (!cell) {
-      throw new Error('No cell was clicked');
-    }
-
     // Nothing was selected before, so just select this cell.
-    if (!this.selectedCell) {
-      this.selectCellAndMaybePiece(cell);
+    if (!this.selectService.isCellSelected()) {
+      this.selectCell(cell);
       return;
     }
 
     // Do nothing if you select the same cell.
-    if (this.selectedCell.equals(cell)) {
+    if (this.selectService.getSelectedCell()!.equals(cell)) {
       return;
     }
 
     // If a different cell was clicked, it now depends if we had
     // a selected piece.
-    if (!this.selectedPiece) {
-      this.selectCellAndMaybePiece(cell);
+    if (!this.selectService.isPieceSelected()) {
+      this.selectCell(cell);
       return;
     }
-    const piece = this.selectedPiece!;
+    const piece = this.selectService.getSelectedPiece()!;
 
     // We clicked a different cell with a selected piece.
     // Now we move the selected piece if it's valid based on its
@@ -116,35 +111,28 @@ export class GameService {
       // The piece cannot move here, so select this cell instead.
       // Also cancel any staged action.
       this.exitStaging();
-      this.selectCellAndMaybePiece(cell);
+      this.selectCell(cell);
     }
   }
 
-  private selectCellAndMaybePiece(cell: Cell) {
-    this.selectCell(cell);
-    // Also select the piece if there is one.
-    if (this.selectedCell!.hasPiece()) {
-      const piece = this.selectedCell!.getPiece()!;
-      if (piece.hasBeenActivated() || piece.canBeActivated()) {
-        this.selectPiece(piece);
-      }
-    }
+  private selectCell(cell: Cell) {
+    this.selectService.selectCell(cell);
+    this.showSelectedActions();
   }
 
   exitStaging(): void {
-    if (!this.selectedPiece) {
+    if (!this.selectService.isPieceSelected()) {
       return;
     }
-    this.selectedPiece.deselect();
-    this.selectedPiece = null;
-    this.selectCell(null);
+    this.selectService.deselect();
+    this.showSelectedActions();
   }
 
   confirmMove(): void {
-    if (!this.selectedPiece) {
+    if (!this.selectService.isPieceSelected()) {
       throw new Error('Confirming move without a staged piece.');
     }
-    const piece = this.selectedPiece;
+    const piece = this.selectService.getSelectedPiece()!;
 
     // Cancel staging if the piece didn't actually move.
     if (!piece.hasConfirmableMove()) {
@@ -164,10 +152,10 @@ export class GameService {
   }
 
   confirmAttack(): void {
-    if (!this.selectedPiece) {
+    if (!this.selectService.isPieceSelected()) {
       throw new Error('Confirming attack without a staged piece.');
     }
-    const piece = this.selectedPiece;
+    const piece = this.selectService.getSelectedPiece()!;
 
     if (!piece.hasConfirmableAttack()) {
       // There's nothing to attack, so just cancel.
@@ -186,35 +174,6 @@ export class GameService {
     this.removeAndAwardForDeadPieces();
   }
 
-  /**
-   * Selects or deselects just the cell portion. Piece is handled separately.
-   * @param cell 
-   */
-  private selectCell(cell: Cell | null): void {
-    if (this.selectedCell) {
-      this.selectedCell.selected = false;
-      this.selectedCell = null;
-    }
-    if (cell) {
-      cell.selected = true;
-      this.selectedCell = cell;
-    }
-    this.showSelectedActions();
-  }
-
-  getSelectedCell(): Cell | null {
-    return this.selectedCell;
-  }
-
-  private selectPiece(piece: Piece): void {
-    if (this.selectedPiece) {
-      throw new Error('There is already a selected piece');
-    }
-    this.selectedPiece = piece;
-    this.selectedPiece.select();
-    this.showSelectedActions();
-  }
-
   showSelectedActions() {
     // Reset the state of the board before showing new actions.
     for (let cell of this.getBoard().getCells().flat()) {
@@ -226,16 +185,17 @@ export class GameService {
     }
 
     // No piece selected, means no actions need to be shown.
-    if (!this.selectedPiece) {
+    if (!this.selectService.isPieceSelected()) {
       return;
     }
+    const selectedPiece = this.selectService.getSelectedPiece()!;
 
     // Show available moves.
-    if (this.selectedPiece.canMove()) {
-      const moveCells = this.selectedPiece.getMoveCells();
+    if (selectedPiece.canMove()) {
+      const moveCells = selectedPiece.getMoveCells();
       for (let cell of moveCells.getMoveableCells()) {
         cell.availableMove = true;
-        if (this.selectedPiece.position.equals(cell.position)) {
+        if (selectedPiece.position.equals(cell.position)) {
           cell.availableMoveStarting = true;
         }
       }
@@ -245,9 +205,9 @@ export class GameService {
     }
 
     // Show available attack, if any.
-    if (this.selectedPiece.canAttack()) {
+    if (selectedPiece.canAttack()) {
       // Highlight all the cells for which an attack could be made.
-      const attackCells = this.selectedPiece.getAttackCells();
+      const attackCells = selectedPiece.getAttackCells();
       // TODO: UI is using piece presence to distinguish targets.
       //       This needs to be explicit state set on the cell instead.
       for (let cell of attackCells.toAttack) {
@@ -262,7 +222,7 @@ export class GameService {
       }
       // Since we are staged, this will show the impact of an attack made
       // with the selected piece.
-      this.selectedPiece.attack();
+      selectedPiece.attack();
     }
   }
 

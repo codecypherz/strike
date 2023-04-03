@@ -29,6 +29,7 @@ import { TerrainSelectorComponent } from './terrain-selector/terrain-selector.co
 import { BoardSelectorComponent } from './board-selector/board-selector.component';
 import { TerrainItemComponent } from './terrain-item/terrain-item.component';
 import { BoardItemComponent } from './board-item/board-item.component';
+import { SelectService } from 'src/model/select.service';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { BoardItemComponent } from './board-item/board-item.component';
     DialogService,
     GameService,
     GameCollection,
+    SelectService
   ],
   bootstrap: [AppComponent],
 })
