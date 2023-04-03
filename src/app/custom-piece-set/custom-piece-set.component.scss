@@ -1,0 +1,21 @@
+.custom-piece-set {
+  display: inline-block;
+  width: 300px;
+  border: 1.5px solid var(--foreground_color);
+  font-size: 26px;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: var(--background_color);
+  vertical-align: top;
+  margin-left: 30px;
+  height: 800px;
+}
+
+.custom-piece-set-title {
+  border-bottom: 1px solid var(--foreground_color);
+}
+
+.custom-piece-set-list {
+  padding-top: 18px;
+  padding-bottom: 10px;
+}

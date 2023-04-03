@@ -30,6 +30,9 @@ import { BoardSelectorComponent } from './board-selector/board-selector.componen
 import { TerrainItemComponent } from './terrain-item/terrain-item.component';
 import { BoardItemComponent } from './board-item/board-item.component';
 import { SelectService } from 'src/model/select.service';
+import { CustomPieceSetComponent } from './custom-piece-set/custom-piece-set.component';
+import { AllPieceCollectionComponent } from './all-piece-collection/all-piece-collection.component';
+import { PieceSetSelectorComponent } from './piece-set-selector/piece-set-selector.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +57,10 @@ import { SelectService } from 'src/model/select.service';
     TerrainSelectorComponent,
     BoardSelectorComponent,
     TerrainItemComponent,
-    BoardItemComponent
+    BoardItemComponent,
+    CustomPieceSetComponent,
+    AllPieceCollectionComponent,
+    PieceSetSelectorComponent
   ],
   imports: [
     AppRoutingModule,
