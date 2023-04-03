@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Direction } from "./direction";
 import { Piece } from "./piece/piece";
-import { PieceCollection } from "./piece-collection";
+import { PieceSet } from "./piece-collection";
 
 /**
  * A cell is a portion of the board. A cell has a certain type of terrain
@@ -14,10 +14,10 @@ export class Player {
   private points: number = 0;
 
   // Pieces the player currently has.
-  private pieces = new PieceCollection();
+  private pieces = new PieceSet();
 
   // Turn metadata
-  private piecesActivated = new PieceCollection();
+  private piecesActivated = new PieceSet();
 
   constructor(
     readonly isFirst: boolean,
@@ -89,7 +89,7 @@ export class Player {
     this.pieces.remove(piece);
   }
 
-  getPieces(): PieceCollection {
+  getPieces(): PieceSet {
     return this.pieces;
   }
 
@@ -113,7 +113,7 @@ export class Player {
   }
 
   clearTurnData(): void {
-    this.piecesActivated = new PieceCollection();
+    this.piecesActivated = new PieceSet();
   }
 
   setActive(active: boolean): void {

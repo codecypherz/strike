@@ -1,5 +1,5 @@
 import { Board } from "./board";
-import { PieceCollection } from "./piece-collection";
+import { PieceSet } from "./piece-collection";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
 import { Direction } from "./direction";
@@ -38,7 +38,7 @@ export class Game extends EventTarget {
   setBoard(board: Board): void {
     this.board = board;
   }
-  
+
   start(): void {
     this.dispatchEvent(new Event(Game.START_TURN_EVENT));
   }

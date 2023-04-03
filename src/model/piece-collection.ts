@@ -1,7 +1,7 @@
 import { getOnly } from "src/util/sets";
 import { Piece } from "./piece/piece";
 
-export class PieceCollection {
+export class PieceSet {
 
   private pieces = new Set<Piece>();
 
