@@ -61,6 +61,10 @@ export class CustomGameService {
     this.getGame().setBoard(board);
   }
 
+  setPieceSet(pieceSet: PieceSet): void {
+    this.pieceSet = pieceSet;
+  }
+
   getPieceSet(): PieceSet {
     return this.pieceSet;
   }

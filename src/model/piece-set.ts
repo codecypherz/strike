@@ -4,6 +4,11 @@ import { Piece } from "./piece/piece";
 export class PieceSet {
 
   private pieces = new Set<Piece>();
+  public name: string = '';
+
+  constructor(name?: string) {
+    this.name = name || '';
+  }
 
   add(piece: Piece): void {
     if (this.pieces.has(piece)) {

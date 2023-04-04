@@ -36,6 +36,8 @@ import { PieceSetSelectorComponent } from './piece-set-selector/piece-set-select
 import { PieceCollection } from 'src/model/piece-collection';
 import { AllPieceItemComponent } from './all-piece-item/all-piece-item.component';
 import { CustomPieceItemComponent } from './custom-piece-item/custom-piece-item.component';
+import { PieceSetComponent } from './piece-set/piece-set.component';
+import { PieceSetCollection } from 'src/model/piece-set-collection';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,8 @@ import { CustomPieceItemComponent } from './custom-piece-item/custom-piece-item.
     AllPieceCollectionComponent,
     PieceSetSelectorComponent,
     AllPieceItemComponent,
-    CustomPieceItemComponent
+    CustomPieceItemComponent,
+    PieceSetComponent
   ],
   imports: [
     AppRoutingModule,
@@ -81,6 +84,7 @@ import { CustomPieceItemComponent } from './custom-piece-item/custom-piece-item.
     GameService,
     GameCollection,
     PieceCollection,
+    PieceSetCollection,
     SelectService,
   ],
   bootstrap: [AppComponent],

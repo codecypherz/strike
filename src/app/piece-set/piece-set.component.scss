@@ -1,0 +1,20 @@
+.piece-set {
+  width: 240px;
+  text-align: left;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 10px;
+  background: #444;
+  border: 1px solid #aaa;
+  margin-bottom: 10px;
+}
+
+.piece-set-name {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+
+.piece-descriptor {
+  font-size: 16px;
+  margin-left: 15px;
+}

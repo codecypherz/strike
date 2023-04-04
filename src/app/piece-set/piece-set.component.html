@@ -1,0 +1,8 @@
+<div class="piece-set" (pointerdown)="select()">
+  <div class="piece-set-name">
+    {{pieceSet.name}}
+  </div>
+  <div class="piece-descriptor" *ngFor="let pieceDescriptor of getPieceDescriptors()">
+    {{pieceDescriptor}}
+  </div>
+</div>

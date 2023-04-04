@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PieceSetCollection } from 'src/model/piece-set-collection';
 
 @Component({
   selector: 'app-piece-set-selector',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class PieceSetSelectorComponent {
 
+  constructor(readonly pieceSetCollection: PieceSetCollection) {}
 }
