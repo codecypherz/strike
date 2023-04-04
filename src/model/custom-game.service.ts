@@ -2,6 +2,8 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { Game } from "./game";
+import { Fireclaw } from "./machine/fireclaw";
+import { Glinthawk } from "./machine/glinthawk";
 import { PieceSet } from "./piece-set";
 import { SelectService } from "./select.service";
 import { Terrain } from "./terrain";
@@ -24,8 +26,18 @@ export class CustomGameService {
 
   startSetup(): void {
     this.selectService.deselect();
+    
+    // Default game.
     this.game = new Game(new Board());
+
+    // Makes the "mirrored" overlay show up.
     this.game.getBoard().setSetupMode(true);
+
+    // Default piece set.
+    this.pieceSet.add(new Fireclaw());
+    this.pieceSet.add(new Glinthawk());
+
+    // Default for board setup.
     this.selectedTerrain = Terrain.GRASSLAND;
     this.step = Step.BOARD_SETUP;
   }

@@ -1,7 +1,19 @@
 <div class="custom-piece-set">
-  <div class="custom-piece-set-title">
-    Your Set
+  
+  <div class="custom-piece-set-header">
+    <div class="custom-piece-set-title">
+      Your Set
+    </div>
+    <div class="custom-piece-set-point-container">
+      <img src="/images/icon/victory_points.png">
+      <div class="points-numerator" [innerHTML]="getPoints()">
+      </div>
+      <div class="points-denominator">
+        /10
+      </div>
+    </div>
   </div>
+
   <div class="custom-piece-set-list">
     <app-custom-piece-item *ngFor="let piece of getPieces()" [piece]="piece">
     </app-custom-piece-item>

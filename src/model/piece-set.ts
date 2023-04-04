@@ -19,6 +19,14 @@ export class PieceSet {
     this.pieces.delete(piece);
   }
 
+  getPoints(): number {
+    let points = 0;
+    for (let piece of this.pieces) {
+      points += piece.points;
+    }
+    return points;
+  }
+
   size(): number {
     return this.pieces.size;
   }

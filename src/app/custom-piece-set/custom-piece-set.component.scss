@@ -10,8 +10,38 @@
   margin-left: 30px;
 }
 
-.custom-piece-set-title {
+.custom-piece-set-header {
   border-bottom: 1px solid var(--foreground_color);
+  text-align: left;
+  padding: 10px 20px 10px 20px;
+  position: relative;
+}
+
+.custom-piece-set-point-container {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.points-numerator {
+  color: black;
+  position: absolute;
+  right: 45px;
+  font-size: 22px;
+  top: -2px;
+  width: 30px;
+  text-align: center;
+}
+
+.points-denominator {
+  position: absolute;
+  right: 0;
+}
+
+.custom-piece-set-point-container > img {
+  width: 40px;
+  position: absolute;
+  right: 40px;
 }
 
 .custom-piece-set-list {
