@@ -2,6 +2,7 @@ import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { Game } from "./game";
+import { PieceSet } from "./piece-set";
 import { SelectService } from "./select.service";
 import { Terrain } from "./terrain";
 
@@ -9,6 +10,7 @@ import { Terrain } from "./terrain";
 export class CustomGameService {
 
   private game: Game | null = null;
+  private pieceSet = new PieceSet();
   private selectedTerrain: Terrain = Terrain.GRASSLAND;
   private step = Step.BOARD_SETUP;
 
@@ -45,6 +47,10 @@ export class CustomGameService {
     this.selectService.deselect();
     board.setSetupMode(true);
     this.getGame().setBoard(board);
+  }
+
+  getPieceSet(): PieceSet {
+    return this.pieceSet;
   }
 
   setStep(step: Step) {

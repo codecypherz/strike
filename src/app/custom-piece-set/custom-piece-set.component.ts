@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { CustomGameService } from 'src/model/custom-game.service';
+import { Piece } from 'src/model/piece/piece';
 
 @Component({
   selector: 'app-custom-piece-set',
@@ -7,4 +9,9 @@ import { Component } from '@angular/core';
 })
 export class CustomPieceSetComponent {
 
+  constructor(private customGameService: CustomGameService) {}
+
+  getPieces(): Set<Piece> {
+    return this.customGameService.getPieceSet().getSet();
+  }
 }

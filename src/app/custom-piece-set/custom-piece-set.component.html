@@ -3,5 +3,7 @@
     Your Set
   </div>
   <div class="custom-piece-set-list">
+    <app-custom-piece-item *ngFor="let piece of getPieces()" [piece]="piece">
+    </app-custom-piece-item>
   </div>
 </div>

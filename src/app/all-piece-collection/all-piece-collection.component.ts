@@ -9,4 +9,8 @@ import { PieceCollection } from 'src/model/piece-collection';
 export class AllPieceCollectionComponent {
 
   constructor(readonly pieceCollection: PieceCollection) {}
+
+  getAllPieces() {
+    return this.pieceCollection.createAllPieces().getSet();
+  }
 }

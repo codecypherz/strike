@@ -8,7 +8,6 @@
   background-color: var(--background_color);
   vertical-align: top;
   margin-left: 30px;
-  height: 800px;
 }
 
 .custom-piece-set-title {
@@ -16,8 +15,10 @@
 }
 
 .custom-piece-set-list {
-  padding-top: 18px;
-  padding-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
   height: 750px;
   overflow: auto;
+  text-align: left;
 }

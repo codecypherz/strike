@@ -3,8 +3,7 @@
     All Pieces
   </div>
   <div class="all-piece-collection-list">
-    <div *ngFor="let piece of pieceCollection.createAllPieces().getSet()">
-      {{piece.name}}
-    </div>
+    <app-all-piece-item *ngFor="let piece of getAllPieces()" [piece]="piece">
+    </app-all-piece-item>
   </div>
 </div>

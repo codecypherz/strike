@@ -34,6 +34,8 @@ import { CustomPieceSetComponent } from './custom-piece-set/custom-piece-set.com
 import { AllPieceCollectionComponent } from './all-piece-collection/all-piece-collection.component';
 import { PieceSetSelectorComponent } from './piece-set-selector/piece-set-selector.component';
 import { PieceCollection } from 'src/model/piece-collection';
+import { AllPieceItemComponent } from './all-piece-item/all-piece-item.component';
+import { CustomPieceItemComponent } from './custom-piece-item/custom-piece-item.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { PieceCollection } from 'src/model/piece-collection';
     BoardItemComponent,
     CustomPieceSetComponent,
     AllPieceCollectionComponent,
-    PieceSetSelectorComponent
+    PieceSetSelectorComponent,
+    AllPieceItemComponent,
+    CustomPieceItemComponent
   ],
   imports: [
     AppRoutingModule,
