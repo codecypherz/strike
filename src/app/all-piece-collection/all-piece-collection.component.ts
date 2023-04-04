@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PieceCollection } from 'src/model/piece-collection';
 
 @Component({
   selector: 'app-all-piece-collection',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AllPieceCollectionComponent {
 
+  constructor(readonly pieceCollection: PieceCollection) {}
 }

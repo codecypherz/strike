@@ -3,5 +3,8 @@
     All Pieces
   </div>
   <div class="all-piece-collection-list">
+    <div *ngFor="let piece of pieceCollection.createAllPieces().getSet()">
+      {{piece.name}}
+    </div>
   </div>
 </div>

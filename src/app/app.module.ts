@@ -33,6 +33,7 @@ import { SelectService } from 'src/model/select.service';
 import { CustomPieceSetComponent } from './custom-piece-set/custom-piece-set.component';
 import { AllPieceCollectionComponent } from './all-piece-collection/all-piece-collection.component';
 import { PieceSetSelectorComponent } from './piece-set-selector/piece-set-selector.component';
+import { PieceCollection } from 'src/model/piece-collection';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { PieceSetSelectorComponent } from './piece-set-selector/piece-set-select
     DialogService,
     GameService,
     GameCollection,
-    SelectService
+    PieceCollection,
+    SelectService,
   ],
   bootstrap: [AppComponent],
 })
