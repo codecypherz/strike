@@ -1,7 +1,7 @@
 <div class="selected-panel">
 
   <!-- Nothing Selected -->
-  <div *ngIf="!getSelected()" class="selected-content nothing-selected">
+  <div *ngIf="!isAnythingSelected()" class="selected-content nothing-selected">
     <div class="nothing-selected-title">
       Nothing selected
     </div>
@@ -10,10 +10,10 @@
     </div>
   </div>
 
-  <div *ngIf="getSelected()" class="selected-content">
+  <div *ngIf="isAnythingSelected()" class="selected-content">
 
     <!-- Piece Selected -->
-    <div *ngIf="getSelected()!.hasPiece()">
+    <div *ngIf="showPieceSelected()">
       <div class="selected-piece-name">
         {{getPiece().name}}
       </div>
@@ -53,7 +53,7 @@
     </div>
 
     <!-- Terrain Selected -->
-    <div *ngIf="!getSelected()!.hasPiece()">
+    <div *ngIf="showTerrainSelected()">
       <div class="selected-piece-name">
         {{getTerrain().type}}
       </div>

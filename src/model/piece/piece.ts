@@ -180,14 +180,16 @@ export abstract class Piece {
       throw new Error('Trying to deselect a non selected piece');
     }
 
-    // Undo the selection by putting the piece back where it was.
-    // Note: this is happening even after confirming a move, but it's a no-op.
-    const currentCell = this.getBoard().getCell(this.stagedPosition!);
-    currentCell.clearPiece();
-    const originalCell = this.getBoard().getCell(this.position);
-    originalCell.clearPiece();
-    originalCell.setPiece(this);
-    this.position = originalCell.position;
+    if (this.board != null) {
+      // Undo the selection by putting the piece back where it was.
+      // Note: this is happening even after confirming a move, but it's a no-op.
+      const currentCell = this.getBoard().getCell(this.stagedPosition!);
+      currentCell.clearPiece();
+      const originalCell = this.getBoard().getCell(this.position);
+      originalCell.clearPiece();
+      originalCell.setPiece(this);
+      this.position = originalCell.position;
+    }
 
     // Clear metadata.
     this.clearSelectionData();

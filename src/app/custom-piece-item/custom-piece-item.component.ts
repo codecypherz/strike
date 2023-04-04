@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CustomGameService } from 'src/model/custom-game.service';
 import { Piece } from 'src/model/piece/piece';
+import { SelectService } from 'src/model/select.service';
 
 @Component({
   selector: 'app-custom-piece-item',
@@ -11,9 +12,22 @@ export class CustomPieceItemComponent {
 
   @Input() piece!: Piece;
 
-  constructor(private customGameService: CustomGameService) {}
+  constructor(
+    private customGameService: CustomGameService,
+    private selectService: SelectService) {}
 
   removePiece(): void {
     this.customGameService.getPieceSet().remove(this.piece);
+  }
+
+  isSelected(): boolean {
+    if (this.selectService.isPieceSelected()) {
+      return this.piece.name == this.selectService.getSelectedPiece()!.name;
+    }
+    return false;
+  }
+
+  select(): void {
+    this.selectService.selectPiece(this.piece);
   }
 }

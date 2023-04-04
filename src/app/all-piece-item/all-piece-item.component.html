@@ -1,4 +1,6 @@
-<div class="all-piece-item">
+<div class="all-piece-item"
+    [ngClass]="{'selected': isSelected()}"
+    (pointerdown)="select()">
   <button class="add-piece-button" (pointerdown)="addPiece()">
     <img src="/images/icon/add_icon_black.png">
   </button>

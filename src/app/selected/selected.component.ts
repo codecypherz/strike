@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Cell } from 'src/model/cell';
+import { Component } from '@angular/core';
 import { Piece } from 'src/model/piece/piece';
 import { SelectService } from 'src/model/select.service';
 import { Terrain } from 'src/model/terrain';
@@ -10,24 +9,28 @@ import { decorate } from '../text-decorator';
   templateUrl: './selected.component.html',
   styleUrls: ['./selected.component.scss']
 })
-export class SelectedComponent implements OnInit {
+export class SelectedComponent {
 
   constructor(private selectService: SelectService) {}
 
-  ngOnInit(): void {
-    this.getSelected();
+  isAnythingSelected(): boolean {
+    return this.selectService.isCellSelected() || this.selectService.isPieceSelected();
   }
 
-  getSelected(): Cell | null {
-    return this.selectService.getSelectedCell();
+  showPieceSelected(): boolean {
+    return this.selectService.isPieceSelected();
   }
 
+  showTerrainSelected(): boolean {
+    return !this.selectService.isPieceSelected() && this.selectService.isCellSelected();
+  }
+  
   getPiece(): Piece {
-    return this.getSelected()!.getPiece()!;
+    return this.selectService.getSelectedPiece()!;
   }
   
   getTerrain(): Terrain {
-    return this.getSelected()!.terrain;
+    return this.selectService.getSelectedCell()!.terrain;
   }
 
   getPieceTypeDescription(): string {
@@ -41,6 +44,6 @@ export class SelectedComponent implements OnInit {
   }
 
   getTerrainDescription(): string {
-    return decorate(this.getSelected()!.terrain.description);
+    return decorate(this.getTerrain().description);
   }
 }

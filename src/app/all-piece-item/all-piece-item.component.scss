@@ -1,12 +1,20 @@
 .all-piece-item {
-  margin-bottom: 5px;
+  cursor: pointer;
+  border: 3px solid transparent;
+  padding: 3px;
+  margin-bottom: -3px;
+}
+
+.all-piece-item.selected {
+  border: 3px solid white;
 }
 
 .add-piece-button {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   vertical-align: middle;
   position: relative;
+  margin-right: 6px;
 }
 
 .add-piece-button>img {
@@ -14,9 +22,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 30px;
+  width: 25px;
 }
 
 .all-piece-item-name {
-  font-size: 20px;
+  font-size: 18px;
 }
