@@ -79,6 +79,10 @@ export abstract class Piece {
     this.board = board;
   }
 
+  isOnBoard(): boolean {
+    return this.board != null;
+  }
+
   getBoard(): Board {
     return this.board!;
   }
@@ -88,6 +92,10 @@ export abstract class Piece {
       throw new Error('Cannot set another player for this piece.');
     }
     this.player = player;
+  }
+
+  hasPlayer(): boolean {
+    return this.player != null;
   }
 
   getPlayer(): Player {

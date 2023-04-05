@@ -1,8 +1,15 @@
 <div class="piece-placement">
+
+  <div class="piece-set-container">
+    <div class="piece-container" *ngFor="let piece of getPieces()">
+      <app-piece [piece]="piece"></app-piece>
+    </div>
+  </div>
+
   <div class="left-panel">
     <app-selected></app-selected>
   </div>
-  
+
   <div class="right-panel">
     <app-board [board]="getGame().getBoard()"></app-board>
   </div>

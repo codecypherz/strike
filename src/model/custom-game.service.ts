@@ -1,6 +1,7 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
 import { Cell } from "./cell";
+import { Direction } from "./direction";
 import { Game } from "./game";
 import { Fireclaw } from "./machine/fireclaw";
 import { Glinthawk } from "./machine/glinthawk";
@@ -72,6 +73,13 @@ export class CustomGameService {
   setStep(step: Step) {
     this.selectService.deselect();
     this.step = step;
+
+    // Make sure all pieces are pointed down.
+    if (this.step == Step.PIECE_PLACEMENT) {
+      for (let piece of this.pieceSet.getSet()) {
+        piece.setDirection(Direction.DOWN);
+      }
+    }
   }
 
   selectTerrain(terrain: Terrain): void {

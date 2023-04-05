@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CustomGameService, Step } from 'src/model/custom-game.service';
 import { Game } from 'src/model/game';
+import { Piece } from 'src/model/piece/piece';
 
 @Component({
   selector: 'app-piece-placement',
@@ -17,5 +18,9 @@ export class PiecePlacementComponent implements OnInit {
 
   getGame(): Game {
     return this.customGameService.getGame();
+  }
+
+  getPieces(): Set<Piece> {
+    return this.customGameService.getPieceSet().getSet();
   }
 }

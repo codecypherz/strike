@@ -16,3 +16,22 @@
   margin-top: 140px;
   margin-right: 40px;
 }
+
+.piece-set-container {
+  position: absolute;
+  top: 0px;
+  left: 40px;
+  right: 40px;
+  background: #333;
+  height: 110px;
+  border: 1.5px solid white;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.piece-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+}

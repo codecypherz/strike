@@ -13,11 +13,40 @@ export class PieceComponent {
 
   constructor(private gameService: GameService) {}
 
-  isPieceSelected() {
-    return this.piece && this.piece.selected;
+  representAsPlayer1(): boolean {
+    if (!this.piece.hasPlayer()) {
+      return true;
+    }
+    return this.piece.getPlayer().isPlayer1();
+  }
+  
+  representAsPlayer2(): boolean {
+    if (!this.piece.hasPlayer()) {
+      return false; // Default is player 1
+    }
+    return this.piece.getPlayer().isPlayer2();
   }
 
+  isPieceSelected() {
+    return this.piece.selected;
+  }
+
+  showAttackPower(): boolean {
+    return this.piece.isOnBoard() && this.piece.getPlayer().isActive();
+  }
+
+  showDefensePower(): boolean {
+    return this.piece.isOnBoard() && !this.piece.getPlayer().isActive();
+  }
+
+  showHealth(): boolean {
+    return this.piece.isOnBoard();
+  }
+  
   showHealthDrop(): boolean {
+    if (!this.piece.isOnBoard()) {
+      return false;
+    }
     // Show if the piece is hurt, but let points override.
     return this.getHealthDropAmount() > 0 && !this.showPointsAwarded();
   }
@@ -27,7 +56,7 @@ export class PieceComponent {
   }
 
   showPointsAwarded(): boolean {
-    return this.piece.getHealth() <= 0;
+    return this.piece.isOnBoard() && this.piece.getHealth() <= 0;
   }
 
   getPointsAwarded(): string {
@@ -40,6 +69,10 @@ export class PieceComponent {
 
   getPieceRotationTransform(): string {
     return 'rotate(' + this.piece.getDirection().degrees + 'deg)';
+  }
+
+  showKnockbackOrPullIndicators(): boolean {
+    return this.piece.isOnBoard();
   }
 
   getKnockbackRotationTransform(): string {
@@ -79,6 +112,10 @@ export class PieceComponent {
   }
   getBackStrength(): string {
     return 'strength-' + this.piece.getBackStrength();
+  }
+
+  showBoardActionButtons(): boolean {
+    return this.piece.isOnBoard() && this.piece.selected;
   }
 
   cancel(event: Event): void {

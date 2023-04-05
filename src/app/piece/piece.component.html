@@ -1,7 +1,7 @@
-<div *ngIf="piece" [ngClass]="{
+<div [ngClass]="{
       'piece': true,
-      'player1' : piece.getPlayer().isPlayer1(),
-      'player2' : piece.getPlayer().isPlayer2()
+      'player1' : representAsPlayer1(),
+      'player2' : representAsPlayer2()
       }">
   <div class="piece-outline" [style.transform]="getPieceRotationTransform()">
     <div class="piece-background"></div>
@@ -16,8 +16,8 @@
 
   <div class="piece-name">{{piece.name}}</div>
 
-  <!-- Show attack if active. -->
-  <div *ngIf="piece.getPlayer().isActive()" class="piece-attack">
+  <!-- Attack Power -->
+  <div *ngIf="showAttackPower()" class="piece-attack">
     <img src="/images/icon/attack_icon_black.png">
     <div class="piece-attack-background">
       <div class="piece-attack-number" [ngClass]="{
@@ -28,8 +28,8 @@
     </div>
   </div>
 
-  <!-- Show defense if not active. -->
-  <div *ngIf="!piece.getPlayer().isActive()" class="piece-defense">
+  <!-- Defense Power -->
+  <div *ngIf="showDefensePower()" class="piece-defense">
     <img src="/images/icon/shield_icon.png">
     <div class="piece-defense-number" [ngClass]="{
         'stat-buffed': getDefense() > piece.getBaseDefense(),
@@ -38,8 +38,8 @@
     </div>
   </div>
 
-  <!-- Always show health -->
-  <div class="piece-health">
+  <!-- Health value -->
+  <div *ngIf="showHealth()" class="piece-health">
     <img src="/images/icon/heart_black.png">
     <div class="piece-health-number" [ngClass]="{
         'stat-buffed': piece.getHealth() > piece.getUnstagedHealth(),
@@ -67,7 +67,7 @@
 </div>
 
 <!-- These are the buttons that show up once the piece is selected. -->
-<div *ngIf="isPieceSelected()" class="piece-buttons">
+<div *ngIf="showBoardActionButtons()" class="piece-buttons">
   <button class="piece-button cancel-selection" (click)="cancel($event)">
     <div class="piece-button-img-container">
       <img class="cancel-selection-image" src="/images/icon/cancel_black.png">
@@ -109,7 +109,8 @@
     </div>
   </button>
 </div>
-<div *ngIf="piece" class="knockback-pull-indicator-container">
+
+<div *ngIf="showKnockbackOrPullIndicators()" class="knockback-pull-indicator-container">
   <div *ngIf="piece.wouldBeKnockedBack()" class="knockback-pull-indicator"
     [style.transform]="getKnockbackRotationTransform()">
     <span></span>
