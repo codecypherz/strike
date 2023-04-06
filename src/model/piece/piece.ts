@@ -21,6 +21,10 @@ export interface PieceCtor {
  */
 export abstract class Piece {
 
+  static newFrom(other: Piece): Piece {
+    return new (Object.getPrototypeOf(other).constructor as PieceCtor)()
+  }
+
   static IMAGE_PATH = '/images/machine/';
 
   // Semi-invalid default, but don't want nullability.

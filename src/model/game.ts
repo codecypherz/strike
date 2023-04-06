@@ -3,6 +3,7 @@ import { PieceSet } from "./piece-set";
 import { v4 as uuidv4 } from 'uuid';
 import { Player } from "./player";
 import { Direction } from "./direction";
+import { Piece } from "./piece/piece";
 
 export class Game extends EventTarget {
 
@@ -37,6 +38,16 @@ export class Game extends EventTarget {
 
   setBoard(board: Board): void {
     this.board = board;
+  }
+
+  initializePiece(piece: Piece, player: Player) {
+    piece.setDirection(player.defaultDirection);
+    piece.setBoard(this.board);
+    piece.setPlayer(player);
+
+    this.board.getCell(piece.position).setPiece(piece);
+
+    player.addPiece(piece);
   }
 
   start(): void {

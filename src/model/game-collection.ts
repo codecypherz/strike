@@ -1,5 +1,4 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
-import { Board } from "./board";
 import { BoardCollection } from "./board-collection";
 import { Game } from "./game";
 import { ApexClawstrider } from "./machine/apex-clawstrider";
@@ -7,10 +6,8 @@ import { Behemoth } from "./machine/behemoth";
 import { Bellowback } from "./machine/bellowback";
 import { Bristleback } from "./machine/bristleback";
 import { Burrower } from "./machine/burrower";
-import { Charger } from "./machine/charger";
 import { Clamberjaw } from "./machine/clamberjaw";
 import { Dreadwing } from "./machine/dreadwing";
-import { ElementalClawstrider } from "./machine/elemental-clawstrider";
 import { Fanghorn } from "./machine/fanghorn";
 import { Fireclaw } from "./machine/fireclaw";
 import { Frostclaw } from "./machine/frostclaw";
@@ -25,8 +22,6 @@ import { RedeyeWatcher } from "./machine/redeye-watcher";
 import { Rockbreaker } from "./machine/rockbreaker";
 import { Rollerback } from "./machine/rollerback";
 import { Scorcher } from "./machine/scorcher";
-import { Scrapper } from "./machine/scrapper";
-import { Scrounger } from "./machine/scrounger";
 import { ShellWalker } from "./machine/shell-walker";
 import { Shellsnapper } from "./machine/shellsnapper";
 import { Skydrifter } from "./machine/skydrifter";
@@ -42,8 +37,7 @@ import { Tideripper } from "./machine/tideripper";
 import { TrackerBurrower } from "./machine/tracker-burrower";
 import { Tremortusk } from "./machine/tremortusk";
 import { Widemaw } from "./machine/widemaw";
-import { Piece, PieceCtor } from "./piece/piece";
-import { Player } from "./player";
+import { PieceCtor } from "./piece/piece";
 import { Position } from "./position";
 
 /**
@@ -180,27 +174,15 @@ export class GameCollection {
   }
 
   private addPiece(row: number, col: number, game: Game, Piece: PieceCtor): void {
-    const board = game.getBoard();
-
     // Add the piece for player 1
     const piece1 = new Piece();
     piece1.position = new Position(row, col);
-    this.initializePiece(piece1, board, game.getPlayer1());
+    game.initializePiece(piece1, game.getPlayer1());
 
     // Add the piece for player 2
     // The position is mirrored.
     const piece2 = new Piece();
     piece2.position = new Position(7 - row, 7 - col);
-    this.initializePiece(piece2, board, game.getPlayer2());
-  }
-
-  private initializePiece(piece: Piece, board: Board, player: Player) {
-    piece.setDirection(player.defaultDirection);
-    piece.setBoard(board);
-    piece.setPlayer(player);
-
-    board.getCell(piece.position).setPiece(piece);
-
-    player.addPiece(piece);
+    game.initializePiece(piece2, game.getPlayer2());
   }
 }

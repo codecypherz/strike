@@ -6,6 +6,9 @@ import { Game } from "./game";
 import { Fireclaw } from "./machine/fireclaw";
 import { Glinthawk } from "./machine/glinthawk";
 import { PieceSet } from "./piece-set";
+import { Piece, PieceCtor } from "./piece/piece";
+import { Player } from "./player";
+import { Position } from "./position";
 import { SelectService } from "./select.service";
 import { Terrain } from "./terrain";
 
@@ -27,7 +30,7 @@ export class CustomGameService {
 
   startSetup(): void {
     this.selectService.deselect();
-    
+
     // Default game.
     this.game = new Game(new Board());
 
@@ -95,6 +98,20 @@ export class CustomGameService {
       this.setTerrain(cell);
     } else if (this.step == Step.PIECE_PLACEMENT) {
       this.selectOrMovePiece(cell);
+      this.showAvailablePlacement();
+    }
+  }
+
+  showAvailablePlacement(): void {
+    for (let cell of this.getGame().getBoard().getCells().flat()) {
+      if (cell.position.row > 1) {
+        break;
+      }
+      cell.clearIndicators();
+
+      if (this.selectService.isPieceSelected() && !cell.hasPiece()) {
+        cell.availableMove = true;
+      }
     }
   }
 
@@ -108,25 +125,79 @@ export class CustomGameService {
   }
 
   private selectOrMovePiece(cell: Cell): void {
-    // Nothing was selected before, so just select this cell.
-    if (!this.selectService.isCellSelected()) {
+    // Neither a piece or a cell was selected, so just select this cell.
+    if (!this.selectService.isCellSelected()
+      && !this.selectService.isPieceSelected()) {
       this.selectService.selectCell(cell);
       return;
     }
 
+    // A piece was selected (could be on or off the board).
+    if (this.selectService.isPieceSelected()) {
+
+      if (cell.hasPiece()) {
+        // The cell clicked had a piece, so can't move or place here.
+        // Select the cell instead.
+        this.selectService.selectCell(cell);
+        return;
+      }
+
+      if (cell.position.row > 1) {
+        // Invalid placement cell, so just select the cell.
+        this.selectService.selectCell(cell);
+        return;
+      }
+
+      const game = this.getGame();
+      const piece = this.selectService.getSelectedPiece()!;
+
+      // Valid placement, put the piece on the board or move it.
+      if (piece.isOnBoard()) {
+
+        // The piece is on the board, so must the mirrored piece.
+        const player2Cell = game.getBoard().getByRowCol(
+          7 - piece.position.row, 7 - piece.position.col);
+        if (!player2Cell.hasPiece()) {
+          throw new Error('Expected a mirrored piece to be found.');
+        }
+        const player2Piece = player2Cell.getPiece()!;
+
+        // Update player 1 piece.
+        piece.getCell().clearPiece();
+        piece.position = cell.position;
+
+        // // Update player 2 piece.
+        player2Cell.clearPiece();
+        const newPlayer2Cell = game.getBoard().getByRowCol(
+          7 - piece.position.row, 7 - piece.position.col);
+        player2Piece.position = newPlayer2Cell.position;
+        newPlayer2Cell.setPiece(player2Piece);
+      } else {
+        // Piece not yet on the board, so put it on the board.
+        this.pieceSet.remove(piece);
+        piece.position = cell.position;
+        game.initializePiece(piece, game.getPlayer1());
+
+        // Create the player 2 piece and mirror it.
+        const player2Piece = Piece.newFrom(piece);
+        player2Piece.position = new Position(
+          7 - piece.position.row, 7 - piece.position.col);
+        game.initializePiece(player2Piece, game.getPlayer2());
+      }
+
+      // Whether on the board or not, finish deselecting everything.
+      this.selectService.deselect();
+      return;
+    }
+
+    // No piece selected.
     // Do nothing if you select the same cell.
     if (this.selectService.getSelectedCell()!.equals(cell)) {
       return;
     }
 
-    // If a different cell was clicked, it now depends if we had
-    // a selected piece.
-    if (!this.selectService.isPieceSelected()) {
-      this.selectService.selectCell(cell);
-      return;
-    }
-
-    // TODO Maybe move piece.
+    // If a different cell was clicked, so just select that one.
+    this.selectService.selectCell(cell);
   }
 }
 

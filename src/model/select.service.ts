@@ -20,10 +20,6 @@ export class SelectService {
   }
 
   selectCell(cell: Cell): void {
-    if (this.cell == cell) {
-      return;
-    }
-
     this.deselectCell();
 
     this.cell = cell;
@@ -45,12 +41,15 @@ export class SelectService {
   }
 
   selectPiece(piece: Piece): void {
-    if (this.piece == piece) {
-      return;
-    }
-
+    // Different piece, so first thing is reset.
     this.deselectPiece();
 
+    // Also deselect the cell if the piece is not on the board.
+    if (!piece.isOnBoard()) {
+      this.deselectCell();
+    }
+
+    // Select the piece.
     this.piece = piece;
     this.piece.select();
   }
