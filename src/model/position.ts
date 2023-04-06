@@ -24,6 +24,10 @@ export class Position {
     return '(' + this.row + ',' + this.col + ')';
   }
 
+  mirror(): Position {
+    return new Position(7 - this.row, 7 - this.col);
+  }
+
   getDirectionTowards(target: Position): Direction {
     if (target.row < this.row) {
       if (target.col != this.col) {

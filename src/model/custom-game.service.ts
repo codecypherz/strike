@@ -6,17 +6,22 @@ import { Game } from "./game";
 import { Fireclaw } from "./machine/fireclaw";
 import { Glinthawk } from "./machine/glinthawk";
 import { PieceSet } from "./piece-set";
-import { Piece, PieceCtor } from "./piece/piece";
-import { Player } from "./player";
-import { Position } from "./position";
+import { Piece } from "./piece/piece";
 import { SelectService } from "./select.service";
 import { Terrain } from "./terrain";
+
+export enum Step {
+  BOARD_SETUP,
+  PIECE_SELECTION,
+  PIECE_PLACEMENT
+}
 
 @Injectable()
 export class CustomGameService {
 
   private game: Game | null = null;
   private pieceSet = new PieceSet();
+  private placementMap: Map<string, string[]> = new Map<string, string[]>();
   private selectedTerrain: Terrain = Terrain.GRASSLAND;
   private step = Step.BOARD_SETUP;
 
@@ -73,6 +78,22 @@ export class CustomGameService {
     return this.pieceSet;
   }
 
+  removePiece(piece: Piece): void {
+    // Remove the piece from the set.
+    this.pieceSet.remove(piece);
+
+    // Also check the board to see if the piece should be removed.
+    if (this.hasBeenPlaced(piece)) {
+      const pieceIds = this.placementMap.get(piece.getId())!;
+      this.getGame().removePiece(pieceIds[0]);
+      this.getGame().removePiece(pieceIds[1]);
+    }
+  }
+
+  hasBeenPlaced(piece: Piece): boolean {
+    return this.placementMap.has(piece.getId());
+  }
+
   setStep(step: Step) {
     this.selectService.deselect();
     this.step = step;
@@ -113,7 +134,10 @@ export class CustomGameService {
       cell.clearIndicators();
 
       if (this.selectService.isPieceSelected() && !cell.hasPiece()) {
-        cell.availableMove = true;
+        const piece = this.selectService.getSelectedPiece()!;
+        if (!this.hasBeenPlaced(piece)) {
+          cell.availableMove = true;
+        }
       }
     }
   }
@@ -122,8 +146,7 @@ export class CustomGameService {
     cell.terrain = this.selectedTerrain;
 
     // Mirror the tile on the other side.
-    const mirroredCell = this.getGame().getBoard()
-      .getByRowCol(7 - cell.position.row, 7 - cell.position.col);
+    const mirroredCell = this.getGame().getBoard().getCell(cell.position.mirror());
     mirroredCell.terrain = this.selectedTerrain;
   }
 
@@ -156,36 +179,39 @@ export class CustomGameService {
 
       // Valid placement, put the piece on the board or move it.
       if (piece.isOnBoard()) {
+        const player1Piece = piece;
 
         // The piece is on the board, so must the mirrored piece.
-        const player2Cell = game.getBoard().getByRowCol(
-          7 - piece.position.row, 7 - piece.position.col);
-        if (!player2Cell.hasPiece()) {
-          throw new Error('Expected a mirrored piece to be found.');
-        }
-        const player2Piece = player2Cell.getPiece()!;
+        const player2Piece = this.lookupPlayer2Piece(player1Piece);
 
         // Update player 1 piece.
-        piece.getCell().clearPiece();
-        piece.position = cell.position;
+        player1Piece.getCell().clearPiece();
+        player1Piece.position = cell.position;
 
         // // Update player 2 piece.
-        player2Cell.clearPiece();
-        const newPlayer2Cell = game.getBoard().getByRowCol(
-          7 - piece.position.row, 7 - piece.position.col);
+        player2Piece.getCell().clearPiece();
+        const newPlayer2Cell = game.getBoard().getCell(player1Piece.position.mirror());
         player2Piece.position = newPlayer2Cell.position;
         newPlayer2Cell.setPiece(player2Piece);
       } else {
-        // Piece not yet on the board, so put it on the board.
-        this.pieceSet.remove(piece);
-        piece.position = cell.position;
-        game.initializePiece(piece, game.getPlayer1());
+        if (this.hasBeenPlaced(piece)) {
+          // This piece has already been place, so just select the cell.
+          this.selectService.selectCell(cell);
+          return;
+        }
+
+        // Piece not yet on the board, so create a copy from it and place it.
+        const player1Piece = Piece.newFrom(piece);
+        player1Piece.position = cell.position;
+        game.initializePiece(player1Piece, game.getPlayer1());
 
         // Create the player 2 piece and mirror it.
         const player2Piece = Piece.newFrom(piece);
-        player2Piece.position = new Position(
-          7 - piece.position.row, 7 - piece.position.col);
+        player2Piece.position = player1Piece.position.mirror();
         game.initializePiece(player2Piece, game.getPlayer2());
+
+        // Do some book keeping in case of set modification.
+        this.placementMap.set(piece.getId(), [player1Piece.getId(), player2Piece.getId()]);
       }
 
       // Whether on the board or not, finish deselecting everything.
@@ -202,10 +228,12 @@ export class CustomGameService {
     // If a different cell was clicked, so just select that one.
     this.selectService.selectCell(cell);
   }
-}
 
-export enum Step {
-  BOARD_SETUP,
-  PIECE_SELECTION,
-  PIECE_PLACEMENT
+  lookupPlayer2Piece(player1Piece: Piece): Piece {
+    const player2Cell = this.getGame().getBoard().getCell(player1Piece.position.mirror());
+    if (!player2Cell.hasPiece()) {
+      throw new Error('Expected a mirrored piece to be found.');
+    }
+    return player2Cell.getPiece()!;
+  }
 }

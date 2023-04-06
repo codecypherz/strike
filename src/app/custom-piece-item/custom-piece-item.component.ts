@@ -17,7 +17,7 @@ export class CustomPieceItemComponent {
     private selectService: SelectService) {}
 
   removePiece(): void {
-    this.customGameService.getPieceSet().remove(this.piece);
+    this.customGameService.removePiece(this.piece);
   }
 
   isSelected(): boolean {

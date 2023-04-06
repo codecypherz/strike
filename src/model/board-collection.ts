@@ -1,5 +1,6 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
 import { Board } from "./board";
+import { Position } from "./position";
 import { Terrain } from "./terrain";
 
 /**
@@ -369,8 +370,9 @@ export class BoardCollection {
   private mirrorToOtherSide(board: Board): void {
     for (let row = 0; row < 4; row++) {
       for (let col = 0; col < 8; col++) {
-        const terrain = board.getByRowCol(row, col).terrain;
-        board.getByRowCol(7 - row, 7 - col).terrain = terrain;
+        const position = new Position(row, col);
+        const terrain = board.getCell(position).terrain;
+        board.getCell(position.mirror()).terrain = terrain;
       }
     }
   }

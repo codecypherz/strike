@@ -24,6 +24,15 @@ export class PieceSet {
     this.pieces.delete(piece);
   }
 
+  find(pieceId: string): Piece | null {
+    for (let piece of this.pieces) {
+      if (piece.getId() == pieceId) {
+        return piece;
+      }
+    }
+    return null;
+  }
+
   getPoints(): number {
     let points = 0;
     for (let piece of this.pieces) {

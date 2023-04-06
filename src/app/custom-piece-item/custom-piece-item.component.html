@@ -1,10 +1,15 @@
 <div class="custom-piece-item"
-  [ngClass]="{'selected': isSelected()}"
-  (pointerdown)="select()">
-  <button class="remove-piece-button" (pointerdown)="removePiece()">
+    [ngClass]="{'selected': isSelected()}"
+    (pointerdown)="select()">
+
+  <button
+      class="remove-piece-button"
+      (pointerdown)="removePiece()">
     <img src="/images/icon/trash_icon_black.png">
   </button>
+
   <span class="custom-piece-item-name">
     {{piece.name}}
   </span>
+
 </div>

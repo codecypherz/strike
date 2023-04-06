@@ -1,4 +1,5 @@
 import { getOnly } from "src/util/sets";
+import { v4 as uuidv4 } from 'uuid';
 import { Ability } from "../ability/ability";
 import { AttackCells } from "../attack-cells";
 import { Board } from "../board";
@@ -26,6 +27,8 @@ export abstract class Piece {
   }
 
   static IMAGE_PATH = '/images/machine/';
+
+  private id = uuidv4();
 
   // Semi-invalid default, but don't want nullability.
   position = new Position(0, 0);
@@ -61,7 +64,7 @@ export abstract class Piece {
   stagedPullDirection: Direction | null = null;
   stagedOvercharge = false;
 
-  // Set later.
+  // Initialization metadata.
   private board: Board | null = null;
   private player: Player | null = null;
 
@@ -74,6 +77,14 @@ export abstract class Piece {
     readonly attackRange: number,
     readonly maxHealth: number) {
     this.health = maxHealth;
+  }
+
+  getId(): string {
+    return this.id;
+  }
+
+  equals(other: Piece): boolean {
+    return this.id == other.id;
   }
 
   setBoard(board: Board): void {

@@ -41,3 +41,7 @@
 .piece-container.selected {
   border: 3px solid white;
 }
+
+.piece-container.placed {
+  opacity: 50%;
+}

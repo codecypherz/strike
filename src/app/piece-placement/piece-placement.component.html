@@ -3,7 +3,10 @@
   <div class="piece-set-container">
     <div *ngFor="let piece of getPieces()"
         class="piece-container"
-        [ngClass]="{'selected': isSelected(piece)}"
+        [ngClass]="{
+          'selected': isSelected(piece),
+          'placed': hasBeenPlaced(piece)
+        }"
         (pointerdown)="select(piece)">
       <app-piece [piece]="piece"></app-piece>
     </div>

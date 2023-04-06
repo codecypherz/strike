@@ -40,7 +40,7 @@ export class Game extends EventTarget {
     this.board = board;
   }
 
-  initializePiece(piece: Piece, player: Player) {
+  initializePiece(piece: Piece, player: Player): void {
     piece.setDirection(player.defaultDirection);
     piece.setBoard(this.board);
     piece.setPlayer(player);
@@ -48,6 +48,24 @@ export class Game extends EventTarget {
     this.board.getCell(piece.position).setPiece(piece);
 
     player.addPiece(piece);
+  }
+
+  removePiece(pieceId: string): void {
+    const piece = this.findPiece(pieceId);
+    piece.getCell().clearPiece();
+    piece.getPlayer().removePiece(piece);
+  }
+
+  private findPiece(pieceId: string): Piece {
+    let piece = this.player1.getPieces().find(pieceId);
+    if (piece != null) {
+      return piece;
+    }
+    piece = this.player2.getPieces().find(pieceId);
+    if (piece != null) {
+      return piece;
+    }
+    throw new Error(`Failed to find this piece: ${pieceId}`);
   }
 
   start(): void {

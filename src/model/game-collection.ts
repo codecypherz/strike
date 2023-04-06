@@ -182,7 +182,7 @@ export class GameCollection {
     // Add the piece for player 2
     // The position is mirrored.
     const piece2 = new Piece();
-    piece2.position = new Position(7 - row, 7 - col);
+    piece2.position = piece1.position.mirror();
     game.initializePiece(piece2, game.getPlayer2());
   }
 }

@@ -37,4 +37,8 @@ export class PiecePlacementComponent implements OnInit {
     return this.selectService.isPieceSelected()
         && this.selectService.getSelectedPiece()! == piece;
   }
+
+  hasBeenPlaced(piece: Piece): boolean {
+    return this.customGameService.hasBeenPlaced(piece);
+  }
 }
