@@ -10,6 +10,7 @@ export class SelectService {
 
   private cell: Cell | null = null;
   private piece: Piece | null = null;
+  private notSelectedText: string = '';
 
   constructor(
     @Optional() @SkipSelf() service?: SelectService) {
@@ -17,6 +18,14 @@ export class SelectService {
     if (service) {
       throw new Error('Singleton violation: SelectService');
     }
+  }
+
+  setNotSelectedText(text: string): void {
+    this.notSelectedText = text;
+  }
+
+  getNotSelectedText(): string {
+    return this.notSelectedText;
   }
 
   selectCell(cell: Cell): void {

@@ -77,11 +77,14 @@ export class CustomGameService {
     this.selectService.deselect();
     this.step = step;
 
-    // Make sure all pieces are pointed down.
     if (this.step == Step.PIECE_PLACEMENT) {
+      this.selectService.setNotSelectedText('Select a piece and place it.');
+      // Make sure all pieces are pointed down.
       for (let piece of this.pieceSet.getSet()) {
         piece.setDirection(Direction.DOWN);
       }
+    } else if (this.step == Step.PIECE_SELECTION) {
+      this.selectService.setNotSelectedText('Select a piece.');
     }
   }
 

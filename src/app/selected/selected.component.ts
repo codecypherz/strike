@@ -17,6 +17,10 @@ export class SelectedComponent {
     return this.selectService.isCellSelected() || this.selectService.isPieceSelected();
   }
 
+  getNotSelectedText(): string {
+    return this.selectService.getNotSelectedText();
+  }
+  
   showPieceSelected(): boolean {
     return this.selectService.isPieceSelected();
   }
@@ -24,7 +28,7 @@ export class SelectedComponent {
   showTerrainSelected(): boolean {
     return !this.selectService.isPieceSelected() && this.selectService.isCellSelected();
   }
-  
+
   getPiece(): Piece {
     return this.selectService.getSelectedPiece()!;
   }

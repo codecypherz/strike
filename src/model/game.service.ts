@@ -25,6 +25,7 @@ export class GameService {
 
   setGame(game: Game | null): void {
     this.selectService.deselect();
+    this.selectService.setNotSelectedText('Select a piece to move or attack.');
     if (this.game) {
       this.game.removeEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
     }
