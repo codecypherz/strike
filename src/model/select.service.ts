@@ -29,6 +29,10 @@ export class SelectService {
   }
 
   selectCell(cell: Cell): void {
+    if (this.cell == cell) {
+      return;
+    }
+
     this.deselectCell();
 
     this.cell = cell;
@@ -50,6 +54,10 @@ export class SelectService {
   }
 
   selectPiece(piece: Piece): void {
+    if (this.piece == piece) {
+      return;
+    }
+
     // Different piece, so first thing is reset.
     this.deselectPiece();
 
