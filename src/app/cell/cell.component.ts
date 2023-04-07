@@ -20,7 +20,7 @@ export class CellComponent {
   onCellClicked(): void {
     if (this.customGameService.isSetupActive()) {
       this.customGameService.onCellClicked(this.cell);
-    } else if (this.gameService.isGameSet()) {
+    } else if (this.gameService.isGameActive()) {
       this.gameService.onCellClicked(this.cell);
     }
   }

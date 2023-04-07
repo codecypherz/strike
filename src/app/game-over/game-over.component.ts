@@ -32,7 +32,7 @@ export class GameOverComponent implements OnInit {
   }
 
   newGame(): void {
-    this.gameService.setGame(null);
+    this.gameService.endGame();
     this.router.navigate(['game-selection']);
   }
 }

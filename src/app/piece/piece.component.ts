@@ -115,7 +115,7 @@ export class PieceComponent {
   }
 
   showBoardActionButtons(): boolean {
-    return this.gameService.isGameSet()
+    return this.gameService.isGameActive()
         && this.piece.isOnBoard()
         && this.piece.selected;
   }

@@ -1,7 +1,9 @@
 import { Injectable, Optional, SkipSelf } from "@angular/core";
+import { NGXLogger } from 'ngx-logger';
 import { Board } from "./board";
 import { Cell } from "./cell";
 import { Game } from "./game";
+import { GameCollection } from "./game-collection";
 import { SelectService } from "./select.service";
 
 /**
@@ -15,7 +17,9 @@ export class GameService {
   private startTurnCallback = this.onStartTurn.bind(this);
 
   constructor(
+    private logger: NGXLogger,
     private selectService: SelectService,
+    private gameCollection: GameCollection,
     @Optional() @SkipSelf() service?: GameService) {
 
     if (service) {
@@ -23,20 +27,33 @@ export class GameService {
     }
   }
 
-  setGame(game: Game | null): void {
+  startGame(game: Game): void {
+    if (this.game != null) {
+      throw new Error('Cannot start a game with one already active.');
+    }
+    this.logger.info(`Starting game: ${game.getId()}`);
+
+    this.game = game;
+    this.gameCollection.addCreatedGame(this.game);
+
     this.selectService.deselect();
     this.selectService.setNotSelectedText('Select a piece to move or attack.');
-    if (this.game) {
-      this.game.removeEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
-    }
     this.exitStaging();
-    this.game = game;
-    if (this.game) {
-      this.game.addEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
-    }
+    this.game.addEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
+
+    this.game.start();
   }
 
-  isGameSet(): boolean {
+  endGame(): void {
+    if (this.game == null) {
+      return;
+    }
+    this.exitStaging();
+    this.game.removeEventListener(Game.START_TURN_EVENT, this.startTurnCallback);
+    this.game = null;
+  }
+
+  isGameActive(): boolean {
     return this.game != null;
   }
 

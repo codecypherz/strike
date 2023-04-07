@@ -3,6 +3,7 @@ import { Board } from "./board";
 import { Cell } from "./cell";
 import { Direction } from "./direction";
 import { Game } from "./game";
+import { GameService } from "./game.service";
 import { Fireclaw } from "./machine/fireclaw";
 import { Glinthawk } from "./machine/glinthawk";
 import { PieceSet } from "./piece-set";
@@ -27,6 +28,7 @@ export class CustomGameService {
 
   constructor(
     private selectService: SelectService,
+    private gameService: GameService,
     @Optional() @SkipSelf() service: CustomGameService) {
     if (service) {
       throw new Error('Singleton violation: CustomGameService');
@@ -51,6 +53,20 @@ export class CustomGameService {
     // Default for board setup.
     this.selectedTerrain = Terrain.GRASSLAND;
     this.step = Step.BOARD_SETUP;
+  }
+
+  startGame(): boolean {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
+
+    // Validate the game.
+    const game = this.getGame();
+
+    // Start the game.
+    game.getBoard().setSetupMode(false);
+    this.gameService.startGame(game);
+    return true;
   }
 
   exitSetup(): void {

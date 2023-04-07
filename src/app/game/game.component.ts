@@ -36,6 +36,6 @@ export class GameComponent implements CanComponentDeactivate, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.gameService.setGame(null);
+    this.gameService.endGame();
   }
 }

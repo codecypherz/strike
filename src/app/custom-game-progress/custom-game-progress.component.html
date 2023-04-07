@@ -17,10 +17,11 @@
     [ngClass]="{'active-setup-step': isPiecePlacementActive()}">
     Piece Placement
   </a>
+
   <div class="custom-game-setup-step">
-    <!-- TODO: Enable once setup is complete. -->
-    <button disabled="true">
+    <button (pointerdown)="startGame()">
       Start Game
     </button>
   </div>
+
 </div>
