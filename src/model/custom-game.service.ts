@@ -4,8 +4,6 @@ import { Cell } from "./cell";
 import { Direction } from "./direction";
 import { Game } from "./game";
 import { GameService } from "./game.service";
-import { Fireclaw } from "./machine/fireclaw";
-import { Glinthawk } from "./machine/glinthawk";
 import { PieceSet } from "./piece-set";
 import { Piece } from "./piece/piece";
 import { SelectService } from "./select.service";
