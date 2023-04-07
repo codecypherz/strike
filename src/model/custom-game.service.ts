@@ -43,6 +43,8 @@ export class CustomGameService {
     this.game.getBoard().setSetupMode(true);
 
     // Default piece set.
+    this.pieceSet = new PieceSet();
+    this.placementMap = new Map<string, string[]>();
     this.pieceSet.add(new Fireclaw());
     this.pieceSet.add(new Glinthawk());
 
@@ -65,20 +67,47 @@ export class CustomGameService {
   }
 
   setBoard(board: Board): void {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     this.selectService.deselect();
     board.setSetupMode(true);
     this.getGame().setBoard(board);
   }
 
   setPieceSet(pieceSet: PieceSet): void {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     this.pieceSet = pieceSet;
   }
 
   getPieceSet(): PieceSet {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     return this.pieceSet;
   }
 
+  canAddPiece(): boolean {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
+    return this.pieceSet.size() < 10;
+  }
+
+  addPiece(piece: Piece): void {
+    if (!this.canAddPiece()) {
+      // This is a silent fail because there's a delay on button disablement.
+      return;
+    }
+    this.pieceSet.add(piece);
+  }
+
   removePiece(piece: Piece): void {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     // Remove the piece from the set.
     this.pieceSet.remove(piece);
 
@@ -91,10 +120,16 @@ export class CustomGameService {
   }
 
   hasBeenPlaced(piece: Piece): boolean {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     return this.placementMap.has(piece.getId());
   }
 
   setStep(step: Step) {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     this.selectService.deselect();
     this.step = step;
 
@@ -110,14 +145,23 @@ export class CustomGameService {
   }
 
   selectTerrain(terrain: Terrain): void {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     this.selectedTerrain = terrain;
   }
 
   getSelectedTerrain(): Terrain {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     return this.selectedTerrain;
   }
 
   onCellClicked(cell: Cell): void {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     if (this.step == Step.BOARD_SETUP) {
       this.setTerrain(cell);
     } else if (this.step == Step.PIECE_PLACEMENT) {
@@ -127,6 +171,9 @@ export class CustomGameService {
   }
 
   showAvailablePlacement(): void {
+    if (!this.isSetupActive()) {
+      throw new Error('Custom game not set up.');
+    }
     for (let cell of this.getGame().getBoard().getCells().flat()) {
       if (cell.position.row > 1) {
         break;
@@ -229,7 +276,7 @@ export class CustomGameService {
     this.selectService.selectCell(cell);
   }
 
-  lookupPlayer2Piece(player1Piece: Piece): Piece {
+  private lookupPlayer2Piece(player1Piece: Piece): Piece {
     const player2Cell = this.getGame().getBoard().getCell(player1Piece.position.mirror());
     if (!player2Cell.hasPiece()) {
       throw new Error('Expected a mirrored piece to be found.');

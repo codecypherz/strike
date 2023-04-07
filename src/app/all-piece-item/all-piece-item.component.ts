@@ -16,8 +16,12 @@ export class AllPieceItemComponent {
     private customGameService: CustomGameService,
     private selectService: SelectService) {}
 
+  canAddPiece(): boolean {
+    return this.customGameService.canAddPiece();
+  }
+
   addPiece(): void {
-    this.customGameService.getPieceSet().add(this.piece);
+    this.customGameService.addPiece(this.piece);
   }
 
   isSelected(): boolean {
