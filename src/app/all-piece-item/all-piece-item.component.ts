@@ -22,6 +22,7 @@ export class AllPieceItemComponent {
 
   addPiece(): void {
     this.customGameService.addPiece(this.piece);
+    this.selectService.selectPiece(this.piece);
   }
 
   isSelected(): boolean {

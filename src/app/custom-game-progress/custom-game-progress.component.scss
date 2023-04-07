@@ -21,3 +21,12 @@
 .custom-game-setup-step > button {
   width: 180px;
 }
+
+.error-indicator {
+  display: none;
+  color: var(--debuffed_color);
+}
+
+.error-indicator.invalid {
+  display: inline;
+}

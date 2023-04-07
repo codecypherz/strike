@@ -1,25 +1,33 @@
 <div class="custom-game-progress">
   <a
-    routerLink="board-setup"
-    class="custom-game-setup-step"
-    [ngClass]="{'active-setup-step': isBoardSetupActive()}">
+      routerLink="board-setup"
+      class="custom-game-setup-step"
+      [ngClass]="{
+        'active-setup-step': isBoardSetupActive()
+      }">
     Board Setup
   </a>
   <a
-    routerLink="piece-selection"
-    class="custom-game-setup-step"
-    [ngClass]="{'active-setup-step': isPieceSelectionActive()}">
-    Piece Selection
+      routerLink="piece-selection"
+      class="custom-game-setup-step"
+      [ngClass]="{
+        'active-setup-step': isPieceSelectionActive()
+      }">
+    Piece Selection<span class="error-indicator" [ngClass]="{'invalid': !isPieceSelectionValid()}">*</span>
   </a>
   <a
-    routerLink="piece-placement"
-    class="custom-game-setup-step"
-    [ngClass]="{'active-setup-step': isPiecePlacementActive()}">
-    Piece Placement
+      routerLink="piece-placement"
+      class="custom-game-setup-step"
+      [ngClass]="{
+        'active-setup-step': isPiecePlacementActive()
+      }">
+    Piece Placement<span class="error-indicator" [ngClass]="{'invalid': !isPiecePlacementValid()}">*</span>
   </a>
 
   <div class="custom-game-setup-step">
-    <button (pointerdown)="startGame()">
+    <button
+        (pointerdown)="startGame()"
+        [disabled]="!isGameValid()">
       Start Game
     </button>
   </div>

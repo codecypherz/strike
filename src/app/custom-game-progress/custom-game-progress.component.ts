@@ -28,8 +28,20 @@ export class CustomGameProgressComponent {
     return this.router.isActive('/custom-game/piece-selection', this.exactMatch);
   }
 
+  isPieceSelectionValid(): boolean {
+    return this.customGameService.isPieceSelectionValid();
+  }
+
   isPiecePlacementActive(): boolean {
     return this.router.isActive('/custom-game/piece-placement', this.exactMatch);
+  }
+
+  isPiecePlacementValid(): boolean {
+    return this.customGameService.isPiecePlacementValid();
+  }
+
+  isGameValid(): boolean {
+    return this.customGameService.isGameValid();
   }
 
   startGame(): void {

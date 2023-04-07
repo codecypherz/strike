@@ -18,7 +18,7 @@ export class CustomPieceSetComponent {
 
   getPoints(): string {
     const points = this.customGameService.getPieceSet().getPoints();
-    if (points > 10 || points < 7) {
+    if (!this.customGameService.isPieceSelectionValid()) {
       return decorate(`<debuff>${points}</debuff>`);
     } else {
       return points.toString();

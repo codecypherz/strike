@@ -44,11 +44,9 @@ export class CustomGameService {
     // Makes the "mirrored" overlay show up.
     this.game.getBoard().setSetupMode(true);
 
-    // Default piece set.
+    // Empty piece set.
     this.pieceSet = new PieceSet();
     this.placementMap = new Map<string, string[]>();
-    this.pieceSet.add(new Fireclaw());
-    this.pieceSet.add(new Glinthawk());
 
     // Default for board setup.
     this.selectedTerrain = Terrain.GRASSLAND;
@@ -62,10 +60,31 @@ export class CustomGameService {
 
     // Validate the game.
     const game = this.getGame();
+    if (!this.isGameValid()) {
+      return false;
+    }
 
     // Start the game.
     game.getBoard().setSetupMode(false);
     this.gameService.startGame(game);
+    return true;
+  }
+
+  isGameValid(): boolean {
+    return this.isPieceSelectionValid() && this.isPiecePlacementValid();
+  }
+
+  isPieceSelectionValid(): boolean {
+    const points = this.pieceSet.getPoints();
+    return points <= 10 && points >= 7;
+  }
+
+  isPiecePlacementValid(): boolean {
+    for (let piece of this.pieceSet.getSet()) {
+      if (!this.hasBeenPlaced(piece)) {
+        return false;
+      }
+    }
     return true;
   }
 
