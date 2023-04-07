@@ -56,7 +56,7 @@ export class Game extends EventTarget {
     piece.getPlayer().removePiece(piece);
   }
 
-  private findPiece(pieceId: string): Piece {
+  findPiece(pieceId: string): Piece {
     let piece = this.player1.getPieces().find(pieceId);
     if (piece != null) {
       return piece;

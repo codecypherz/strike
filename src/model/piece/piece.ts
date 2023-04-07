@@ -88,9 +88,6 @@ export abstract class Piece {
   }
 
   setBoard(board: Board): void {
-    if (this.board) {
-      throw new Error('Cannot set another board for this piece.');
-    }
     this.board = board;
   }
 

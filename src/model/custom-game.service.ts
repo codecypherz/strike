@@ -105,15 +105,45 @@ export class CustomGameService {
     if (!this.isSetupActive()) {
       throw new Error('Custom game not set up.');
     }
+    const game = this.getGame();
     this.selectService.deselect();
     board.setSetupMode(true);
-    this.getGame().setBoard(board);
+
+    // Take all pieces that were on the old board and transfer them.
+    for (let piece of this.pieceSet.getSet()) {
+      if (this.hasBeenPlaced(piece)) {
+        const pieceIds = this.placementMap.get(piece.getId())!;
+
+        const piece1 = game.findPiece(pieceIds[0]);
+        piece1.setBoard(board);
+        board.getCell(piece1.position).setPiece(piece1);
+
+        const piece2 = game.findPiece(pieceIds[1]);
+        piece2.setBoard(board);
+        board.getCell(piece2.position).setPiece(piece2);
+      }
+    }
+
+    // Set the new board on the game.
+    game.setBoard(board);
   }
 
   setPieceSet(pieceSet: PieceSet): void {
     if (!this.isSetupActive()) {
       throw new Error('Custom game not set up.');
     }
+    const game = this.getGame();
+
+    // Remove all previously placed pieces.
+    for (let piece of this.pieceSet.getSet()) {
+      if (this.hasBeenPlaced(piece)) {
+        const pieceIds = this.placementMap.get(piece.getId())!;
+        this.getGame().removePiece(pieceIds[0]);
+        this.getGame().removePiece(pieceIds[1]);
+      }
+    }
+
+    // Now set the new piece set.
     this.pieceSet = pieceSet;
   }
 
