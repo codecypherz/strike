@@ -1,0 +1,11 @@
+<div class="board">
+  <div class="row" *ngFor="let row of getCells()">
+    <app-cell *ngFor="let cell of row" [cell]="cell" (pointerdown)="onCellClicked(cell)">
+    </app-cell>
+  </div>
+  <div *ngIf="isSetupActive()" class="mirror-block">
+    <div class="mirror-block-text">
+      Mirrored
+    </div>
+  </div>
+</div>
