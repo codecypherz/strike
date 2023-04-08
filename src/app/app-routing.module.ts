@@ -1,8 +1,14 @@
 import { Injectable, NgModule } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { PreloadAllModules, RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from "@angular/router";
+import { PageNotFoundComponent } from "./ui/page-not-found/page-not-found.component";
 
 const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'game-selection',
+    pathMatch: 'full'
+  },
   {
     path: 'game-selection',
     loadChildren: () => import('../game-selection/game-selection.module').then(m => m.GameSelectionModule),
@@ -15,10 +21,9 @@ const routes: Routes = [
     path: 'game',
     loadChildren: () => import('../game/game.module').then(m => m.GameModule),
   },
-  { // redirect to 'game-selection'
-    path: '',
-    redirectTo: 'game-selection',
-    pathMatch: 'full'
+  {
+    path: '**',
+    component: PageNotFoundComponent
   },
 ];
 

@@ -11,6 +11,7 @@ import { PieceSetCollection } from './collection/piece-set-collection';
 import { DialogService } from './service/dialog.service';
 import { GameService } from './service/game.service';
 import { SelectService } from './service/select.service';
+import { PageNotFoundComponent } from './ui/page-not-found/page-not-found.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { SelectService } from './service/select.service';
   ],
   declarations: [
     AppComponent,
+    PageNotFoundComponent,
   ],
   providers: [
     // Services
