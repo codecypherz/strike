@@ -11,7 +11,7 @@ export class AppComponent {
   constructor(private router: Router) { }
 
   navigateHome(): void {
-    this.router.navigate(['/game-selection']);
+    this.router.navigate(['']);
   }
 
   getNavigationTitle(): string {

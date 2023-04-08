@@ -12,6 +12,9 @@ import { DialogService } from './service/dialog.service';
 import { GameService } from './service/game.service';
 import { SelectService } from './service/select.service';
 import { PageNotFoundComponent } from './ui/page-not-found/page-not-found.component';
+import { GameChoiceComponent } from './ui/game-choice/game-choice.component';
+import { GameModule } from 'src/game/game.module';
+import { GameSelectionComponent } from './ui/game-selection/game-selection.component';
 
 @NgModule({
   imports: [
@@ -20,10 +23,13 @@ import { PageNotFoundComponent } from './ui/page-not-found/page-not-found.compon
     LoggerModule.forRoot({
       level: NgxLoggerLevel.INFO,
     }),
+    GameModule,
   ],
   declarations: [
     AppComponent,
     PageNotFoundComponent,
+    GameSelectionComponent,
+    GameChoiceComponent,
   ],
   providers: [
     // Services

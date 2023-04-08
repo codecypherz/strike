@@ -20,7 +20,7 @@ export const gameResolver: ResolveFn<Game> = (
     if (game) {
       return of(game);
     } else {
-      router.navigate(['/game-selection']);
+      router.navigate(['']);
       return EMPTY;
     }
   }));
