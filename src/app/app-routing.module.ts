@@ -1,7 +1,6 @@
 import { Injectable, NgModule } from "@angular/core";
 import { Title } from "@angular/platform-browser";
 import { PreloadAllModules, RouterModule, RouterStateSnapshot, Routes, TitleStrategy } from "@angular/router";
-import { PageNotFoundComponent } from "./ui/page-not-found/page-not-found.component";
 import { GameSelectionComponent } from "./ui/game-selection/game-selection.component";
 
 const routes: Routes = [
