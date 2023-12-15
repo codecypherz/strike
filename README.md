@@ -33,7 +33,8 @@ Run App Engine locally (test the deployment):
 
 Deploy to App Engine (publish):
 1. Go to strike directory.
-2. Run `gcloud app deploy`
+2. Run `gcloud config set project strike-376819`
+3. Run `gcloud app deploy`
 
 
 Other cheat sheet commands:
